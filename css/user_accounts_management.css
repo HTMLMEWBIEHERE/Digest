@@ -1,0 +1,54 @@
+.message {
+    padding: 1.5rem;
+    background-color: var(--light-bg);
+    color: var(--black);
+    font-size: 1.8rem;
+    margin: 1rem 0;
+    position: relative;
+    border-radius: 0.5rem;
+ }
+ 
+ .message span {
+    margin-right: 1rem;
+ }
+ 
+ .message i {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: 1.5rem;
+    transform: translateY(-50%);
+    color: var(--red);
+ }
+ 
+ /* Box Container Styling */
+ .box-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    gap: 1.5rem;
+ }
+ 
+ .box {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: var(--box-shadow);
+ }
+ 
+ .box p {
+    font-size: 1.8rem;
+    color: var(--black);
+    margin-bottom: 1rem;
+ }
+ 
+ .box p span {
+    color: var(--main-color);
+ }
+ 
+ /* Empty Message Styling */
+ .empty {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--red);
+    grid-column: 1 / -1;
+ }

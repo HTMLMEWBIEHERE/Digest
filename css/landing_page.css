@@ -1,0 +1,379 @@
+/* Carousel container */
+.carousel-container {
+    width: 100%; /* Full width of the viewport */
+    height: 85vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Added for positioning the card */
+}
+
+/* Carousel */
+.carousel {
+    position: relative;
+    width: 100%; /* Full width of the viewport */
+    height: 100vh;
+    overflow: hidden;
+    border-radius: 0; /* Remove border radius for full-screen */
+    box-shadow: none; /* Remove shadow for full-screen */
+}
+
+/* Carousel inner container */
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%; /* Full width of the viewport */
+    height: 100vh;
+}
+
+/* Carousel item */
+.carousel-item {
+    min-width: 100%; /* Full width of the viewport */
+    height: 100vh;
+}
+
+/* Carousel images */
+.carousel-item img {
+    width: 100%; /* Full width of the viewport */
+    height: 100vh;
+    object-fit: cover; /* Ensure images cover the entire screen */
+}
+
+/* Carousel controls */
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 40px;
+    transition: 0.3s;
+    opacity: 0.6;
+    z-index: 10;
+}
+
+.carousel-control:hover {
+    opacity: 1;
+}
+
+.prev {
+    left: 20px;
+}
+
+.next {
+    right: 20px;
+}
+
+/* Carousel indicators */
+.carousel-indicators {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0px;
+    z-index: 10;
+}
+
+.indicator {
+    width: 10px; /* Adjust width as needed */
+    height: 10px; /* Adjust height as needed */
+    background-color: transparent;
+    border-radius: 50%;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.indicator.active {
+    background-color: #007bff;
+    opacity: 1;
+}
+
+/* Overlapping Card */
+.card-1 {
+    position: absolute; /* Overlaps the carousel */
+    bottom: 5px; /* Position at the bottom */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%) translateY(50%); /* Center horizontally and overlap the top half */
+    background-color: #4F0003; /* Set background color */
+    color: white; /* Set text color */
+    padding: 35px; /* Increase padding to make it larger */
+    border-radius: 8px;
+    z-index: 20; /* Ensure it overlaps other elements */
+    width: 90%; /* Set width to make it larger */
+    text-align:left; /* Center text */
+}
+
+/* Icon Text Styling */
+.icon-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.icon-text i {
+    margin-right: 5px;
+}
+
+.icon-text span {
+    font-size: 14px;
+    margin-right: 150px;
+}
+
+/* New Card */
+.card-2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px;
+    margin: 150px 0 25.4px 0; /* Approx. 3 inches on top, 1 inch at the bottom */
+    background-color: #ffffff;
+    border-radius: 0px;
+    width: 100%; /* Match the width of the first card */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow */
+}
+
+.card-2 .card-content {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.card-2 .card-image img {
+    width: 350px; /* Set a specific width */
+    height: auto;
+    border-radius: 10px;
+}
+
+.read-more-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #4F0003;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    text-align: center; /* Center button text */
+}
+
+
+.read-more-button:hover {
+    background-color: #3d0002;
+}
+
+/* Divider for Additional Card */
+.card-3-divider {
+    background-color: #f5f5f5;
+    padding: 50px;
+    margin: 50px 0; /* Approx. 3 inches */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow */
+}
+
+/* Additional Card with Four Smaller Cards */
+/* Articles Header */
+.articles-header {
+    text-align: center;
+    font-size: 32px;
+    color: #EEA61A;
+    margin-bottom: 50px;
+    border-bottom: 2px solid #EEA61A;
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+/* Divider for Additional Card */
+.card-3-divider {
+    background-color: #4f0003;
+    padding: 50px;
+    margin: 50px 0; /* Approx. 3 inches */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow */
+}
+
+/* Additional Card with Four Smaller Cards */
+.card-3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.smaller-card {
+    flex: 1;
+    margin: 10px;
+    text-align: center;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added shadow */
+}
+
+.smaller-card i {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #EEA61A; /* Icon color */
+}
+
+.smaller-card h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333; /* Title color */
+}
+
+.smaller-card p {
+    font-size: 14px;
+    margin-bottom: 20px;
+    color: #666; /* Description color */
+}
+
+.explore-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #EEA61A;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.explore-button:hover {
+    background-color: #3d0002;
+}
+
+/* Announcements Card */
+.card-announcements {
+    display: flex;
+    justify-content: center; /* Center the card horizontally */
+    align-items: center;
+    padding: 20px;
+    margin: 50px auto; /* Center the card vertically and horizontally */
+    background-color: #ffffff;
+    border-radius: 10px;
+    width: 80%; /* Match the width of the first card */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow */
+}
+
+.card-announcements .card-content {
+    flex: 1;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.card-announcements .card-content h1 {
+    color: #4F0003;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.card-announcements .card-content p {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+}
+
+.card-announcements .card-content .read-more-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #4F0003;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.card-announcements .card-content .read-more-button:hover {
+    background-color: #3a0002;
+}
+
+/* .card-announcements .card-image img {
+    width: 350px; 
+    height: auto;
+    border-radius: 10px;
+} */
+
+/* Centering the card using a container */
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh; /* Full screen height */
+}
+
+/* Card Styling */
+.card {
+    width: 99%; /* Longer width */
+    height: 500px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    text-align: center;
+}
+
+/* Hover Effect */
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Card Header */
+.card-header {
+    background: #4F0003;
+    color: #EEA61A;
+    font-size: 1.4em;
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Card Body */
+.card-body {
+    padding: 20px;
+}
+
+/* Card Title */
+.card-title {
+    font-size: 1.6em;
+    margin-bottom: 10px;
+    color: #4F0003;
+}
+
+/* Card Text */
+.card-text {
+    font-size: 1.1em;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Button */
+.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #EEA61A;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out;
+}
+
+/* Button Hover */
+.btn:hover {
+    background: #D98A15;
+}
+
+.card-img4 {
+    margin-top: 30px;
+    width: 100%;
+    height: 320px; /* Adjusted height for better visibility */
+    object-fit: cover; /* Ensures the image fills the space without distortion */
+}

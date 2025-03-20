@@ -1,0 +1,260 @@
+@font-face {
+    font-family: 'Trojan Pro';
+    src: url('./fonts/TrojanPro-Regular.ttf') format('truetype'),
+         url('./fonts/TrojanPro-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* ========== HEADER STYLES ========== */
+header {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    background: #4F0003;
+    padding: 0 20px;
+}
+
+/* Logo */
+header .logo-container {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    flex-direction: row; /* Explicitly set to row to ensure side-by-side layout */
+    flex-wrap: nowrap; /* Prevent wrapping */
+}
+
+header .logo-container img {
+    height: 80px; 
+    width: auto; 
+    object-fit: contain;
+}
+
+header .logo {
+    font-family: 'Cinzel', serif;
+    color: #EEA61A;
+    margin-left: 10px;
+    text-transform: uppercase;
+    font-size: 1em; 
+    font-weight: bold;
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+/* Add this to your CSS file */
+header .logo-container a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none; /* Remove underline from link */
+}
+
+/* Search Bar */
+header .search-box {
+    flex: 1;
+    position: relative;
+    max-width: 400px; /* Limit search box width */
+    margin: 0 20px; /* Add margin for spacing */
+}
+
+.search-box input {
+    width: 100%;
+    height: 40px;
+    border: none;
+    outline: none;
+    background-color: white;
+    color: black;
+    border-radius: 30px;
+    text-align: center;
+    padding: 5px 15px;
+    font-size: 14px; /* Adjust font size for smaller screens */
+}
+
+.search-box button {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 30px;
+    border: none;
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    background: white;
+    transition: background 0.3s ease-in-out;
+}
+
+.search-box button:hover {
+    background: #D98A15;
+}
+
+/* Navigation Menu */
+header ul {
+    flex: 2;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+
+header ul li {
+    list-style: none;
+    position: relative;
+}
+
+header ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 10px 15px;
+    transition: color 0.3s ease-in-out;
+    font-size: 14px; /* Adjust font size for smaller screens */
+}
+
+header ul li a:hover {
+    color: #EEA61A;
+}
+
+/* Dropdown Menu */
+header ul li ul.dropdown {
+    width: 200px;
+    background-color: #4F0003;
+    position: absolute;
+    display: none;
+    top: 100%;
+    left: 0;
+    padding: 10px 0;
+    border-radius: 5px;
+}
+
+header ul li ul.dropdown li {
+    display: block;
+    padding: 10px 15px;
+}
+
+header ul li ul.dropdown li a {
+    color: white;
+    display: block;
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+header ul li ul.dropdown li a:hover {
+    background-color: #EEA61A;
+    color: #4F0003;
+    border-radius: 3px;
+}
+
+header ul li:hover ul.dropdown {
+    display: block;
+}
+
+/* User Icon */
+.user-icon {
+    width: 30px;
+    height: 30px;
+    filter: invert(100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.user-icon-container {
+    display: flex;
+    align-items: center;
+}
+
+.user-icon-container:hover .user-icon {
+    transform: scale(1.1);
+}
+
+/* ========== FIX OVERLAPPING CONTENT ========== */
+.main-content {
+    margin-top: 110px; /* Ensures content is pushed down */
+    padding: 20px;
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+@media (max-width: 1024px) {
+    header {
+        height: auto;
+        flex-wrap: wrap;
+        padding: 10px;
+    }
+
+    header .logo-container {
+        flex: 0 0 auto; /* Don't stretch to fill width */
+        justify-content: flex-start; /* Align to start instead of center */
+        margin-bottom: 10px;
+        margin-right: auto; /* Push other elements to the right */
+    }
+
+    header .search-box {
+        flex: 1 1 100%;
+        max-width: 100%;
+        margin: 10px 0;
+    }
+
+    header ul {
+        flex: 1 1 100%;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    header ul li a {
+        padding: 10px;
+        font-size: 12px; /* Smaller font size for smaller screens */
+    }
+}
+
+@media (max-width: 768px) {
+    header .logo-container img {
+        height: 60px; /* Smaller logo for smaller screens */
+    }
+
+    header .logo {
+        font-size: 0.9em; /* Smaller logo text */
+    }
+
+    .search-box input {
+        font-size: 12px; /* Smaller font size for search input */
+    }
+
+    header ul li a {
+        font-size: 12px; /* Smaller font size for navigation links */
+    }
+}
+
+@media (max-width: 480px) {
+    header .logo-container img {
+        height: 50px; /* Even smaller logo for mobile */
+    }
+
+    header .logo {
+        font-size: 0.8em; /* Smaller logo text */
+    }
+
+    .search-box input {
+        font-size: 10px; /* Smaller font size for search input */
+    }
+
+    header ul li a {
+        font-size: 10px; /* Smaller font size for navigation links */
+    }
+
+    .user-icon {
+        width: 25px;
+        height: 25px; /* Smaller user icon */
+    }
+}
