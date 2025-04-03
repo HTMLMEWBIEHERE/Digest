@@ -1,11 +1,14 @@
+/* ========== FONT IMPORTS ========== */
 @font-face {
-    font-family: 'Trojan Pro';
-    src: url('./fonts/TrojanPro-Regular.ttf') format('truetype'),
-         url('./fonts/TrojanPro-Regular.otf') format('opentype');
+    font-family: 'Trajan Pro';
+    src: url('../fonts/TrajanPro-Regular.ttf') format('truetype'),
+         url('../fonts/TrajanPro-Regular.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
+/* ========== RESET ========== */
 * {
     margin: 0;
     padding: 0;
@@ -13,7 +16,7 @@
     font-family: Arial, sans-serif;
 }
 
-/* ========== HEADER STYLES ========== */
+/* ========== HEADER LAYOUT ========== */
 header {
     width: 100%;
     height: 100px;
@@ -28,13 +31,19 @@ header {
     padding: 0 20px;
 }
 
-/* Logo */
+/* Logo Section */
 header .logo-container {
     display: flex;
     align-items: center;
-    flex: 1;
-    flex-direction: row; /* Explicitly set to row to ensure side-by-side layout */
-    flex-wrap: nowrap; /* Prevent wrapping */
+    flex: 0 0 25%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+header .logo-container a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
 }
 
 header .logo-container img {
@@ -44,29 +53,33 @@ header .logo-container img {
 }
 
 header .logo {
-    font-family: 'Cinzel', serif;
+    font-family: 'Trajan Pro', 'Cinzel', serif;
     color: #EEA61A;
     margin-left: 10px;
     text-transform: uppercase;
     font-size: 1em; 
     font-weight: bold;
-    white-space: nowrap; /* Prevent text from wrapping */
+    white-space: nowrap;
 }
 
-/* Add this to your CSS file */
-header .logo-container a {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-decoration: none; /* Remove underline from link */
+/* Specific h3 styling within logo */
+header .logo h3 {
+    font-family: 'Trajan Pro', 'Cinzel', serif;
+    color: #EEA61A;
+    font-size: 22px; /* Increased size */
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5); /* Add subtle shadow for better contrast */
 }
 
-/* Search Bar */
+/* ========== SEARCH BOX ========== */
 header .search-box {
-    flex: 1;
+    flex: 0 0 30%;
     position: relative;
-    max-width: 400px; /* Limit search box width */
-    margin: 0 20px; /* Add margin for spacing */
+    max-width: 400px;
+    margin: 0 auto;
 }
 
 .search-box input {
@@ -79,7 +92,7 @@ header .search-box {
     border-radius: 30px;
     text-align: center;
     padding: 5px 15px;
-    font-size: 14px; /* Adjust font size for smaller screens */
+    font-size: 14px;
 }
 
 .search-box button {
@@ -100,14 +113,22 @@ header .search-box {
     background: #D98A15;
 }
 
-/* Navigation Menu */
+/* ========== NAVIGATION MENU ========== */
+.header-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 0 0 45%;
+    flex-wrap: nowrap;
+}
+
 header ul {
-    flex: 2;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     padding: 0;
     margin: 0;
+    flex: 1;
 }
 
 header ul li {
@@ -122,7 +143,7 @@ header ul li a {
     text-transform: uppercase;
     padding: 10px 15px;
     transition: color 0.3s ease-in-out;
-    font-size: 14px; /* Adjust font size for smaller screens */
+    font-size: 14px;
 }
 
 header ul li a:hover {
@@ -162,7 +183,15 @@ header ul li:hover ul.dropdown {
     display: block;
 }
 
-/* User Icon */
+/* ========== USER ICON & PROFILE ========== */
+.user-icon-container {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    padding: 0;
+    height: 100%;
+}
+
 .user-icon {
     width: 30px;
     height: 30px;
@@ -170,91 +199,238 @@ header ul li:hover ul.dropdown {
     transition: transform 0.3s ease-in-out;
 }
 
-.user-icon-container {
-    display: flex;
-    align-items: center;
-}
-
 .user-icon-container:hover .user-icon {
     transform: scale(1.1);
 }
 
-/* ========== FIX OVERLAPPING CONTENT ========== */
+#user-btn {
+    font-size: 18px;
+    color: #fff;
+    cursor: pointer;
+    height: 35px;
+    width: 35px;
+    line-height: 35px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    margin-top: 0;
+}
+
+#user-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #EEA61A;
+}
+
+.profile {
+    position: absolute;
+    top: 100px;
+    right: 20px;
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    text-align: center;
+    width: 30rem;
+    transform: scale(0);
+    transform-origin: top right;
+    transition: 0.2s linear;
+    z-index: 1000;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.profile.active {
+    transform: scale(1);
+}
+
+/* ========== CONTENT SPACING ========== */
 .main-content {
-    margin-top: 110px; /* Ensures content is pushed down */
+    margin-top: 110px;
     padding: 20px;
 }
 
 /* ========== RESPONSIVE DESIGN ========== */
 @media (max-width: 1024px) {
+    /* Header Layout */
     header {
         height: auto;
-        flex-wrap: wrap;
-        padding: 10px;
+        flex-direction: column; 
+        padding: 8px 10px;
     }
 
     header .logo-container {
-        flex: 0 0 auto; /* Don't stretch to fill width */
-        justify-content: flex-start; /* Align to start instead of center */
-        margin-bottom: 10px;
-        margin-right: auto; /* Push other elements to the right */
-    }
-
-    header .search-box {
-        flex: 1 1 100%;
-        max-width: 100%;
-        margin: 10px 0;
-    }
-
-    header ul {
-        flex: 1 1 100%;
+        width: 100%;
         justify-content: center;
-        margin-top: 10px;
+        margin-bottom: 5px;
     }
 
-    header ul li a {
-        padding: 10px;
-        font-size: 12px; /* Smaller font size for smaller screens */
+    header .logo-container img {
+        height: 60px;
+    }
+
+    header .logo h3 {
+        font-size: 20px;
+    }
+
+    /* Search Box */
+    header .search-box {
+        width: 100%;
+        max-width: 400px;
+        margin: 5px auto;
+    }
+    
+    .search-box input {
+        height: 35px;
+        font-size: 12px;
+    }
+    
+    .search-box button {
+        width: 35px;
+        height: 35px;
+    }
+
+    /* Navigation */
+    .header-right {
+        width: 100%;
+        justify-content: center;
+        margin: 3px 0;
+    }
+    
+    header ul.nav-menu {
+        display: flex;
+        justify-content: center;
+        width: auto;
+        flex-wrap: nowrap;
+        margin: 0;
+        padding: 0;
+    }
+
+    header ul.nav-menu li {
+        display: inline-block;
+        margin: 0 2px;
+    }
+
+    header ul.nav-menu li a {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+
+    /* User Icon */
+    .user-icon-container {
+        margin-left: 5px;
+        padding: 0;
+        height: auto;
+    }
+    
+    #user-btn {
+        height: 30px;
+        width: 30px;
+        line-height: 30px;
+        font-size: 16px;
+    }
+
+    /* Profile Dropdown */
+    .profile {
+        top: 160px;
+        right: 50%;
+        transform: translateX(50%) scale(0);
+        width: 90%;
+        max-width: 300px;
+    }
+
+    .profile.active {
+        transform: translateX(50%) scale(1);
     }
 }
 
 @media (max-width: 768px) {
+    header .logo h3 {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 600px) {
+    /* Header Sizing */
+    header {
+        padding: 5px;
+    }
+    
+    header .logo-container {
+        margin-bottom: 3px;
+    }
+    
     header .logo-container img {
-        height: 60px; /* Smaller logo for smaller screens */
+        height: 45px;
     }
 
-    header .logo {
-        font-size: 0.9em; /* Smaller logo text */
+    header .logo h1 {
+        font-size: 14px;
     }
 
+    header .logo h3 {
+        font-size: 16px;
+    }
+    
+    /* Search Box */
+    .search-box {
+        margin: 3px auto;
+    }
+    
     .search-box input {
-        font-size: 12px; /* Smaller font size for search input */
+        height: 30px;
+    }
+    
+    .search-box button {
+        width: 30px;
+        height: 30px;
     }
 
-    header ul li a {
-        font-size: 12px; /* Smaller font size for navigation links */
+    /* Navigation */
+    .header-right {
+        margin: 2px 0;
+    }
+    
+    header ul.nav-menu {
+        gap: 0;
+    }
+
+    header ul.nav-menu li {
+        margin: 2px;
+    }
+
+    header ul.nav-menu li a {
+        padding: 4px 6px;
+        font-size: 11px;
+    }
+
+    /* User Icon */
+    #user-btn {
+        height: 26px;
+        width: 26px;
+        line-height: 26px;
+        font-size: 14px;
+    }
+
+    /* Profile Dropdown */
+    .profile {
+        top: 140px;
+        padding: 1rem;
     }
 }
 
 @media (max-width: 480px) {
     header .logo-container img {
-        height: 50px; /* Even smaller logo for mobile */
+        height: 40px;
     }
 
-    header .logo {
-        font-size: 0.8em; /* Smaller logo text */
+    header .logo h3 {
+        font-size: 14px;
     }
-
-    .search-box input {
-        font-size: 10px; /* Smaller font size for search input */
-    }
-
-    header ul li a {
-        font-size: 10px; /* Smaller font size for navigation links */
-    }
-
-    .user-icon {
-        width: 25px;
-        height: 25px; /* Smaller user icon */
+    
+    .main-content {
+        margin-top: 130px;
     }
 }

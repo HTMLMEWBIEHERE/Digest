@@ -16,9 +16,9 @@ if (!isset($admin_id)) {
     exit();
 }
 
-// Fetch published posts created by the logged-in admin
+// Fetch published posts created by the logged-in admin (now including image)
 $select_posts = $conn->prepare("
-    SELECT posts.post_id, posts.title, COUNT(likes.like_id) AS total_likes 
+    SELECT posts.post_id, posts.title, posts.image, COUNT(likes.like_id) AS total_likes 
     FROM `posts` 
     LEFT JOIN `likes` ON posts.post_id = likes.post_id 
     WHERE posts.created_by = ? AND posts.status = 'published' 
@@ -41,6 +41,17 @@ $posts = $select_posts->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Custom CSS File -->
     <link rel="stylesheet" href="../css/admin_style.css">
+    
+    <!-- Minimal inline style just for image sizing -->
+    <style>
+    .likes-container .box img.image {
+        max-width: 100%;
+        height: auto;
+        max-height: 200px;
+        object-fit: contain;
+        margin: 10px 0;
+    }
+    </style>
 </head>
 <body>
 
@@ -53,9 +64,19 @@ $posts = $select_posts->fetchAll(PDO::FETCH_ASSOC);
         <?php if (count($posts) > 0): ?>
             <?php foreach ($posts as $post): ?>
                 <div class="box">
-                    <p>Post Title: <span><?= $post['title']; ?></span></p>
+                    <p>Post Title: <span><?= htmlspecialchars($post['title']); ?></span></p>
+                    
+                    <?php if(!empty($post['image'])): ?>
+                        <div class="image-container">
+                            <img src="../uploaded_img/<?= $post['image']; ?>" alt="<?= htmlspecialchars($post['title']); ?>" class="image">
+                        </div>
+                    <?php endif; ?>
+                    
                     <p>Total Likes: <span><?= $post['total_likes']; ?></span></p>
-                    <a href="view_post.php?post_id=<?= $post['post_id']; ?>" class="btn">View Post</a>
+                    
+                    <div class="btn-container">
+                        <a href="edit_post.php?post_id=<?= $post['post_id']; ?>" class="option-btn">Edit Post</a>
+                    </div>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>

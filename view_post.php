@@ -15,28 +15,42 @@ if(isset($_SESSION['account_id'])){
 include 'components/like_post.php';
 
 // Get the post_id from the URL
-$get_id = $_GET['post_id'];
+$get_id = isset($_GET['post_id']) ? $_GET['post_id'] : (isset($_GET['id']) ? $_GET['id'] : '');
 
+if(empty($get_id)){
+   header('location:home.php');
+   exit();
+}
+
+// Check if user is logged in before allowing comments
 if(isset($_POST['add_comment'])){
-
-   $admin_id = $_POST['admin_id'];
-   $admin_id = filter_var($admin_id, FILTER_SANITIZE_STRING);
-   $user_name = $_POST['user_name'];
-   $user_name = filter_var($user_name, FILTER_SANITIZE_STRING);
-   $comment = $_POST['comment'];
-   $comment = filter_var($comment, FILTER_SANITIZE_STRING);
-
-   $verify_comment = $conn->prepare("SELECT * FROM `comments` WHERE post_id = ? AND admin_id = ? AND commented_by = ? AND user_name = ? AND comment = ?");
-   $verify_comment->execute([$get_id, $admin_id, $user_id, $user_name, $comment]);
-
-   if($verify_comment->rowCount() > 0){
-      $message[] = 'comment already added!';
-   }else{
-      $insert_comment = $conn->prepare("INSERT INTO `comments`(post_id, admin_id, commented_by, user_name, comment) VALUES(?,?,?,?,?)");
-      $insert_comment->execute([$get_id, $admin_id, $user_id, $user_name, $comment]);
-      $message[] = 'new comment added!';
+   if(empty($user_id)){
+      $message[] = 'Please login to add a comment';
+   } else {
+      $comment = $_POST['comment'];
+      $comment = filter_var($comment, FILTER_SANITIZE_STRING);
+      
+      // First verify the user exists in the accounts table
+      $verify_user = $conn->prepare("SELECT * FROM `accounts` WHERE account_id = ?");
+      $verify_user->execute([$user_id]);
+      
+      if($verify_user->rowCount() == 0){
+         $message[] = 'User account not found. Please log out and log in again.';
+      } else {
+         // Check if the same comment was already added
+         $verify_comment = $conn->prepare("SELECT * FROM `comments` WHERE post_id = ? AND commented_by = ? AND comment = ?");
+         $verify_comment->execute([$get_id, $user_id, $comment]);
+   
+         if($verify_comment->rowCount() > 0){
+            $message[] = 'Comment already added!';
+         } else {
+            // Now insert the comment
+            $insert_comment = $conn->prepare("INSERT INTO `comments`(post_id, commented_by, comment) VALUES(?,?,?)");
+            $insert_comment->execute([$get_id, $user_id, $comment]);
+            $message[] = 'New comment added!';
+         }
+      }
    }
-
 }
 
 if(isset($_POST['edit_comment'])){
@@ -45,24 +59,34 @@ if(isset($_POST['edit_comment'])){
    $comment_edit_box = $_POST['comment_edit_box'];
    $comment_edit_box = filter_var($comment_edit_box, FILTER_SANITIZE_STRING);
 
-   $verify_comment = $conn->prepare("SELECT * FROM `comments` WHERE comment = ? AND comment_id = ?");
-   $verify_comment->execute([$comment_edit_box, $edit_comment_id]);
+   // Verify the comment exists and belongs to this user
+   $verify_comment = $conn->prepare("SELECT * FROM `comments` WHERE comment_id = ? AND commented_by = ?");
+   $verify_comment->execute([$edit_comment_id, $user_id]);
 
-   if($verify_comment->rowCount() > 0){
-      $message[] = 'comment already added!';
-   }else{
+   if($verify_comment->rowCount() == 0){
+      $message[] = 'Comment not found or you do not have permission to edit!';
+   } else {
       $update_comment = $conn->prepare("UPDATE `comments` SET comment = ? WHERE comment_id = ?");
       $update_comment->execute([$comment_edit_box, $edit_comment_id]);
-      $message[] = 'your comment edited successfully!';
+      $message[] = 'Your comment edited successfully!';
    }
 }
 
 if(isset($_POST['delete_comment'])){
    $delete_comment_id = $_POST['comment_id'];
    $delete_comment_id = filter_var($delete_comment_id, FILTER_SANITIZE_STRING);
-   $delete_comment = $conn->prepare("DELETE FROM `comments` WHERE comment_id = ?");
-   $delete_comment->execute([$delete_comment_id]);
-   $message[] = 'comment deleted successfully!';
+   
+   // Verify the comment exists and belongs to this user
+   $verify_delete = $conn->prepare("SELECT * FROM `comments` WHERE comment_id = ? AND commented_by = ?");
+   $verify_delete->execute([$delete_comment_id, $user_id]);
+   
+   if($verify_delete->rowCount() > 0){
+      $delete_comment = $conn->prepare("DELETE FROM `comments` WHERE comment_id = ?");
+      $delete_comment->execute([$delete_comment_id]);
+      $message[] = 'Comment deleted successfully!';
+   } else {
+      $message[] = 'Comment not found or you do not have permission to delete!';
+   }
 }
 
 ?>
@@ -88,18 +112,29 @@ if(isset($_POST['delete_comment'])){
 <?php include 'components/user_header.php'; ?>
 <!-- header section ends -->
 
+<!-- Display messages if any -->
 <?php
-   if(isset($_POST['open_edit_box'])){
+if(isset($message)){
+   foreach($message as $msg){
+      echo '<div class="message"><span>'.$msg.'</span><i class="fas fa-times" onclick="this.parentElement.remove();"></i></div>';
+   }
+}
+?>
+
+<?php
+   if(isset($_POST['open_edit_box']) && !empty($user_id)){
    $comment_id = $_POST['comment_id'];
    $comment_id = filter_var($comment_id, FILTER_SANITIZE_STRING);
+   
+   // Verify the comment belongs to this user
+   $verify_edit = $conn->prepare("SELECT * FROM `comments` WHERE comment_id = ? AND commented_by = ?");
+   $verify_edit->execute([$comment_id, $user_id]);
+   
+   if($verify_edit->rowCount() > 0){
+      $fetch_edit_comment = $verify_edit->fetch(PDO::FETCH_ASSOC);
 ?>
    <section class="comment-edit-form">
    <p>Edit Your Comment</p>
-   <?php
-      $select_edit_comment = $conn->prepare("SELECT * FROM `comments` WHERE comment_id = ?");
-      $select_edit_comment->execute([$comment_id]);
-      $fetch_edit_comment = $select_edit_comment->fetch(PDO::FETCH_ASSOC);
-   ?>
    <form action="" method="POST">
       <input type="hidden" name="edit_comment_id" value="<?= $comment_id; ?>">
       <textarea name="comment_edit_box" required cols="30" rows="10" placeholder="Please enter your comment"><?= $fetch_edit_comment['comment']; ?></textarea>
@@ -109,6 +144,7 @@ if(isset($_POST['delete_comment'])){
    </section>
 <?php
    }
+}
 ?>
 
 <section class="posts-container" style="padding-bottom: 0;">
@@ -118,7 +154,7 @@ if(isset($_POST['delete_comment'])){
       <?php
          // Fetch the post details based on the post_id
          $select_posts = $conn->prepare("
-            SELECT posts.*, accounts.firstname, accounts.lastname 
+            SELECT posts.*, accounts.firstname, accounts.lastname, accounts.user_name 
             FROM `posts` 
             JOIN `accounts` ON posts.created_by = accounts.account_id 
             WHERE posts.post_id = ? AND posts.status = 'published'
@@ -126,35 +162,39 @@ if(isset($_POST['delete_comment'])){
          $select_posts->execute([$get_id]);
 
          if($select_posts->rowCount() > 0){
-            while($fetch_posts = $select_posts->fetch(PDO::FETCH_ASSOC)){
-               $post_id = $fetch_posts['post_id'];
+            $fetch_posts = $select_posts->fetch(PDO::FETCH_ASSOC);
+            $post_id = $fetch_posts['post_id'];
 
-               // Count comments for the post
-               $count_post_comments = $conn->prepare("SELECT * FROM `comments` WHERE post_id = ?");
-               $count_post_comments->execute([$post_id]);
-               $total_post_comments = $count_post_comments->rowCount(); 
+            // Count comments for the post
+            $count_post_comments = $conn->prepare("SELECT * FROM `comments` WHERE post_id = ?");
+            $count_post_comments->execute([$post_id]);
+            $total_post_comments = $count_post_comments->rowCount(); 
 
-               // Count likes for the post
-               $count_post_likes = $conn->prepare("SELECT * FROM `likes` WHERE post_id = ?");
-               $count_post_likes->execute([$post_id]);
-               $total_post_likes = $count_post_likes->rowCount();
+            // Count likes for the post
+            $count_post_likes = $conn->prepare("SELECT * FROM `likes` WHERE post_id = ?");
+            $count_post_likes->execute([$post_id]);
+            $total_post_likes = $count_post_likes->rowCount();
 
-               // Check if the logged-in user has liked the post
-               $confirm_likes = $conn->prepare("SELECT * FROM `likes` WHERE account_id = ? AND post_id = ?");
-               if ($user_id) {
-                  $confirm_likes->execute([$user_id, $post_id]);
-               }
+            // Check if the logged-in user has liked the post
+            $confirm_likes = $conn->prepare("SELECT * FROM `likes` WHERE account_id = ? AND post_id = ?");
+            $user_liked = false;
+            if (!empty($user_id)) {
+               $confirm_likes->execute([$user_id, $post_id]);
+               $user_liked = ($confirm_likes->rowCount() > 0);
+            }
       ?>
-      <form class="box" method="post">
-         <input type="hidden" name="post_id" value="<?= $post_id; ?>">
+      <div class="box">
+         <input type="hidden" id="post-id-<?= $get_id; ?>" value="<?= $get_id; ?>">
+         <input type="hidden" name="post_id" value="<?= $get_id; ?>">
          <input type="hidden" name="admin_id" value="<?= $fetch_posts['created_by']; ?>">
          <div class="post-admin">
             <i class="fas fa-user"></i>
             <div>
                <a href="author_posts.php?author=<?= $fetch_posts['created_by']; ?>">
                   <?= $fetch_posts['firstname'] . ' ' . $fetch_posts['lastname']; ?>
+                  (<?= $fetch_posts['user_name']; ?>)
                </a>
-               <div><?= $fetch_posts['created_at']; ?></div>
+               <div><?= date('M d, Y \a\t h:i A', strtotime($fetch_posts['created_at'])); ?></div>
             </div>
          </div>
          
@@ -166,16 +206,21 @@ if(isset($_POST['delete_comment'])){
          <div class="post-content"><?= $fetch_posts['content']; ?></div>
          <div class="icons">
             <div><i class="fas fa-comment"></i><span>(<?= $total_post_comments; ?>)</span></div>
-            <button type="submit" name="like_post">
-               <i class="fas fa-heart" style="<?php if($confirm_likes->rowCount() > 0){ echo 'color:var(--red);'; } ?>"></i>
-               <span>(<?= $total_post_likes; ?>)</span>
-            </button>
+            <?php if (!empty($user_id)) { ?>
+               <div class="like-btn" style="cursor:pointer;" data-post-id="<?= $get_id; ?>">
+                  <i class="fas fa-heart" style="<?= $user_liked ? 'color:var(--red);' : ''; ?>"></i>
+                  <span id="likes-count-<?= $get_id; ?>">(<?= $total_post_likes; ?>)</span>
+               </div>
+            <?php } else { ?>
+               <a href="login.php" class="like-btn">
+                  <i class="fas fa-heart"></i><span>(<?= $total_post_likes; ?>)</span>
+               </a>
+            <?php } ?>
          </div>
-      </form>
+      </div>
       <?php
-            }
          }else{
-            echo '<p class="empty">No posts found!</p>';
+            echo '<p class="empty">No post found or post has been removed!</p>';
          }
       ?>
    </div>
@@ -186,20 +231,22 @@ if(isset($_POST['delete_comment'])){
 
    <p class="comment-title">Add Comment</p>
    <?php
-      if($user_id != ''){  
-         $select_admin_id = $conn->prepare("SELECT * FROM `posts` WHERE post_id = ?");
-         $select_admin_id->execute([$get_id]);
-         $fetch_admin_id = $select_admin_id->fetch(PDO::FETCH_ASSOC);
+      if(!empty($user_id)){  
+         // Fetch the current user's profile
+         $select_profile = $conn->prepare("SELECT * FROM `accounts` WHERE account_id = ?");
+         $select_profile->execute([$user_id]);
+         $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
+         
+         if($select_profile->rowCount() > 0){
    ?>
    <form action="" method="post" class="add-comment">
-      <input type="hidden" name="admin_id" value="<?= $fetch_admin_id['created_by']; ?>">
-      <input type="hidden" name="user_name" value="<?= $fetch_profile['name']; ?>">
-      <p class="user"><i class="fas fa-user"></i><a href="update.php"><?= $fetch_profile['name']; ?></a></p>
+      <p class="user"><i class="fas fa-user"></i><a href="update.php"><?= $fetch_profile['user_name']; ?></a></p>
       <textarea name="comment" maxlength="1000" class="comment-box" cols="30" rows="10" placeholder="Write your comment" required></textarea>
       <input type="submit" value="Add Comment" class="inline-btn" name="add_comment">
    </form>
    <?php
-   }else{
+         }
+      }else{
    ?>
    <div class="add-comment">
       <p>Please login to add or edit your comment</p>
@@ -212,31 +259,37 @@ if(isset($_POST['delete_comment'])){
    <p class="comment-title">Post Comments</p>
    <div class="user-comments-container">
       <?php
-         $select_comments = $conn->prepare("SELECT * FROM `comments` WHERE post_id = ?");
+         $select_comments = $conn->prepare("
+            SELECT c.*, a.user_name, a.firstname, a.lastname 
+            FROM `comments` c
+            JOIN `accounts` a ON c.commented_by = a.account_id
+            WHERE c.post_id = ?
+            ORDER BY c.commented_at DESC
+         ");
          $select_comments->execute([$get_id]);
+         
          if($select_comments->rowCount() > 0){
             while($fetch_comments = $select_comments->fetch(PDO::FETCH_ASSOC)){
+               $is_own_comment = ($fetch_comments['commented_by'] == $user_id);
       ?>
-      <div class="show-comments" style="<?php if($fetch_comments['commented_by'] == $user_id){echo 'order:-1;'; } ?>">
+      <div class="show-comments" style="<?= $is_own_comment ? 'order:-1;' : ''; ?>">
          <div class="comment-user">
             <i class="fas fa-user"></i>
             <div>
-               <span><?= $fetch_comments['user_name']; ?></span>
-               <div><?= $fetch_comments['commented_at']; ?></div>
+               <span><?= htmlspecialchars($fetch_comments['user_name']); ?></span>
+               <div><?= date('M d, Y \a\t h:i A', strtotime($fetch_comments['commented_at'])); ?></div>
             </div>
          </div>
-         <div class="comment-box" style="<?php if($fetch_comments['commented_by'] == $user_id){echo 'color:var(--white); background:var(--black);'; } ?>"><?= $fetch_comments['comment']; ?></div>
-         <?php
-            if($fetch_comments['commented_by'] == $user_id){  
-         ?>
+         <div class="comment-box" style="<?= $is_own_comment ? 'color:var(--white); background:var(--black);' : ''; ?>">
+            <?= htmlspecialchars($fetch_comments['comment']); ?>
+         </div>
+         <?php if($is_own_comment){ ?>
          <form action="" method="POST">
             <input type="hidden" name="comment_id" value="<?= $fetch_comments['comment_id']; ?>">
             <button type="submit" class="inline-option-btn" name="open_edit_box">Edit Comment</button>
             <button type="submit" class="inline-delete-btn" name="delete_comment" onclick="return confirm('Delete this comment?');">Delete Comment</button>
          </form>
-         <?php
-         }
-         ?>
+         <?php } ?>
       </div>
       <?php
             }
@@ -245,11 +298,15 @@ if(isset($_POST['delete_comment'])){
          }
       ?>
    </div>
-
 </section>
+
+<!-- footer section starts  -->
+<?php include 'components/footer.php'; ?>
+<!-- footer section ends -->
 
 <!-- custom js file link  -->
 <script src="js/script.js"></script>
+<script src="js/likes.js"></script>
 
 </body>
 </html>

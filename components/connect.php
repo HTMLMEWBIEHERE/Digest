@@ -5,7 +5,7 @@ class Database
     private $host = 'localhost';      
     private $user_name = 'root';       
     private $user_password = '';          
-    private $db_name = 'digest_db'; 
+    private $db_name = 'udg_db'; 
 
     protected $connection; 
     function connect()

@@ -9,9 +9,9 @@ session_start();
 $admin_id = $_SESSION['admin_id'] ?? null;
 $admin_role = $_SESSION['admin_role'] ?? null;
 
-// Redirect if not logged in or not a subadmin
-if(!isset($admin_id) || $admin_role != 'subadmin'){
-   header('location:../admin_content/admin_login.php');
+// Redirect if not logged in or not a subadmin or superadmin
+if(!isset($admin_id) || ($admin_role != 'subadmin' && $admin_role != 'superadmin')){
+   header('location:../admin/admin_login.php');
    exit();
 }
 
@@ -25,7 +25,7 @@ if(isset($_POST['publish'])){
    $title = filter_var($title, FILTER_SANITIZE_STRING);
    $content = $_POST['content'];
    $content = filter_var($content, FILTER_SANITIZE_STRING);
-   $category_id = $_POST['category_id']; // Use category_id instead of category
+   $category_id = $_POST['category_id'];
    $category_id = filter_var($category_id, FILTER_SANITIZE_STRING);
    $status = 'published';
    
@@ -39,7 +39,7 @@ if(isset($_POST['publish'])){
    $select_image->execute([$image, $admin_id]);
 
    if($image != ''){
-      if($select_image->rowCount() > 0){
+      if($select_image->rowCount() > 0 && $image != ''){
          $message[] = 'Image name repeated!';
       }elseif($image_size > 2000000){
          $message[] = 'Image size is too large!';
@@ -64,7 +64,7 @@ if(isset($_POST['draft'])){
    $title = filter_var($title, FILTER_SANITIZE_STRING);
    $content = $_POST['content'];
    $content = filter_var($content, FILTER_SANITIZE_STRING);
-   $category_id = $_POST['category_id']; // Use category_id instead of category
+   $category_id = $_POST['category_id']; 
    $category_id = filter_var($category_id, FILTER_SANITIZE_STRING);
    $status = 'draft';
    
@@ -78,7 +78,7 @@ if(isset($_POST['draft'])){
    $select_image->execute([$image, $admin_id]);
 
    if($image != ''){
-      if($select_image->rowCount() > 0){
+      if($select_image->rowCount() > 0 && $image != ''){
          $message[] = 'Image name repeated!';
       }elseif($image_size > 2000000){
          $message[] = 'Image size is too large!';
@@ -95,6 +95,52 @@ if(isset($_POST['draft'])){
       $insert_post = $conn->prepare("INSERT INTO `posts` (title, content, category_id, image, status, created_by) VALUES (?, ?, ?, ?, ?, ?)");
       $insert_post->execute([$title, $content, $category_id, $image, $status, $admin_id]);
       $message[] = 'Draft saved!';
+      // Redirect to view_posts.php after saving draft
+      header('location:view_posts.php');
+      exit();
+   }
+}
+
+// Add this after your existing code for publishing and drafts
+if(isset($_POST['delete'])){
+   $post_id = $_POST['post_id'];
+   $post_id = filter_var($post_id, FILTER_SANITIZE_NUMBER_INT);
+   
+   try {
+      // Begin transaction to ensure all operations succeed or fail together
+      $conn->beginTransaction();
+      
+      // 1. First, get the post's image filename (for deletion if needed)
+      $select_image = $conn->prepare("SELECT image FROM `posts` WHERE post_id = ? AND created_by = ?");
+      $select_image->execute([$post_id, $admin_id]);
+      $image = $select_image->fetch(PDO::FETCH_ASSOC);
+      
+      // 2. Delete all likes associated with this post
+      $delete_likes = $conn->prepare("DELETE FROM `likes` WHERE post_id = ?");
+      $delete_likes->execute([$post_id]);
+      
+      // 3. Delete all comments associated with this post
+      $delete_comments = $conn->prepare("DELETE FROM `comments` WHERE post_id = ?");
+      $delete_comments->execute([$post_id]);
+      
+      // 4. Finally delete the post itself
+      $delete_post = $conn->prepare("DELETE FROM `posts` WHERE post_id = ? AND created_by = ?");
+      $delete_post->execute([$post_id, $admin_id]);
+      
+      // If everything succeeded, commit the transaction
+      $conn->commit();
+      
+      // If post had an image, delete the file from server
+      if(isset($image['image']) && $image['image'] != ''){
+         unlink('../uploaded_img/'.$image['image']);
+      }
+      
+      $message[] = 'Post deleted successfully!';
+      
+   } catch (Exception $e) {
+      // If any query fails, roll back the transaction
+      $conn->rollBack();
+      $message[] = 'Error deleting post: ' . $e->getMessage();
    }
 }
 ?>
@@ -179,7 +225,7 @@ if(isset($_POST['draft'])){
          <div class="content"><?= $content_preview; ?></div>
          <div class="date"><?= $created_at; ?></div>
          <div class="flex-btn">
-            <a href="edit_post.php?id=<?= $post_id; ?>" class="option-btn">edit</a>
+            <a href="edit_post.php?post_id=<?= $post_id; ?>" class="option-btn">edit</a>
             <form action="" method="post">
                <input type="hidden" name="post_id" value="<?= $post_id; ?>">
                <button type="submit" name="delete" class="delete-btn" onclick="return confirm('delete this post?');">delete</button>

@@ -61,12 +61,12 @@ if(!isset($admin_id)){
 
    <div class="box">
       <?php
-      $select_tejido = $conn->prepare("SELECT * FROM `tejido` WHERE created_by = ?");
+      $select_tejido = $conn->prepare("SELECT * FROM `tejido` WHERE created_by = ? AND status = 'published'");
       $select_tejido->execute([$admin_id]);
       $numbers_of_tejido = $select_tejido->rowCount();
       ?>
       <h3><?= $numbers_of_tejido; ?></h3>
-      <p>tejido added</p>
+      <p>Published Tejido</p>
       <a href="../admin_content/add_tejido.php" class="btn">Add tejido</a>
    </div>
 
@@ -77,8 +77,20 @@ if(!isset($admin_id)){
          $numbers_of_deactive_posts = $select_deactive_posts->rowCount();
       ?>
       <h3><?= $numbers_of_deactive_posts; ?></h3>
-      <p>draft posts</p>
-      <a href="../admin_content/view_posts.php" class="btn">See drafts</a>
+      <p>All Draft Posts</p>
+      <a href="../admin_content/view_posts.php" class="btn">See Posts Drafts</a>
+   </div>
+
+   <div class="box">
+      <?php
+         // Count draft tejidos
+         $select_draft_tejido = $conn->prepare("SELECT * FROM `tejido` WHERE created_by = ? AND status = 'draft'");
+         $select_draft_tejido->execute([$admin_id]);
+         $numbers_of_draft_tejido = $select_draft_tejido->rowCount();
+      ?>
+      <h3><?= $numbers_of_draft_tejido; ?></h3>
+      <p>draft tejidos</p>
+      <a href="../admin_content/view_tejido.php" class="btn">View draft tejidos</a>
    </div>
 
    <div class="box">
@@ -88,41 +100,85 @@ if(!isset($admin_id)){
          $numbers_of_users = $select_users->rowCount();
       ?>
       <h3><?= $numbers_of_users; ?></h3>
-      <p>users account</p>
-      <a href="./user_accounts_management.php" class="btn">see users</a>
+      <p>Users Account</p>
+      <a href="./user_accounts_management.php" class="btn">See Users</a>
    </div>
 
    <div class="box">
       <?php
-         $select_admins = $conn->prepare("SELECT * FROM `accounts` WHERE role IN ('superadmin', 'subadmin')");
-         $select_admins->execute();
-         $numbers_of_admins = $select_admins->rowCount();
+         // Get the article category ID
+         $article_category_query = $conn->prepare("SELECT category_id FROM category WHERE name = 'Articles'");
+         $article_category_query->execute();
+         $article_category = $article_category_query->fetch(PDO::FETCH_ASSOC);
+         $article_category_id = $article_category['category_id'] ?? 0;
+         
+         // Count published articles
+         $select_articles = $conn->prepare("SELECT * FROM `articles` WHERE created_by = ? AND status = 'published'");
+         $select_articles->execute([$admin_id]);
+         $numbers_of_articles = $select_articles->rowCount();
       ?>
-      <h3><?= $numbers_of_admins; ?></h3>
-      <p>Articles</p>
-      <a href="admin_accounts.php" class="btn">Add Articles</a>
+      <h3><?= $numbers_of_articles; ?></h3>
+      <p>Published Articles</p>
+      <a href="../admin_content/add_articles.php" class="btn">Add Articles</a>
+   </div>
+
+   <div class="box">
+      <?php
+         // Count draft articles
+         $select_draft_articles = $conn->prepare("SELECT * FROM `articles` WHERE created_by = ? AND status = 'draft'");
+         $select_draft_articles->execute([$admin_id]);
+         $numbers_of_draft_articles = $select_draft_articles->rowCount();
+      ?>
+      <h3><?= $numbers_of_draft_articles; ?></h3>
+      <p>Draft Articles</p>
+      <a href="../admin_content/view_articles.php" class="btn">View Draft Articles</a>
    </div>
    
    <div class="box">
       <?php
-         $select_comments = $conn->prepare("SELECT * FROM `comments` WHERE commented_by = ?");
+         // Count comments on posts created by this admin
+         $select_comments = $conn->prepare("
+             SELECT COUNT(*) as total_comments 
+             FROM `comments` c
+             JOIN `posts` p ON c.post_id = p.post_id
+             WHERE p.created_by = ?
+         ");
          $select_comments->execute([$admin_id]);
-         $numbers_of_comments = $select_comments->rowCount();
+         $result = $select_comments->fetch(PDO::FETCH_ASSOC);
+         $numbers_of_comments = $result['total_comments'];
       ?>
       <h3><?= $numbers_of_comments; ?></h3>
-      <p>comments added</p>
-      <a href="../admin_content/comments.php" class="btn">see comments</a>
+      <p>Comments on your Posts</p>
+      <a href="../admin_content/comments.php" class="btn">See Comments</a>
    </div>
 
    <div class="box">
       <?php
-         $select_likes = $conn->prepare("SELECT * FROM `likes` WHERE account_id = ?");
+         // Count likes on posts created by this admin
+         $select_likes = $conn->prepare("
+             SELECT COUNT(*) as total_likes 
+             FROM `likes` l
+             JOIN `posts` p ON l.post_id = p.post_id
+             WHERE p.created_by = ?
+         ");
          $select_likes->execute([$admin_id]);
-         $numbers_of_likes = $select_likes->rowCount();
+         $result = $select_likes->fetch(PDO::FETCH_ASSOC);
+         $numbers_of_likes = $result['total_likes'];
       ?>
       <h3><?= $numbers_of_likes; ?></h3>
-      <p>total likes</p>
+      <p>Likes on your Posts</p>
       <a href="../admin_content/total_likes.php" class="btn">See Total Likes</a>
+   </div>
+
+   <div class="box">
+      <?php
+         $select_categories = $conn->prepare("SELECT * FROM `category`");
+         $select_categories->execute();
+         $numbers_of_categories = $select_categories->rowCount();
+      ?>
+      <h3><?= $numbers_of_categories; ?></h3>
+      <p>Categories</p>
+      <a href="../admin_content/edit_categories.php" class="btn">Edit Categories</a>
    </div>
    </div>
 

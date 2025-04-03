@@ -9,9 +9,9 @@ session_start();
 // Initialize $user_id for non-logged-in users
 $user_id = '';
 
-// Check if the user is logged in
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
+// Check if the user is logged in - FIXED: use account_id consistently
+if (isset($_SESSION['account_id'])) {
+    $user_id = $_SESSION['account_id'];
 }
 
 include 'components/like_post.php';
@@ -31,7 +31,9 @@ include 'components/like_post.php';
     <link rel="stylesheet" href="css/style.css">    
 </head>
 <body>
-    <?php include 'components/user_header.php'; ?>
+    <?php
+     include 'components/user_header.php';?>
+    
     <section class="posts-container">
         <h1 class="headingpost">Latest Posts</h1>
 
@@ -65,7 +67,8 @@ include 'components/like_post.php';
                         $total_post_likes = $count_post_likes->rowCount();
 
                         // Check if the logged-in user has liked the post
-                        $confirm_likes = $conn->prepare("SELECT * FROM `likes` WHERE user_id = ? AND post_id = ?");
+                        // FIXED: Change user_id to account_id in the query
+                        $confirm_likes = $conn->prepare("SELECT * FROM `likes` WHERE account_id = ? AND post_id = ?");
                         if ($user_id) {
                             $confirm_likes->execute([$user_id, $post_id]);
                         }
@@ -76,7 +79,7 @@ include 'components/like_post.php';
             ?>
                         <form class="box" method="post">
                             <input type="hidden" name="post_id" value="<?= $post_id; ?>">
-                            <input type="hidden" name="user_id" value="<?= $user_id; ?>">
+                            <input type="hidden" name="admin_id" value="<?= $fetch_posts['created_by']; ?>">
                             <div class="post-admin">
                                 <i class="fas fa-user"></i>
                                 <div>
@@ -102,7 +105,7 @@ include 'components/like_post.php';
                                     <i class="fas fa-comment"></i><span>(<?= $total_post_comments; ?>)</span>
                                 </a>
                                 <?php if ($user_id) { ?>
-                                    <button type="submit" name="like_post">
+                                    <button type="button" name="like_post" class="like-btn">
                                         <i class="fas fa-heart" style="<?= ($confirm_likes->rowCount() > 0) ? 'color:var(--red);' : ''; ?>"></i>
                                         <span>(<?= $total_post_likes; ?>)</span>
                                     </button>
@@ -129,6 +132,10 @@ include 'components/like_post.php';
         </div>
     </section>
 
+    <!-- Include Footer -->
+    <?php include 'components/footer.php'; ?>
     <script src="js/script.js"></script>
+    <script src="js/likes.js"></script>
+
 </body>
 </html>

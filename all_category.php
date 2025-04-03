@@ -8,8 +8,8 @@ $conn = $db->connect();
 
 session_start();
 
-if(isset($_SESSION['user_id'])){
-   $user_id = $_SESSION['user_id'];
+if(isset($_SESSION['account_id'])){
+   $user_id = $_SESSION['account_id'];
 }else{
    $user_id = '';
 };
@@ -67,6 +67,7 @@ include 'components/like_post.php';
 
 <!-- custom js file link  -->
 <script src="js/script.js"></script>
+<?php include 'components/footer.php'; ?>
 
 </body>
 </html>

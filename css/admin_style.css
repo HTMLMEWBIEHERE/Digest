@@ -158,7 +158,7 @@ section{
 .empty{
    border:var(--border);
    border-radius: .5rem;
-   background-color: var(--white);
+   background-color: var (--white);
    padding:1.5rem;
    text-align: center;
    width: 100%;
@@ -576,7 +576,7 @@ section{
 }
 
 .comments .box-container .post-title span{
-   color: var(--black);
+   color: var (--black);
 }
 
 .comments .box-container .post-title a{
@@ -738,16 +738,6 @@ section{
     }
 }
 
-
-
-
-
-
-
-
-
-
-
 /* Tejido Posts Section */
 .tejido-posts {
     padding: 2rem;
@@ -841,8 +831,177 @@ section{
 .tejido-posts .empty {
     text-align: center;
     font-size: 2rem;
-    color: var(--red);
+    color: var (--red);
     margin-top: 2rem;
+}
+
+/* Likes Analysis Page Styles */
+.likes-analysis-section {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.likes-analytics-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.likes-summary-card {
+    flex: 1;
+    min-width: 200px;
+    background-color: var(--light-bg);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.likes-summary-card.likes-total-card {
+    background-color: var(--main-color);
+    color: #fff;
+}
+
+.likes-summary-card h3 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.likes-summary-card p {
+    font-size: 1.5rem;
+    color: var(--light-color);
+}
+
+.likes-summary-card.likes-total-card p {
+    color: rgba(255,255,255,0.8);
+}
+
+.likes-filter-panel {
+    background-color: var(--light-bg);
+    padding: 2rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.likes-filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-end;
+}
+
+.likes-filter-input {
+    flex: 1;
+    min-width: 250px;
+}
+
+.likes-filter-input label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 1.6rem;
+    color: var(--black);
+    font-weight: 500;
+}
+
+.likes-filter-input .box,
+.likes-filter-input select {
+    width: 100%;
+    padding: 1.2rem;
+    font-size: 1.6rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--light-color);
+}
+
+.post-likes-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.post-likes-card {
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.post-likes-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.post-author-info {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--light-bg);
+    font-size: 1.4rem;
+}
+
+.post-author-username {
+    background-color: var(--light-bg);
+    padding: 0.3rem 0.8rem;
+    border-radius: 0.4rem;
+    font-size: 1.2rem;
+    margin-left: 0.5rem;
+    display: inline-block;
+}
+
+.post-likes-title {
+    font-size: 1.8rem;
+    margin: 1rem 0;
+    color: var(--black);
+    line-height: 1.4;
+}
+
+.post-likes-count {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+    gap: 0.8rem;
+}
+
+.post-likes-count i {
+    color: var(--red);
+    font-size: 2rem;
+}
+
+.post-likes-count .likes-counter {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--black);
+}
+
+.post-likes-count p {
+    font-size: 1.5rem;
+    color: var(--light-color);
+}
+
+.post-likes-card .btn {
+    margin-top: auto;
+    width: 100%;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .likes-analytics-summary {
+        flex-direction: column;
+    }
+    
+    .likes-summary-card {
+        width: 100%;
+    }
+    
+    .post-likes-container {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* media queries  responsive design */
@@ -899,9 +1058,6 @@ section{
 
 }
 
-
-
-
 /*for user_accounts_managements*/ 
 .message {
    padding: 1.5rem;
@@ -937,6 +1093,7 @@ section{
    background-color: var(--white);
    padding: 2rem;
    border-radius: 0.5rem;
+   border: solid 2px black;
    box-shadow: var(--box-shadow);
 }
 
@@ -958,4 +1115,783 @@ section{
    grid-column: 1 / -1;
 }
 
+/* Login/Register Form Styles */
+.form-container {
+   min-height: 100vh;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   padding: 2rem;
+}
 
+.form-container form {
+   width: 100%;
+   max-width: 40rem;
+   padding: 2rem;
+   text-align: center;
+   border-radius: 0.5rem;
+   background-color: var(--white);
+   box-shadow: var(--box-shadow);
+   border: var(--border);
+}
+
+.form-container .box {
+   width: 100%;
+   margin: 1rem 0;
+   font-size: 1.8rem;
+   color: var(--black);
+   border-radius: 0.5rem;
+   background-color: var(--light-bg);
+   padding: 1.4rem;
+   border: var(--border);
+}
+
+.form-container .btn {
+   margin-top: 1rem;
+}
+
+.form-container h3 {
+   margin-bottom: 1.5rem;
+   font-size: 2.5rem;
+   color: var(--black);
+   text-transform: uppercase;
+}
+
+/* Form toggle button styles */
+.form-toggle-btn {
+   margin: 2rem 0;
+   text-align: center;
+}
+
+/* Fix for the flex-btn in login/register pages */
+.auth-flex-btn {
+   display: flex;
+   gap: 1rem;
+   justify-content: center;
+   margin: 2rem 0;
+}
+
+/* For the back to login / register admin buttons */
+.auth-option-btn {
+   display: inline-block;
+   margin-top: 1rem;
+   padding: 1rem 2rem;
+   cursor: pointer;
+   font-size: 1.8rem;
+   border-radius: 0.5rem;
+   text-transform: capitalize;
+   background-color: var(--light-bg);
+   color: var(--black);
+}
+
+.auth-option-btn:hover {
+   background-color: var(--black);
+   color: var(--white);
+}
+
+/* Ensure no padding on login page body */
+body.login-body {
+   padding-left: 0 !important;
+}
+
+/* Message styling for login/register pages */
+.auth-message {
+   position: sticky;
+   top: 0;
+   margin: 0 auto;
+   background-color: var(--white);
+   padding: 2rem;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   z-index: 10000;
+   gap: 1.5rem;
+   box-shadow: var(--box-shadow);
+   border-radius: .5rem;
+   margin-bottom: 2rem;
+   width: 100%;
+   max-width: 40rem;
+}
+
+.auth-message span {
+   font-size: 2rem;
+   color: var(--black);
+}
+
+.auth-message i {
+   cursor: pointer;
+   color: var(--red);
+   font-size: 2.5rem;
+}
+
+.auth-message i:hover {
+   transform: rotate(90deg);
+}
+
+/* Profile image and container styling */
+.profile-image-container {
+   display: flex;
+   justify-content: center;
+   margin-bottom: 10px;
+}
+
+.profile-pic {
+   width: 65px;
+   height: 65px;
+   border-radius: 50%;
+   object-fit: cover;
+   border: 2px solid var(--main-color);
+   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.profile {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+/* Authentication message styling */
+.auth-message {
+   padding: 20px;
+   text-align: center;
+}
+
+.auth-message p {
+   color: #666;
+}
+
+.auth-message a {
+   color: var(--main-color);
+   font-weight: bold;
+}
+
+/* Profile image upload styling */
+.profile-image-container {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   margin-bottom: 20px;
+}
+
+.profile-image {
+   width: 150px;
+   height: 150px;
+   border-radius: 50%;
+   object-fit: cover;
+   margin-bottom: 10px;
+   border: 3px solid var(--main-color);
+   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.image-upload-label {
+   cursor: pointer;
+   padding: 8px 15px;
+   background-color: var(--light-bg);
+   border-radius: 5px;
+   margin-top: 10px;
+   display: inline-block;
+   transition: all 0.3s ease;
+}
+
+.image-upload-label:hover {
+   background-color: var(--light-color);
+}
+
+.image-upload {
+   display: none;
+}
+
+/* ================= E-MAGAZINE MANAGEMENT STYLES ================= */
+
+/* Magazine Grid Layout */
+.magazine-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Magazine Item Card */
+.magazine-item {
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.magazine-item:hover {
+    transform: translateY(-5px);
+}
+
+/* Magazine Cover Image */
+.magazine-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid var(--light-bg);
+}
+
+/* Magazine Content Container */
+.magazine-details {
+    padding: 1.5rem;
+}
+
+/* Magazine Title */
+.magazine-title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--black);
+}
+
+/* Magazine Info Line Items */
+.magazine-info {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    color: var(--light-color);
+}
+
+.magazine-info i {
+    width: 20px;
+    margin-right: 0.5rem;
+    color: var(--main-color);
+}
+
+/* Magazine Description */
+.magazine-context {
+    margin: 1.5rem 0;
+    color: var(--black);
+    line-height: 1.6;
+    max-height: 100px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Gradient Fade for Description */
+.magazine-context::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: linear-gradient(transparent, var(--white));
+}
+
+/* Magazine Action Buttons */
+.magazine-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.magazine-link {
+    display: block;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+/* Category Tag */
+.magazine-category {
+    background-color: var(--light-bg);
+    color: var(--black);
+    padding: 0.3rem 0.7rem;
+    border-radius: 3px;
+    font-size: 1.2rem;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+/* Filter Form */
+.filter-form {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.filter-form .box {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .filter-form {
+        flex-direction: column;
+    }
+    
+    .filter-form .box {
+        width: 100%;
+    }
+}
+
+/* ================= ANNOUNCEMENT MANAGEMENT STYLES ================= */
+
+/* Dashboard box style for summary */
+
+
+
+
+.announcement-item:hover {
+    transform: translateY(-5px);
+}
+
+/* Announcement Image */
+.announcement-image {
+    width: 100%;
+    height: 20rem;
+    object-fit: cover;
+}
+
+/* Announcement Content Container */
+.announcement-details {
+    padding: 2rem;
+}
+
+/* Announcement Title */
+.announcement-title {
+    font-size: 2rem;
+    color: var(--black);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+/* Announcement Meta Info */
+.announcement-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    color: var(--light-color);
+}
+
+.announcement-meta span {
+    display: flex;
+    align-items: center;
+}
+
+.announcement-meta i {
+    margin-right: 0.8rem;
+    color: var(--main-color);
+}
+
+/* Announcement Content */
+.announcement-content {
+    margin: 1.5rem 0;
+    color: var(--black);
+    line-height: 1.8;
+    font-size: 1.6rem;
+    max-height: 12rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.announcement-content::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5rem;
+    background: linear-gradient(transparent, var(--white));
+}
+
+/* Announcement Actions */
+.announcement-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    gap: 1rem;
+}
+
+.announcement-actions .option-btn,
+.announcement-actions .delete-btn {
+    flex: 1;
+    text-align: center;
+    font-size: 1.6rem;
+    padding: 1.2rem 0;
+}
+
+/* Current Image Preview */
+.current-image {
+    margin-top: 1.5rem;
+}
+
+.current-image p {
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    color: var(--light-color);
+}
+
+.current-image img {
+    border: 1px solid var(--light-bg);
+    border-radius: .5rem;
+    padding: .5rem;
+}
+
+/* Filter Container */
+.filter-container {
+    background-color: var(--white);
+    box-shadow: var(--box-shadow);
+    border-radius: .5rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Filter Form */
+.filter-form {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.filter-form .input-field {
+    flex: 1;
+    min-width: 25rem;
+}
+
+.filter-form .box {
+    width: 100%;
+    border-radius: .5rem;
+    padding: 1.4rem;
+    font-size: 1.8rem;
+    color: var(--black);
+    border: var(--border);
+    background-color: var(--light-bg);
+}
+
+.filter-form .inline-btn,
+.filter-form .inline-option-btn {
+    font-size: 1.6rem;
+    border-radius: .5rem;
+    padding: 1.4rem 2.5rem;
+    cursor: pointer;
+    color: var(--white);
+    text-transform: capitalize;
+}
+
+.filter-form .inline-btn {
+    background-color: var(--main-color);
+}
+
+.filter-form .inline-option-btn {
+    background-color: var(--orange);
+}
+
+/* Make sure this works with your existing section styling */
+.announcements .form-container {
+    background-color: var(--white);
+    box-shadow: var(--box-shadow);
+    border-radius: .5rem;
+    padding: 2rem;
+    margin-bottom: 3rem;
+}
+
+/* Responsive adjustments to match other admin pages */
+@media (max-width: 991px){
+    .announcement-grid {
+        grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    }
+}
+
+@media (max-width: 768px){
+    .filter-form .input-field {
+        width: 100%;
+    }
+    
+    .announcement-actions {
+        flex-direction: column;
+    }
+    
+    .announcement-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 450px){
+    .announcement-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ================= ANNOUNCEMENT MANAGEMENT STYLES ================= */
+
+/* Announcement Grid Layout */
+.announcement-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(35rem, 1fr));
+    gap: 1.5rem;
+    align-items: stretch;
+}
+
+/* Announcement Item Card */
+.announcement-item {
+    background-color: var(--white);
+    border-radius: .5rem;
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    border: var(--border);
+}
+
+.announcement-item:hover {
+    transform: translateY(-5px);
+}
+
+/* Announcement Image */
+.announcement-image {
+    width: 100%;
+    height: 20rem;
+    object-fit: cover;
+}
+
+/* Announcement Content Container */
+.announcement-details {
+    padding: 2rem;
+}
+
+/* Announcement Title */
+.announcement-title {
+    font-size: 2rem;
+    color: var(--black);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+/* Announcement Meta Info */
+.announcement-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    color: var(--light-color);
+}
+
+.announcement-meta span {
+    display: flex;
+    align-items: center;
+}
+
+.announcement-meta i {
+    margin-right: 0.8rem;
+    color: var(--main-color);
+}
+
+/* Announcement Content */
+.announcement-content {
+    margin: 1.5rem 0;
+    color: var(--black);
+    line-height: 1.8;
+    font-size: 1.6rem;
+    max-height: 12rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.announcement-content::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5rem;
+    background: linear-gradient(transparent, var(--white));
+}
+
+/* Announcement Actions */
+.announcement-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    gap: 1rem;
+}
+
+.announcement-actions .option-btn,
+.announcement-actions .delete-btn {
+    flex: 1;
+    text-align: center;
+    font-size: 1.6rem;
+    padding: 1.2rem 0;
+}
+
+/* Current Image Preview */
+.current-image {
+    margin-top: 1.5rem;
+}
+
+.current-image p {
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    color: var(--light-color);
+}
+
+.current-image img {
+    border: 1px solid var(--light-bg);
+    border-radius: .5rem;
+    padding: .5rem;
+}
+
+/* For announcement dashboard summary */
+.announcements .box-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(27rem, 1fr));
+    gap: 1.5rem;
+    align-items: flex-start;
+    margin-bottom: 3rem;
+}
+
+.announcements .box-container .box {
+    background-color: var(--white);
+    box-shadow: var(--box-shadow);
+    border-radius: .5rem;
+    padding: 2rem;
+    text-align: center;
+    border: var(--border);
+}
+
+.announcements .box-container .box h3 {
+    font-size: 2.7rem;
+    color: var(--black);
+    margin-bottom: 1rem;
+}
+
+.announcements .box-container .box p {
+    font-size: 1.8rem;
+    color: var(--light-color);
+    padding: .5rem 0;
+}
+
+/* Filter Container */
+.filter-container {
+    background-color: var(--white);
+    box-shadow: var(--box-shadow);
+    border-radius: .5rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: var(--border);
+}
+
+/* Filter Form */
+.filter-form {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.filter-form .input-field {
+    flex: 1;
+    min-width: 25rem;
+}
+
+.filter-form .box {
+    width: 100%;
+    border-radius: .5rem;
+    padding: 1.4rem;
+    font-size: 1.8rem;
+    color: var(--black);
+    border: var(--border);
+    background-color: var(--light-bg);
+}
+
+.filter-form .inline-btn,
+.filter-form .inline-option-btn {
+    font-size: 1.6rem;
+    border-radius: .5rem;
+    padding: 1.4rem 2.5rem;
+    cursor: pointer;
+    color: var(--white);
+    text-transform: capitalize;
+}
+
+.filter-form .inline-btn {
+    background-color: var(--main-color);
+}
+
+.filter-form .inline-option-btn {
+    background-color: var(--orange);
+}
+
+/* Make sure this works with your existing section styling */
+.announcements .form-container {
+    background-color: var(--white);
+    box-shadow: var(--box-shadow);
+    border-radius: .5rem;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    border: var(--border);
+}
+
+/* Responsive adjustments to match other admin pages */
+@media (max-width: 991px){
+    .announcement-grid {
+        grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    }
+}
+
+@media (max-width: 768px){
+    .filter-form .input-field {
+        width: 100%;
+    }
+    
+    .announcement-actions {
+        flex-direction: column;
+    }
+    
+    .announcement-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 450px){
+    .announcement-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Special form styling for announcement form without box */
+.add-announcement-form {
+    max-width: 1200px;
+    margin: 0 auto 3rem;
+    padding: 2rem 0;
+}
+
+.add-announcement-form h3 {
+    font-size: 2.5rem;
+    text-transform: capitalize;
+    color: var(--black);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.add-announcement-form .box {
+    width: 100%;
+    border-radius: .5rem;
+    padding: 1.4rem;
+    font-size: 1.8rem;
+    color: var(--black);
+    background-color: var(--light-bg);
+    margin: 1rem 0;
+}
+
+.add-announcement-form textarea {
+    height: 20rem;
+    resize: none;
+}
+
+.add-announcement-form .flex-btn {
+    margin-top: 1.5rem;
+}

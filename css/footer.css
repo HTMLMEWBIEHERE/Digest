@@ -1,87 +1,175 @@
-/* Main Content */
-.main-content {
-    min-height: calc(100vh - 200px); /* Adjust based on the height of your footer */
-    padding: 20px;
-}
-
-/* Footer Styling */
 .footer {
-    background-color: #4F0003; /* Dark red background */
-    color: #fff;
-    padding: 20px 0; /* Reduced padding */
-    text-align: center;
+    background-color: #4F0003;
+    color: #D9D9D9;
+    padding: 20px 0;
     width: 100%;
-    position: relative;
-    bottom: 0;
-    left: 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    
+    /* Force footer to normal positioning - keep this */
+    position: static !important;
+    z-index: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    top: auto !important;
+    right: auto !important;
+    transform: none !important;
+    clear: both;
+    
+    /* Add space above footer */
+    margin-top: 50px;
+    
+    /* NEW: Minimum height to fill bottom space */
+    min-height: 200px; /* Adjust this value as needed */
+    
+    /* NEW: Add bottom padding to fill space */
+    padding-bottom: 40px;
 }
 
 .footer-container {
-    display: flex;
+    display: flex; 
+    flex-wrap: nowrap; 
     justify-content: space-between;
-    align-items: flex-start;
-    width: 80%;
+    align-items: center; 
+    width: 85%;
     margin: 0 auto;
 }
 
 .footer-section {
     flex: 1;
-    margin: 10px; /* Reduced margin */
+    min-width: 150px; 
+    text-align: left;
+    padding: 5px;
+    list-style: none; 
+}
+
+\.footer-section.logo {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center;
+}
+
+.footer-logo {
+    width: 80px;
+    height: auto;
+    margin-bottom: 10px; 
+}
+
+.footer-logo-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #EEA61A;
 }
 
 .footer-section h4 {
-    font-size: 18px; /* Reduced font size */
-    margin-bottom: 5px; /* Reduced margin-bottom */
-    color: #EEA61A; /* Bright gold color */
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #EEA61A;
+    font-weight: bold;
 }
 
 .footer-section p,
 .footer-section a,
 .footer-section ul {
-    color: #ccc;
-    font-size: 12px; /* Reduced font size */
-    line-height: 1.4; /* Adjusted line-height */
+    color: #D9D9D9;
+    font-size: 12px;
+    line-height: 1.4;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
 }
 
 .footer-section a {
     text-decoration: none;
-    color: #EEA61A; /* Bright gold color */
+    color: #FFFFFF;
+    font-weight: bold;
     transition: color 0.3s ease;
 }
 
 .footer-section a:hover {
-    color: #fff;
-}
-
-.footer-section ul {
-    list-style: none;
-    padding: 0;
-}
-
-.footer-section ul li {
-    margin-bottom: 5px; /* Reduced margin-bottom */
-}
-
-/* Social Icons */
-.footer-section .social-icon {
-    color: #EEA61A; /* Bright gold color */
-    font-size: 18px;
-    margin: 0 10px;
-    transition: color 0.3s ease;
-}
-
-.footer-section .social-icon:hover {
-    color: #fff;
+    color: #EEA61A;
 }
 
 .footer-bottom {
-    background-color: transparent; /* Transparent background */
-    padding: 10px 0;
-    margin-top: 10px; /* Reduced margin-top */
+    text-align: center;
+    padding: 5px 0;
+    margin-top: 10px;
 }
 
 .footer-bottom p {
     margin: 0;
-    font-size: 12px; /* Reduced font size */
-    color: #ccc;
+    font-size: 10px;
+    color: #D9D9D9;
+}
+
+
+/* TABLET */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column; 
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-section {
+        width: 100%; 
+        text-align: center;
+    }
+
+    .footer-section.logo {
+        padding: 15px 0;
+    }
+
+    .footer-logo {
+        width: 70px;
+        margin-bottom: 10px;
+    }
+
+    .footer-logo-name {
+        font-size: 14px;
+    }
+
+    .footer-section h4 {
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .footer-section p,
+    .footer-section a {
+        font-size: 11px;
+        line-height: 1.5;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .footer-section {
+        width: 100%;
+        text-align: center;
+    }
+
+    .footer-logo {
+        width: 60px;
+    }
+
+    .footer-logo-name {
+        font-size: 12px;
+    }
+
+    .footer-section h4 {
+        font-size: 12px;
+    }
+
+    .footer-section p,
+    .footer-section a {
+        font-size: 10px;
+    }
 }

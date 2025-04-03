@@ -87,5 +87,6 @@ include 'components/like_post.php';
 
 <!-- Custom JS File -->
 <script src="js/script.js"></script>
+<?php include 'components/footer.php'; ?>
 </body>
 </html>
