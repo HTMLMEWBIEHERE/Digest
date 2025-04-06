@@ -54,6 +54,7 @@ $admin_name = $fetch_profile ? htmlspecialchars($fetch_profile['firstname'] . ' 
     <nav class="navbar">
         <a href="../super_admin/superadmin_dashboard.php"><i class="fas fa-home"></i> <span>Home</span></a>
         <a href="../superadmin_content/sa_add_posts.php"><i class="fas fa-pen"></i> <span>Manage Posts</span></a>
+        <a href="../superadmin_content/sa_add_carousel.php"><i class="fas fa-images"></i> <span>Manage Carousel</span></a>
         <a href="../superadmin_content/sa_view_posts.php"><i class="fas fa-eye"></i> <span>View Drafts</span></a>
         <a href="../superadmin_content/sa_admin_accounts.php"><i class="fas fa-user-shield"></i> <span>Admin Accounts</span></a>
         <a href="../superadmin_content/sa_manage_emagazines.php"><i class="fas fa-book"></i> <span>E-Magazines</span></a>

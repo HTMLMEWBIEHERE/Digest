@@ -598,7 +598,7 @@ body {
 /* Articles Header */
 .articles-header {
     text-align: center;
-    font-size: 24px;     /*Adjusted font size*/
+    font-size: 35px;     /*Adjusted font size*/
     color: #EEA61A;
     margin-bottom: 20px;    /*Adjusted font size*/
     border-bottom: 2px solid #EEA61A;
@@ -667,51 +667,83 @@ body {
 }
 
 /* Announcements Card */
+/* Style for the card container */
+.card-announcements-container {
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    margin-bottom: 20px;
+}
+
+/* Style for the individual announcement card */
 .card-announcements {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px; /* Adjusted padding */
-    margin: 20px auto; /* Adjusted margin */
-    background-color: #ffffff;
-    border-radius: 8px;    /*give a slight curve to make it more appealing*/
-    width: 90%; /* Adjusted width */
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden; /* To make sure content doesn't overflow */
+    margin: 20px;
 }
 
-.card-announcements .card-content {
-    flex: 1;
-    margin-right: 0;  /* Adjusted margin */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.card-announcements .card-content h1 {
-    color: #4F0003;
-    font-size: 30px; /*Adjusted font size*/
-    margin-bottom: 5px;  /*Adjusted margin*/
-}
-
-.card-announcements .card-content p {
-    font-size: 14px; /*Adjusted font size*/
-    line-height: 1.5;
-}
-
-.card-announcements .card-content .read-more-button {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 8px 16px;  /* Adjusted padding */
+/* Announcement card header style */
+.card-announcements-header {
     background-color: #4F0003;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+    color: #EEA61A;
+    font-weight:bold;
+    padding: 15px;
+    font-size: 35px;
+    text-align: left;
 }
 
-.card-announcements .card-content .read-more-button:hover {
-    background-color: #3a0002;
+
+/* Announcement card body style */
+.card-announcements-body {
+    padding: 20px;
 }
+
+/* Style for the title */
+.card-announcements-title {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Style for the content paragraph */
+.card-announcements-content {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+/* Style for the footer */
+.card-announcements-footer {
+    font-size: 14px;
+    color: #777;
+    text-align: right;
+}
+
+/* Style for the image */
+.card-announcements-image {
+    width: 100%;
+    height: 20rem, auto;
+    object-fit: cover;
+}
+
+/* Button Style */
+.btn-announcement {
+    display: inline-block;
+    background-color: #EEA61A;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+.btn-announcement:hover {
+    background-color: #a77003;
+}
+
 
 /* Centering the card using a container */
 .card-container {
@@ -741,7 +773,7 @@ body {
 .card-header {
     background: #4F0003;
     color: #EEA61A;
-    font-size: 1.4em;
+    font-size: 35px;
     padding: 15px;
     text-align: center;
     font-weight: bold;
@@ -792,10 +824,12 @@ body {
 }
 
 /* Magazine Carousel Container */
+/* Container for the carousel */
 .magazine-carousel-container {
+    font-size: 25px;
     position: relative;
     width: 100%;
-    height: auto; /* Adjusted height */
+    height: auto;
     margin: 0;
     overflow: hidden;
     text-align: center;
@@ -803,8 +837,10 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 20px 10px;
 }
 
+/* Title of the carousel */
 .magazine-carousel-container h2 {
     background: #4F0003;
     color: #EEA61A;
@@ -815,27 +851,30 @@ body {
     border-radius: 5px;
 }
 
+/* Main carousel wrapper */
 .magazine-carousel {
     display: flex;
-    overflow-x: auto; /* Enable horizontal scrolling */
-    scroll-snap-type: x mandatory;  /* Enable snapping */
-    width: 100%; /* Changed width */
-    height: auto;  /* Adjust height */
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    width: 100%;
+    height: auto;
     padding: 10px 0;
 }
 
+/* Track holding magazine cards */
 .magazine-track {
     display: flex;
     transition: transform 0.5s ease-in-out;
-    gap: 20px; /* Adjusted gap */
+    gap: 20px;
 }
 
+/* Individual magazine card */
 .magazine-card {
     scroll-snap-align: start;
-    width: 250px;          /* Medium size */
-    min-width: 250px;      /* Consistent sizing */
+    width: 250px;
+    min-width: 250px;
     max-width: 250px;
-    height: auto; /* Allowing flexibility */
+    height: auto;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     border-radius: 15px;
     overflow: hidden;
@@ -848,15 +887,16 @@ body {
     position: relative;
 }
 
-/* Adjust image to fit new card size */
+/* Image styling */
 .magazine-card img {
     width: 100%;
-    height: auto; /* Maintain aspect ratio */
+    height: auto;
     object-fit: cover;
     border-radius: 15px;
     transition: opacity 0.3s ease-in-out;
 }
 
+/* Title and description styles */
 .magazine-card h4, .magazine-card p {
     position: absolute;
     bottom: 0;
@@ -868,6 +908,7 @@ body {
     transition: opacity 0.3s ease-in-out;
 }
 
+/* Hover effects for card */
 .magazine-card:hover img {
     opacity: 0.3;
 }
@@ -876,6 +917,7 @@ body {
     opacity: 1;
 }
 
+/* Hover effect for title */
 .magazine-card h4 {
     top: 50%;
     transform: translateY(-50%);
@@ -887,6 +929,23 @@ body {
     opacity: 1;
 }
 
+/* Link styling */
+.magazine-link {
+    position: absolute;
+    bottom: 10px;
+    background-color: #EEA61A;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.magazine-link:hover {
+    background-color: #4F0003;
+}
+
+/* Carousel control buttons */
 .magazine-carousel-btn {
     position: absolute;
     top: 50%;
@@ -912,6 +971,46 @@ body {
     background: none;
     color: black;
 }
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .magazine-card {
+        width: 220px;
+        min-width: 220px;
+        max-width: 220px;
+    }
+}
+
+@media (max-width: 992px) {
+    .magazine-card {
+        width: 200px;
+        min-width: 200px;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .magazine-card {
+        width: 180px;
+        min-width: 180px;
+        max-width: 180px;
+    }
+}
+
+@media (max-width: 576px) {
+    .magazine-card {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .magazine-carousel-btn {
+        font-size: 18px;
+        padding: 8px;
+    }
+}
+
 
 /* Update logo text styling in userheader.css */
 
