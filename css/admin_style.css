@@ -1834,6 +1834,187 @@ body.login-body {
     border: var(--border);
 }
 
+
+
+
+/* Organizational Chart Management Styles */
+.org-member-editor {
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    border: var(--border);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    max-width: 80rem;
+    margin: 2rem auto;
+}
+
+.org-member-editor .heading {
+    font-size: 3rem;
+    color: var(--black);
+    text-align: center;
+    margin-bottom: 2rem;
+    text-transform: capitalize;
+}
+
+.org-member-editor form {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.org-member-editor .input-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.org-member-editor .input-box label {
+    font-size: 1.8rem;
+    color: var(--black);
+}
+
+.org-member-editor .input-box .box {
+    width: 100%;
+    background-color: var(--light-bg);
+    padding: 1.4rem;
+    font-size: 1.8rem;
+    color: var(--black);
+    border: var(--border);
+    border-radius: 0.5rem;
+}
+
+.org-member-editor .input-box .box:focus {
+    border-color: var(--main-color);
+    outline: none;
+}
+
+.show-org-members {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+.show-org-members .box-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    gap: 2rem;
+}
+
+.show-org-members .box {
+    background-color: var(--white);
+    border: var(--border);
+    border-radius: 0.5rem;
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.show-org-members .box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+.show-org-members .box h3 {
+    font-size: 2rem;
+    color: var(--black);
+    margin-bottom: 1rem;
+    text-transform: capitalize;
+}
+
+.show-org-members .box p {
+    font-size: 1.6rem;
+    color: var(--light-color);
+    margin-bottom: 0.5rem;
+}
+
+.show-org-members .box img {
+    width: 100%;
+    height: 25rem;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+}
+
+.show-org-members .box .flex-btn {
+    margin-top: auto;
+}
+
+.show-org-members .box .delete-btn {
+    width: 100%;
+    background-color: var(--red);
+    color: var(--white);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease;
+}
+
+.show-org-members .box .delete-btn:hover {
+    background-color: var(--black);
+}
+
+/* New Category Input Styles */
+#new-category-box {
+    transition: all 0.3s ease;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .org-member-editor,
+    .show-org-members {
+        padding: 1rem;
+    }
+
+    .show-org-members .box-container {
+        grid-template-columns: 1fr;
+    }
+
+    .org-member-editor .heading {
+        font-size: 2.5rem;
+    }
+
+    .org-member-editor .input-box .box {
+        font-size: 1.6rem;
+    }
+}
+
+/* Modal Styles for Org Chart */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: var(--white);
+    margin: 10% auto;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.modal .close {
+    color: var(--red);
+    float: right;
+    font-size: 3rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal .close:hover {
+    color: var(--black);
+}
+
+
 /* Responsive adjustments to match other admin pages */
 @media (max-width: 991px){
     .announcement-grid {

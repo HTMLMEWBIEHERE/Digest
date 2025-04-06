@@ -14,7 +14,7 @@ $user_role = $_SESSION['role'] ?? null;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The University Digest</title>
-    <link rel="stylesheet" href="../css/userheader.css">
+    <link rel="stylesheet" href="css/userheader.css">
     <!-- Updated Material Icons Import -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
@@ -24,8 +24,8 @@ $user_role = $_SESSION['role'] ?? null;
 <body>
 <header>
     <div class="logo-container">
-        <a href="../landing_page.php">
-            <img src="../imgs/logo.png" alt="The University Digest Logo">
+        <a href="landing_page.php">
+            <img src="imgs/logo.png" alt="The University Digest Logo">
             <div class="logo"><h3>The University Digest</h3></div>
         </a>
     </div>
@@ -37,10 +37,10 @@ $user_role = $_SESSION['role'] ?? null;
 
     <div class="header-right">
         <ul class="nav-menu">
-            <li><a href="../home.php">Home</a></li>
-            <li><a href="../all_category.php">Announcements</a></li>
-            <li><a href="../authors.php">Authors</a></li>
-            <li><a href="../about_us.php">About Us</a></li>
+            <li><a href="home.php">Home</a></li>
+            <li><a href="all_category.php">Announcements</a></li>
+            <li><a href="authors.php">Authors</a></li>
+            <li><a href="about_us.php">About Us</a></li>
         </ul>
         
         <!-- Add user icon here -->
@@ -63,7 +63,7 @@ $user_role = $_SESSION['role'] ?? null;
         <p class="name"><?= htmlspecialchars($fetch_profile['firstname'] . ' ' . $fetch_profile['lastname']); ?></p>
         <a href="../update_profile.php" class="btn">Update Profile</a>
         <?php if($fetch_profile['role'] == 'superadmin' || $fetch_profile['role'] == 'subadmin'): ?>
-            <a href="../admin/dashboard.php" class="option-btn">Admin Dashboard</a>
+            <a href="admin/dashboard.php" class="option-btn">Admin Dashboard</a>
         <?php endif; ?>
         <a href="../components/user_logout.php" onclick="return confirm('logout from this website?');" class="delete-btn">Logout</a>
     <?php
@@ -71,7 +71,7 @@ $user_role = $_SESSION['role'] ?? null;
     ?>
         <p class="name">Please login first!</p>
         <div class="flex-btn">
-            <a href="../login.php" class="option-btn">Login</a>
+            <a href="login.php" class="option-btn">Login</a>
             <a href="../register.php" class="option-btn">Register</a>
         </div>
     <?php
@@ -80,8 +80,8 @@ $user_role = $_SESSION['role'] ?? null;
     ?>
         <p class="name">Please login first!</p>
         <div class="flex-btn">
-            <a href="../login.php" class="option-btn">Login</a>
-            <a href="../register.php" class="option-btn">Register</a>
+            <a href="login.php" class="option-btn">Login</a>
+            <a href="register.php" class="option-btn">Register</a>
         </div>
     <?php
         }
@@ -102,6 +102,6 @@ $user_role = $_SESSION['role'] ?? null;
         }
     });
 </script>
-<script src="../js/script.js"></script>
+<script src="js/script.js"></script>
 </body>
 </html>
