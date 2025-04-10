@@ -25,7 +25,7 @@ $user_role = $_SESSION['role'] ?? null;
 <header>
     <div class="logo-container">
         <a href="../landing_page.php">
-            <img src="../imgs/logo.png" alt="The University Digest Logo">
+            <img src="./imgs/logo.png" alt="The University Digest Logo">
             <div class="logo"><h3>The University Digest</h3></div>
         </a>
     </div>

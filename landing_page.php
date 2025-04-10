@@ -76,31 +76,42 @@ try {
     <?php include 'components/user_header.php'; ?>
 
     <div class="main-content">
-        <!-- Hero Carousel -->
-        <div class="hero-carousel-container">
-            <div class="hero-carousel">
-                <div class="hero-carousel-inner">
-                    <?php if (!empty($carousel_images)) {
-                        foreach ($carousel_images as $index => $carousel_image) { ?>
-                            <div class="hero-carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
-                                <img src="uploaded_img/<?php echo htmlspecialchars($carousel_image['image']); ?>" alt="<?php echo htmlspecialchars($carousel_image['title']); ?>">
-                            </div>
-                        <?php }
-                    } ?>
-                </div>
-
-                <button class="hero-carousel-control prev" onclick="moveSlide(-1)">&#10094;</button>
-                <button class="hero-carousel-control next" onclick="moveSlide(1)">&#10095;</button>
-
-                <div class="hero-carousel-indicators">
-                    <?php if (!empty($carousel_images)) {
-                        foreach ($carousel_images as $index => $carousel_image) { ?>
-                            <span class="hero-indicator <?php echo $index === 0 ? 'active' : ''; ?>" onclick="goToSlide(<?php echo $index; ?>)"></span>
-                        <?php }
-                    } ?>
-                </div>
-            </div>
+       <!-- Hero Carousel -->
+<div class="hero-carousel-container">
+    <div class="hero-carousel">
+        <div class="hero-carousel-inner">
+            <?php 
+            if (!empty($carousel_images)) {
+                $carousel_images = array_slice($carousel_images, 0, 3); // Limit to 3 images
+                foreach ($carousel_images as $carousel_image) { 
+                    $image_url = htmlspecialchars($carousel_image['image_url'] ?? 'default.jpg');
+            ?>
+                <img src="uploaded_img/<?php echo $image_url; ?>" alt="Carousel Image">
+            <?php 
+                }
+            } else { 
+            ?>
+                <p>No carousel items available at the moment.</p>
+            <?php } ?>
         </div>
+
+        <button class="hero-carousel-control prev" onclick="moveSlide(-1)">&#10094;</button>
+        <button class="hero-carousel-control next" onclick="moveSlide(1)">&#10095;</button>
+
+        <div class="hero-carousel-indicators">
+            <?php 
+            if (!empty($carousel_images)) {
+                foreach ($carousel_images as $index => $carousel_image) { 
+            ?>
+                <span class="hero-indicator <?php echo $index === 0 ? 'active' : ''; ?>" onclick="goToSlide(<?php echo $index; ?>)"></span>
+            <?php 
+                }
+            } 
+            ?>
+        </div>
+    </div>
+</div>
+
 
         <!-- Purpose Card -->
         <div class="purpose-card">
@@ -142,7 +153,7 @@ try {
                             Posted by: <?php echo htmlspecialchars($latest_announcement['created_by_name']); ?>
                             on <?php echo date('M j, Y h:i A', strtotime($latest_announcement['created_at'])); ?>
                         </p>
-                        <a href="content/more_announcements.php" class="btn-announcement">View More</a>
+                        <a href="user_content/more_announcement.php" class="btn-announcement">View More</a>
                     <?php } else { ?>
                         <p class="card-announcements-content">No announcements available at the moment.</p>
                     <?php } ?>
@@ -155,16 +166,16 @@ try {
             <h2 class="articles-header">ARTICLES</h2>
             <div class="card-3">
                 <div class="smaller-card">
+                    <i class="fa-solid fa-book-open-reader"></i>
+                    <h4>Feature</h4>
+                    <p>Short description 2</p>
+                    <a href="user_content/feature.php" class="explore-button">Explore</a>
+                </div>
+                <div class="smaller-card">
                     <i class="fas fa-newspaper"></i>
                     <h4>News</h4>
                     <p>Short description 1</p>
                     <a href="user_content/news.php" class="explore-button">Explore</a>
-                </div>
-                <div class="smaller-card">
-                    <i class="fa-solid fa-book-open-reader"></i>
-                    <h4>Comics</h4>
-                    <p>Short description 2</p>
-                    <a href="user_content/comics.php" class="explore-button">Explore</a>
                 </div>
                 <div class="smaller-card">
                     <i class="fas fa-pencil-alt"></i>
@@ -192,7 +203,7 @@ try {
                                 <?php if (!empty($magazine['image'])) { ?>
                                     <img src="uploaded_img/<?php echo htmlspecialchars($magazine['image']); ?>" alt="<?php echo htmlspecialchars($magazine['title']); ?>">
                                 <?php } else { ?>
-                                    <img src="uploaded_img/default_magazine.jpg" alt="Default Magazine Image">
+                                    <img src="imgs/default_magazine.jpg" alt="Default Magazine Image">
                                 <?php } ?>
                                 <h4><?php echo htmlspecialchars($magazine['title']); ?></h4>
                                 <p><?php echo htmlspecialchars($magazine['context']); ?></p>
@@ -216,6 +227,7 @@ try {
     <?php include 'components/footer.php'; ?>
 
     <!-- Scripts -->
+     <script src="js/carousel.js"></script>
     <script src="js/script.js"></script>
     <script src="js/landing.js"></script>
     <script src="js/mags.js"></script>
