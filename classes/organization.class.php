@@ -18,22 +18,31 @@ class Organization {
     }
 
     // Add a new category
- // Add a new category
-public function addCategory($category_name) {
-    $query = "INSERT INTO org_categories (category_name) VALUES (?)";
-    $stmt = $this->conn->prepare($query);
-    if(!$stmt) {
-        throw new Exception('Prepare failed: ' . implode(" ", $this->conn->errorInfo()));
-    }
-    
-    if (!$stmt->execute([$category_name])) {
-        $errorInfo = $stmt->errorInfo();
-        throw new Exception('Failed to add category: ' . implode(" ", $errorInfo));
-    }
-    
-    return $this->conn->lastInsertId();
-}
+    public function addCategory($category_name) {
+        $query = "INSERT INTO org_categories (category_name) VALUES (?)";
+        $stmt = $this->conn->prepare($query);
+        if (!$stmt) {
+            throw new Exception('Prepare failed: ' . implode(" ", $this->conn->errorInfo()));
+        }
 
+        if (!$stmt->execute([$category_name])) {
+            $errorInfo = $stmt->errorInfo();
+            throw new Exception('Failed to add category: ' . implode(" ", $errorInfo));
+        }
+
+        return $this->conn->lastInsertId();
+    }
+
+    public function deleteCategory($category_id) {
+        $query = "DELETE FROM org_categories WHERE category_id = ?";
+        $stmt = $this->conn->prepare($query);
+        if (!$stmt->execute([$category_id])) {
+            $error = $stmt->errorInfo();
+            throw new Exception("Failed to delete category: " . $error[2]);
+        }
+        return true;
+    }
+    
 
     // Add Organization Member
     public function addOrganization($data) {
@@ -63,39 +72,70 @@ public function addCategory($category_name) {
             $data['date_appointed'],
             $data['date_ended'] ?? null
         ]);
-        
+
         return 'Member Added Successfully!';
     }
 
-    // Edit Organization Member
     public function editOrganization($org_id, $data) {
-        // Validate required fields
-        if (empty($org_id) || empty($data['name']) || empty($data['position']) || empty($data['category_id']) || empty($data['date_appointed'])) {
-            throw new Exception('Missing required fields for editing.');
+        // Only validate org_id exists
+        $stmt = $this->conn->prepare("SELECT org_id FROM organizational_chart WHERE org_id = ?");
+        $stmt->execute([$org_id]);
+        if (!$stmt->fetch()) {
+            throw new Exception('Member not found');
         }
-
-        // Handle image upload if a new image is provided
-        $imagePath = !empty($_FILES['image']['name']) 
-            ? $this->uploadImage($_FILES['image']) 
+    
+        // Handle image upload if new image was provided
+        $imagePath = isset($data['image']) && is_array($data['image']) 
+            ? $this->uploadImage($data['image'])
             : $data['existing_image'];
-
-        $query = "UPDATE organizational_chart 
-                  SET name = ?, image = ?, position = ?, 
-                      category_id = ?, date_appointed = ?, date_ended = ?, updated_at = NOW() 
-                  WHERE org_id = ?";
+    
+        // Build dynamic UPDATE query
+        $updates = [];
+        $params = [];
+        
+        if (isset($data['name'])) {
+            $updates[] = 'name = ?';
+            $params[] = $data['name'];
+        }
+        
+        if (isset($data['position'])) {
+            $updates[] = 'position = ?';
+            $params[] = $data['position'];
+        }
+        
+        if (isset($data['category_id'])) {
+            $updates[] = 'category_id = ?';
+            $params[] = $data['category_id'];
+        }
+        
+        if (isset($data['date_appointed'])) {
+            $updates[] = 'date_appointed = ?';
+            $params[] = $data['date_appointed'];
+        }
+        
+        if (isset($data['date_ended'])) {
+            $updates[] = 'date_ended = ?';
+            $params[] = $data['date_ended'];
+        }
+        
+        // Always update image and timestamp
+        $updates[] = 'image = ?';
+        $params[] = $imagePath;
+        
+        $updates[] = 'updated_at = NOW()';
+        
+        // Finalize query
+        $query = "UPDATE organizational_chart SET " . implode(', ', $updates) . " WHERE org_id = ?";
+        $params[] = $org_id;
+        
         $stmt = $this->conn->prepare($query);
-        $stmt->execute([
-            $data['name'],
-            $imagePath,
-            $data['position'],
-            $data['category_id'],
-            $data['date_appointed'],
-            $data['date_ended'] ?? null,
-            $org_id
-        ]);
-
-        return 'Member Updated Successfully!';
+        if (!$stmt->execute($params)) {
+            throw new Exception('Failed to update member');
+        }
+        
+        return 'Member updated successfully';
     }
+
 
     // Soft Delete Organization Member
     public function deleteOrganization($org_id) {
@@ -118,34 +158,33 @@ public function addCategory($category_name) {
     }
 
     // Upload Image and Save Path
-    private function uploadImage($image) {
-        if ($image['error'] === UPLOAD_ERR_OK) {
-            $targetDir = __DIR__ . '/../uploads/members/';
-    
-            if (!is_dir($targetDir)) {
-                mkdir($targetDir, 0777, true);
-            }
-    
-            // Check if file is a valid image
-            $imageInfo = getimagesize($image['tmp_name']);
-            if ($imageInfo === false) {
-                throw new Exception('Uploaded file is not a valid image.');
-            }
-    
-            $extension = pathinfo($image['name'], PATHINFO_EXTENSION);
-            $fileName = uniqid() . '.' . $extension;
-            $targetFilePath = $targetDir . $fileName;
-    
-            if (move_uploaded_file($image['tmp_name'], $targetFilePath)) {
-                return 'uploads/members/' . $fileName;
-            } else {
-                throw new Exception('Image upload failed.');
-            }
+private function uploadImage($image) {
+    if ($image['error'] === UPLOAD_ERR_OK) {
+        $targetDir = __DIR__ . '/../uploads/members/';
+
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0777, true);
         }
-    
-        return null;
+
+        $imageInfo = getimagesize($image['tmp_name']);
+        if ($imageInfo === false) {
+            throw new Exception('Uploaded file is not a valid image.');
+        }
+
+        $extension = pathinfo($image['name'], PATHINFO_EXTENSION);
+        $fileName = uniqid() . '.' . $extension;
+        $targetFilePath = $targetDir . $fileName;
+
+        if (move_uploaded_file($image['tmp_name'], $targetFilePath)) {
+            return 'uploads/members/' . $fileName;
+        } else {
+            throw new Exception('Image upload failed.');
+        }
     }
-    
+
+    return null;
+}
+
 
     // Get a single organization member by ID
     public function getOrganizationById($org_id) {
