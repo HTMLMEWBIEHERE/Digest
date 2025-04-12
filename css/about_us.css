@@ -1,107 +1,35 @@
-.card-2 {
-    display: grid;
-    grid-template-columns: auto 1fr; 
-    grid-template-rows: auto auto;
-    align-items: center;
-    justify-content: center;
-    padding: 50px;
-    margin: 100px auto 25.4px auto;
-    background-color: #ffffff;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 900px;
-    gap: 20px; 
+css about us 
+:root {
+    --primary-color: #4F0003;
+    --secondary-color: #8B0000;
+    --text-color: #333;
+    --background-color: #f4f4f4;
+    --white: #ffffff;
 }
 
-.card-2 .logo-image {
-    grid-column: 1; 
-    grid-row: 1 / span 2; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.card-2 .logo-image img {
-    width: 250px; 
-    height: auto;
-    border-radius: 10px;
-}
-
-.card-2 .card-content {
-    grid-column: 2; 
-    grid-row: 1 / span 2;
-    text-align: center;
-    align-self: center;
-}
-
-.card-2 .read-more-button {
-    grid-column: 2;
-    grid-row: 2;
-    justify-self: center;
-    margin-top: 10px;
-}
-
-
-.adviser-container h2 {
-    text-align: center;
-    font-size: 28px;
-    color: #4F0003;
-    margin-bottom: 20px;
-}
-
-
-
-/* Editorial Board & Staff Section */
-.editorial-container {
-    text-align: center;
-    max-width: auto;
-    margin: auto;
-    padding: auto;
-}
-
-/* Title Styling */
-.editorial-container h2 {
-    font-size: 28px;
-    color: #4F0003;
-    margin-bottom: 20px;
-}
-
-/* Flexbox for 2 Cards in 1 Row */
-.editorial-cards {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
-}
-
-/* Individual Card Design */
-.card {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 8px 10px rgba(101, 10, 10, 0.2);
-    padding: 20px;
-    text-align: center;
-    width: 35%; /* Ensures 2 cards fit per row */
-    min-width: 200px;
-    border-top: 4px solid #EEA61A; /* Adds a top border */
-
-}
-
-.card:hover {
-    transform: scale(1.05);
-}
-
-.logo-text h1 {
-    font-family: 'Cinzel', serif;
-    font-size: 20px; /* Smaller, consistent size */
-    font-weight: 700;
-    color: #EEA61A;
-    letter-spacing: 1px;
+/* ========== Global Styles ========== */
+* {
+    box-sizing: border-box;
     margin: 0;
+    padding: 0;
 }
 
+body {
+    line-height: 1.6;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    background-color: var(--background-color);
+}
+
+.main {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* ========== Title Styling ========== */
 h1 {
-    background-color: #4F0003;
+    background-color: var(--primary-color);
     font-family: "Poppins", sans-serif;
     width: 40%;
     font-size: 28px;
@@ -113,25 +41,67 @@ h1 {
     padding: 15px 0;
     margin: 20px auto;
     position: relative;
-    border-radius: 5px; /* Slightly rounded edges */
+    border-radius: 5px;
 }
 
-/* Arrow effect */
 h1::after {
     content: "";
     position: absolute;
     bottom: -15px;
     left: 50%;
     transform: translateX(-50%);
-    width: 0;
-    height: 0;
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
-    border-top: 15px solid #4F0003; /* Same as the background color */
+    border-top: 15px solid var(--primary-color);
 }
 
+.logo-text h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #EEA61A;
+    letter-spacing: 1px;
+    margin: 0;
+}
 
-/* Editorial Board - Second Section */
+/* ========== Card-2 Layout ========== */
+.card-2 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    background-color: var(--white);
+    border-radius: 12px;
+    margin: 100px auto 30px;
+    padding: 50px;
+    max-width: 900px;
+    gap: 20px;
+}
+
+.card-2 .logo-image,
+.card-2 .card-content {
+    flex: 1;
+    min-width: 300px;
+    padding: 15px;
+}
+
+.card-2 .logo-image img {
+    width: 250px;
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.card-2 .card-content {
+    text-align: center;
+}
+
+.card-2 .read-more-button {
+    margin-top: 10px;
+    align-self: center;
+}
+
+/* ========== Editorial Board & Staff Cards ========== */
+.editorial-container,
 .editorial-container2 {
     text-align: center;
     max-width: 1200px;
@@ -139,44 +109,69 @@ h1::after {
     padding: 20px;
 }
 
-/* Flexbox for 4 Cards in 1 Row */
-.editorial-container2 {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 columns */
-    gap: 50px;
-    justify-content: center;
-}
-
-/* Individual Card Design */
-.cards {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(101, 10, 10, 0.2);
-    padding: 60px;
+.adviser-container h2,
+.editorial-container h2 {
     text-align: center;
-    border-top: 4px solid #EEA61A; /* Adds a top border */
-    transition: transform 0.3s ease-in-out;
+    font-size: 28px;
+    color: var(--primary-color);
+    margin-bottom: 20px;
 }
 
-/* Hover Effect */
+.editorial-cards,
+.editorial-container2 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* This centers the cards per row */
+    gap: 20px;
+    width: 100%;
+}
+
+/* Individual Cards */
+.card,
+.cards {
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 8px 10px rgba(101, 10, 10, 0.2);
+    padding: 20px;
+    text-align: center;
+    border-top: 4px solid #EEA61A;
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    height: 350px;
+}
+
+.card:hover,
 .cards:hover {
     transform: scale(1.05);
 }
 
-/* Profile Images */
-.card-image img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 0px;
-    border: 3px solid #4F0003; /* Adds a border to images */
+/* ========== Global Styles ========== */
+.card-image {
+    height: 250px; /* Set consistent height */
+    width: 250px; /* Set consistent width */
+    overflow: hidden;
+    margin-bottom: 10px;
+    border-radius: 50%; /* Maintain circular appearance */
 }
 
-/* Text Styles */
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures images cover the area without distortion */
+    border-radius: 50%; /* Maintains round shape */
+    border: 3px solid var(--primary-color);
+    transition: transform 0.3s ease;
+}
+
+.card:hover img,
+.cards:hover img {
+    transform: scale(1.1); /* Optional zoom effect on hover */
+}
+
 .cards h2 {
     font-size: 18px;
-    color: #4F0003;
+    color: var(--primary-color);
     margin-bottom: 10px;
 }
 
@@ -185,122 +180,97 @@ h1::after {
     color: black;
 }
 
+/* ========== Position Group Section ========== */
+.position-group {
+    margin-bottom: 30px;
+}
 
-/* Responsive Breakpoints */
+.position-group h2 {
+    text-align: center;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
 
-
-/* TABLET */
-@media (max-width: 1024px) {
-    .card-2 {
-        grid-template-columns: 1fr; 
-        grid-template-rows: auto auto auto;
-        text-align: center;
+/* ========== Responsive Styles ========== */
+@media screen and (max-width: 1200px) {
+    .editorial-cards,
+    .editorial-container2 {
+        grid-template-columns: repeat(3, 1fr);
     }
 
-    .card-2 .logo-image {
-        grid-column: 1;
-        grid-row: 1;
-        justify-self: center;
+    .card-2 {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px;
     }
 
     .card-2 .logo-image img {
         width: 200px;
     }
+}
 
-    .card-2 .card-content {
-        grid-column: 1;
-        grid-row: 2;
+@media screen and (max-width: 992px) {
+    .editorial-cards,
+    .editorial-container2 {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .card-2 .read-more-button {
-        grid-column: 1;
-        grid-row: 3;
+    .card-2 .card-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .card-2 .logo-image img {
+        max-width: 200px;
     }
 }
 
-
-/* MOBILE */
-@media (max-width: 768px) {
-    .card-2 {
+@media screen and (max-width: 768px) {
+    .editorial-cards,
+    .editorial-container2 {
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
-        text-align: center;
     }
 
-    .card-2 .logo-image {
-        grid-column: 1;
-        grid-row: 1;
-        justify-self: center;
+    .editorial-container h2 {
+        font-size: 24px;
+    }
+
+    .writers-container h1 {
+        font-size: 1.2rem;
+        padding: 10px 0;
+    }
+
+    .cards {
+        padding: 30px;
+    }
+
+    .card .card-content h2,
+    .cards .card-content h2 {
+        font-size: 0.9rem;
+    }
+
+    .card .card-content p,
+    .cards .card-content p {
+        font-size: 0.8rem;
     }
 
     .card-2 .logo-image img {
         width: 150px;
     }
-
-    .card-2 .card-content {
-        grid-column: 1;
-        grid-row: 2;
-    }
-
-    .card-2 .read-more-button {
-        grid-column: 1;
-        grid-row: 3;
-    }
 }
 
-@media screen and (max-width: 1200px) {
-    .card-2 {
-        flex-direction: column;
-        padding: 30px;
-        margin: 50px 0;
+@media screen and (max-width: 576px) {
+    .main {
+        padding: 0 10px;
     }
 
-    .card-2 .card-content {
-        margin-right: 0;
-        margin-bottom: 20px;
-        text-align: center;
-    }
-
-    .card-2 .logo-image img {
-        width: 250px;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    /* Editorial Board & Staff Section */
-    .editorial-container h2 {
-        font-size: 24px;
-    }
-
-    .editorial-cards {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .card {
-        width: 90%;
-        max-width: 350px;
-    }
-
-    /* Editorial Board - Second Section */
-    .editorial-container2 {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-    }
-
-    .cards {
-        padding: 40px;
-    }
-}
-
-@media screen and (max-width: 480px) {
     .card-2 {
         padding: 20px;
-        margin: 30px 0;
     }
 
     .card-2 .logo-image img {
-        width: 200px;
+        max-width: 150px;
     }
 
     h1 {
@@ -309,12 +279,8 @@ h1::after {
         padding: 10px 0;
     }
 
-    .editorial-container2 {
-        grid-template-columns: 1fr;
-    }
-
     .cards {
-        padding: 30px;
+        padding: 25px;
     }
 
     .card-image img {
