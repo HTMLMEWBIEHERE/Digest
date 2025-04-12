@@ -1,42 +1,29 @@
-// Magazine Carousel
-document.addEventListener("DOMContentLoaded", function () {
-    const track = document.querySelector(".magazine-track");
-    const prevBtn = document.querySelector(".prev-magazine-btn");
-    const nextBtn = document.querySelector(".next-magazine-btn");
-    const cards = document.querySelectorAll(".magazine-card");
+// Magazine Carousel Script
+let currentSlide = 0;
+const magazineTrack = document.querySelector('.magazine-track');
+const magazineCards = document.querySelectorAll('.magazine-card');
+const totalSlides = magazineCards.length;
 
-    if (cards.length === 0) return; // Prevent errors if no cards exist
+// Function to move the carousel
+function moveMagazineSlide(direction) {
+    currentSlide += direction;
 
-    let index = 0;
-    const visibleCards = 3; // Number of visible cards
-    const cardWidth = cards[0].getBoundingClientRect().width; // Accurate width calculation
-    const gap = parseFloat(window.getComputedStyle(track).gap || 30); // Read CSS gap (default 30px)
-    const totalCards = cards.length;
-    const maxIndex = totalCards - visibleCards;
-
-    function updateCarousel() {
-        const offset = -index * (cardWidth + gap);
-        track.style.transform = `translateX(${offset}px)`;
+    // If the current slide exceeds the total, reset to the first slide
+    if (currentSlide >= totalSlides) {
+        currentSlide = 0;
     }
 
-    nextBtn.addEventListener("click", () => {
-        if (index < maxIndex) {
-            index++;
-        } else {
-            index = 0; // Loop back to start
-        }
-        updateCarousel();
-    });
+    // If the current slide is less than 0, go to the last slide
+    if (currentSlide < 0) {
+        currentSlide = totalSlides - 1;
+    }
 
-    prevBtn.addEventListener("click", () => {
-        if (index > 0) {
-            index--;
-        } else {
-            index = maxIndex; // Loop to end
-        }
-        updateCarousel();
-    });
+    // Move the magazine track
+    const slideWidth = magazineCards[0].offsetWidth;
+    magazineTrack.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
+}
 
-    // Ensure the carousel starts at the correct position
-    updateCarousel();
-});
+// Optional: Auto-slide every 5 seconds
+setInterval(() => {
+    moveMagazineSlide(1);
+}, 5000);

@@ -137,6 +137,7 @@ $categories = $select_categories->fetchAll(PDO::FETCH_ASSOC);
 
 <section class="magazines">
    <h1 class="heading">Manage E-Magazines</h1>
+   <h2>Note: Make sure the magazine covers are same sizes for better view</h2>
    
    <?php
    if(!empty($message)){
