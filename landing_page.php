@@ -26,7 +26,6 @@ if (session_status() === PHP_SESSION_NONE) {
     
     <!-- CSS Files -->
     <link rel="stylesheet" href="css/landing_page.css">
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/userheader.css">
     <link rel="stylesheet" href="css/footer.css">
     
