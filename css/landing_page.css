@@ -21,35 +21,42 @@ body {
     padding: 20px;
 }
 
-/* Hero Carousel Container - with fixed dimensions and animations */
+/* Hero Carousel Container - Remove any padding or margins */
 .hero-carousel-container {
-    width: 100%;
-    height: 600px; /* Fixed height */
+    width: 100vw; /* Full viewport width */
+    height: 600px;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
     overflow: hidden;
 }
 
 /* Hero Carousel */
+/* Hero Carousel */
 .hero-carousel {
-    position: relative;
     width: 100%;
-    height: 600px; /* Fixed height */
-    overflow: hidden;
+    height: 100%;
+    position: relative;
 }
 
 /* Hero Carousel inner container */
 .hero-carousel-inner {
-    display: flex;
     width: 100%;
     height: 100%;
+    display: flex;
 }
 
+/* Hero Carousel images */
+.hero-carousel-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
 /* Hero Carousel item */
 .hero-carousel-item {
     min-width: 100%;
@@ -703,8 +710,10 @@ body {
 /* Style for the image */
 .card-announcements-image {
     width: 100%;
-    height: 20rem, auto;
-    object-fit: cover;
+    height: 400px; /* Fixed height */
+    object-fit: cover; /* Ensures image covers the area without stretching */
+    object-position: center; /* Centers the image */
+    border-radius: 8px; /* Optional: adds rounded corners */
 }
 
 /* Button Style */
