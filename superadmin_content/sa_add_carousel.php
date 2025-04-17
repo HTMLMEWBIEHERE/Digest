@@ -133,8 +133,6 @@ $carousel_images = $select_carousel_images->fetchAll(PDO::FETCH_ASSOC);
 <!-- Add Carousel Image Section -->
 <section class="add-carousel">
     <h1 class="heading">Add Carousel Image</h1>
-    <h2>Note: The image size should be 4000 x 1500</h2>
-
     <?php if (!empty($message)): ?>
         <?php foreach ($message as $msg): ?>
             <div class="message">
