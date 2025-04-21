@@ -1,0 +1,330 @@
+/* Universal designs for subadmin */
+:root {
+    --main-color: #4F0003;
+    --red: #e74c3c;
+    --orange: #4F0003;
+    --black: #34495e;
+    --white: #fff;
+    --light-bg: #f5f5f5;
+    --light-color: #999;
+    --border: .2rem solid var(--black);
+    --box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
+ }
+ 
+ * {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    outline: none;
+    border: none;
+ }
+ 
+ .main {
+    width: 90%;
+    margin: 0 auto;
+    padding: 50px 0; /* Increased padding to create more space */
+    position: relative;
+    top: 80px; /* Add space above the content to separate from header */
+}
+ 
+/* Improve card-2 styling */
+.card-2 {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-2 .card-content {
+    flex: 2;
+    padding-right: 20px;
+}
+
+.card-2 .card-content h2 {
+    color: #4F0003;
+    margin-bottom: 15px;
+    font-size: 28px;
+}
+
+.card-2 .logo-image {
+    flex: 1;
+    text-align: right;
+}
+
+.card-2 .logo-image img {
+    max-width: 200px;
+    height: auto;
+    border-radius: 8px;
+}
+
+ /* Card Layout */
+ .tejidos-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px;
+ }
+ 
+ /* Tejido Card */
+ .tejido-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+ }
+ 
+ .tejido-image img {
+    width: 100%;
+    height: auto;
+    max-height: 250px; /* Limit the size of the image */
+    object-fit: cover; /* Ensures image aspect ratio is maintained */
+    border-radius: 8px;
+ }
+ 
+ .tejido-content {
+    padding: 15px 0;
+ }
+ 
+ .tejido-content h3 {
+    font-size: 24px;
+    color: #4F0003;
+    margin: 10px 0;
+ }
+ 
+ .tejido-content p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+ }
+ 
+ /* Move text information above the image */
+ .tejido-image {
+    order: 1;  /* Keep the image below the text */
+ }
+ .tejido-image {
+    position: relative;
+}
+
+.tejido-image img {
+    width: 100%;
+    height: auto;
+    object-fit: contain; /* Preserves the entire image */
+    border-radius: 8px;
+}
+
+.tejido-image img:hover {
+    transform: scale(1.1); /* Slightly enlarge the image on hover */
+    z-index: 10; /* Brings the image to the front */
+}
+
+/* Create a modal-like effect */
+.tejido-image img.modal-active {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.2); /* Enlarge a little and center */
+    max-width: 80%; /* Limit the size */
+    max-height: 80%; /* Limit the height */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    background: #fff;
+    cursor: zoom-out; /* Change cursor when enlarged */
+    z-index: 9999; /* Make sure the image is above all content */
+}
+
+/* Overlay for closing the modal */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998; /* Overlay behind the image */
+}
+
+ .tejido-meta {
+    font-size: 14px;
+    color: #888;
+    margin: 10px 0;
+ }
+ 
+ .tejido-actions {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 10px;
+ }
+ 
+ /* Author Name */
+ .post-admin {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+ }
+ 
+ .post-admin .fas {
+    margin-right: 10px;
+    color: #4F0003;
+ }
+ 
+ .post-admin a {
+    font-weight: bold;
+    color: gold; /* Author name in gold */
+    text-decoration: none;
+    font-size: 16px;
+ }
+ 
+ .post-admin a:hover {
+    color: #d4af37; /* Lighter gold on hover */
+ }
+ 
+ .post-admin div {
+    font-size: 14px;
+    color: #777;
+ }
+ 
+ /* Empty State */
+ .empty-state {
+   text-align: center;
+   padding: 20px;
+   background-color: #f9f9f9;
+   border-radius: 8px;
+ }
+ 
+ .empty-state p {
+   font-size: 18px;
+   color: #888;
+   margin-bottom: 15px; /* 👈 Add spacing below the paragraph */
+ }
+ 
+ .empty-state .btn {
+   padding: 10px 20px;
+   background-color: #4F0003;
+   color: white;
+   border: none;
+   cursor: pointer;
+   border-radius: 5px;
+   text-decoration: none;
+   display: inline-block; /* ensures it's on its own line */
+ }
+ 
+ .empty-state .btn:hover {
+   background-color: #6B0A0A;
+ }
+ 
+ 
+ /* Filter Section */
+ .tejidos-filter {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+ }
+ 
+ .tejidos-filter .filter-form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+ }
+ 
+ .tejidos-filter select,
+ .tejidos-filter input,
+ .tejidos-filter button {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+ }
+ 
+ .tejidos-filter select {
+    width: 200px;
+ }
+ 
+ .tejidos-filter button {
+    background-color: #4F0003;
+    color: white;
+    border: none;
+    cursor: pointer;
+ }
+ 
+ .tejidos-filter button:hover {
+    background-color: #6B0A0A;
+ }
+
+ .description-wrapper {
+    margin-top: 10px;
+  }
+  
+  .tejido-description.collapsed {
+    max-height: 4.5em;
+    overflow: hidden;
+  }
+  
+  .toggle-desc-btn {
+    background: none;
+    border: none;
+    color: #4F0003;
+    cursor: pointer;
+    padding: 5px 0;
+    font-weight: bold;
+  }
+  
+ 
+ /* Pagination */
+ .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+ }
+ 
+ .pagination a {
+    padding: 10px 15px;
+    margin: 0 5px;
+    text-decoration: none;
+    color: #333;
+    background-color: #ddd;
+    border-radius: 5px;
+ }
+ 
+ .pagination a:hover {
+    background-color: #4F0003;
+    color: white;
+ }
+ 
+ .pagination a.active {
+    background-color: #4F0003;
+    color: white;
+ }
+
+
+
+ /* Responsive adjustments */
+@media (max-width: 768px) {
+    .main {
+        top: 50px; /* Adjust for smaller screens */
+        padding: 30px 0;
+    }
+
+    .card-2 {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .card-2 .card-content {
+        padding-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .card-2 .logo-image {
+        text-align: center;
+    }
+}

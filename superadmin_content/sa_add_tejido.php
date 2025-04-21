@@ -147,7 +147,6 @@ $tejido_posts = $select_tejido->fetchAll(PDO::FETCH_ASSOC);
 <body>
 
 <?php include '../components/superadmin_header.php' ?>
-
 <!-- Add Tejido Section -->
 <section class="add-tejido">
    <h1 class="heading">Add New Tejido</h1>

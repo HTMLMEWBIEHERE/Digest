@@ -20,7 +20,6 @@ $categories = $select_categories->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - The University Digest</title>
     <link rel="stylesheet" href="css/about_us.css">
-    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <?php include 'components/user_header.php'; ?>
