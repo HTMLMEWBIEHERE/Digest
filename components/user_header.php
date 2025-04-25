@@ -24,7 +24,7 @@ $user_role = $_SESSION['role'] ?? null;
 <body>
 <header>
     <div class="logo-container">
-        <a href="../landing_page.php">
+        <a href="../user_content/landing_page.php">
             <img src="../imgs/logo.png" alt="The University Digest Logo">
             <div class="logo"><h3>The University Digest</h3></div>
         </a>
@@ -37,10 +37,12 @@ $user_role = $_SESSION['role'] ?? null;
 
     <div class="header-right">
         <ul class="nav-menu">
-            <li><a href="../home.php">Home</a></li>
-            <li><a href="../all_category.php">Announcements</a></li>
-            <li><a href="../authors.php">Authors</a></li>
-            <li><a href="../about_us.php">About Us</a></li>
+            <li><a href="../user_content/home.php">Home</a></li>
+            <li><a href="../user_content/more_announcement.php">Announcements</a></li>
+            <li><a href="../user_content/authors.php">Creators</a></li>
+            <li><a href="../user_content/about_us.php">About</a></li>
+            <li><a href="../user_content/more_tejidos.php">Tejidos</a></li>
+            <li><a href="../user_content/more_magazines.php">Magazines</a></li>
         </ul>
         
         <!-- Add user icon here -->
@@ -61,7 +63,7 @@ $user_role = $_SESSION['role'] ?? null;
                 $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
     ?>
         <p class="name"><?= htmlspecialchars($fetch_profile['firstname'] . ' ' . $fetch_profile['lastname']); ?></p>
-        <a href="../update_profile.php" class="btn">Update Profile</a>
+        <a href="update_profile.php" class="btn">Update Profile</a>
         <?php if($fetch_profile['role'] == 'superadmin' || $fetch_profile['role'] == 'subadmin'): ?>
             <a href="../admin/dashboard.php" class="option-btn">Admin Dashboard</a>
         <?php endif; ?>
@@ -71,7 +73,7 @@ $user_role = $_SESSION['role'] ?? null;
     ?>
         <p class="name">Please login first!</p>
         <div class="flex-btn">
-            <a href="../login.php" class="option-btn">Login</a>
+            <a href="login.php" class="option-btn">Login</a>
             <a href="../register.php" class="option-btn">Register</a>
         </div>
     <?php
@@ -80,8 +82,8 @@ $user_role = $_SESSION['role'] ?? null;
     ?>
         <p class="name">Please login first!</p>
         <div class="flex-btn">
-            <a href="../login.php" class="option-btn">Login</a>
-            <a href="../register.php" class="option-btn">Register</a>
+            <a href="login.php" class="option-btn">Login</a>
+            <a href="register.php" class="option-btn">Register</a>
         </div>
     <?php
         }
@@ -90,18 +92,52 @@ $user_role = $_SESSION['role'] ?? null;
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // Toggle profile dropdown when user button is clicked
-    document.querySelector('#user-btn').onclick = () => {
-        document.querySelector('.profile').classList.toggle('active');
-    }
-    
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('#user-btn') && !e.target.closest('.profile')) {
-            document.querySelector('.profile').classList.remove('active');
-        }
+    // Improved profile dropdown functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const userBtn = document.querySelector('#user-btn');
+        const profileDropdown = document.querySelector('.profile');
+        let isScrolling = false;
+        
+        // Toggle profile dropdown when user button is clicked
+        userBtn.onclick = function(e) {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('active');
+            
+            if(profileDropdown.classList.contains('active')) {
+                // Get position of the user button
+                const rect = userBtn.getBoundingClientRect();
+                
+                // Position dropdown relative to viewport
+                profileDropdown.style.position = 'fixed';
+                profileDropdown.style.top = (rect.bottom + 10) + 'px';
+                profileDropdown.style.right = '20px';
+                profileDropdown.style.zIndex = '1000';
+            }
+        };
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if(!e.target.closest('#user-btn') && !e.target.closest('.profile')) {
+                profileDropdown.classList.remove('active');
+            }
+        });
+        
+        // Hide dropdown when scrolling begins
+        let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        window.addEventListener('scroll', function() {
+            let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Check if we're actually scrolling (not just tiny movements)
+            if(Math.abs(lastScrollTop - currentScroll) > 5) {
+                profileDropdown.classList.remove('active');
+            }
+            
+            lastScrollTop = currentScroll;
+        }, { passive: true });
     });
 </script>
+
+<!-- Keep the script.js reference but modify script.js to avoid conflicts -->
 <script src="../js/script.js"></script>
 </body>
 </html>

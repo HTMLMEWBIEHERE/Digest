@@ -266,6 +266,30 @@ if (!$fetch_profile) {
                 <i class="fas fa-bullhorn"></i> Add Announcements
             </a>
         </div>
+<!-- Organizational Chart Section -->
+<div class="box">
+    <?php
+    try {
+        $db = new Database();
+        $conn = $db->connect();
+
+        $stmt = $conn->prepare("SELECT COUNT(org_id) FROM organizational_chart WHERE is_deleted = 0 AND (date_ended IS NULL OR date_ended = '')");
+        $stmt->execute();
+        $number_of_org_members = $stmt->fetchColumn();
+    } catch (PDOException $e) {
+        $number_of_org_members = 0;
+    }
+    ?>
+    <h3><?= htmlspecialchars($number_of_org_members); ?></h3>
+    <p>Current Org Members</p>
+    <a href="../superadmin_content/sa_manage_org_chart.php" class="btn">
+        <i class="fas fa-sitemap"></i> Manage Org Chart
+    </a>
+</div>
+
+
+
+        
 
     </div>
 

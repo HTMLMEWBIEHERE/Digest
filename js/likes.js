@@ -1,84 +1,81 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Document loaded');
     
-    // Select all elements with class like-btn (buttons and divs)
-    const likeButtons = document.querySelectorAll('.like-btn');
-    console.log('Found like elements:', likeButtons.length);
-    
-    likeButtons.forEach(button => {
-        // Skip if it's an anchor tag (for non-logged in users)
-        if (button.tagName === 'A') return;
-        
-        button.addEventListener('click', function(e) {
+    // Handle like button clicks
+    document.addEventListener('click', function(e) {
+        // Check if a like button was clicked
+        if (e.target && (
+            e.target.classList.contains('like-btn') || 
+            e.target.closest('.like-btn')
+        )) {
             e.preventDefault();
-            e.stopPropagation();
-            console.log('Like clicked');
             
-            // Get post ID from data attribute or closest form
-            let postId;
-            if (this.dataset.postId) {
-                postId = this.dataset.postId;
-            } else {
-                const form = this.closest('form');
-                if (!form) {
-                    console.error('No form found');
-                    return;
-                }
-                const postIdInput = form.querySelector('input[name="post_id"]');
-                if (!postIdInput) {
-                    console.error('No post_id input found');
-                    return;
-                }
-                postId = postIdInput.value;
+            // Get the like button (could be the clicked element or its parent)
+            const likeBtn = e.target.classList.contains('like-btn') ? 
+                            e.target : 
+                            e.target.closest('.like-btn');
+            
+            // Get post ID from data attribute
+            const postId = likeBtn.getAttribute('data-post-id');
+            
+            // If no post ID, exit
+            if (!postId) {
+                console.error('No post ID found');
+                return;
             }
             
-            console.log('Liking post ID:', postId);
+            // Get heart icon and likes count elements
+            const heartIcon = likeBtn.querySelector('.fas.fa-heart');
+            const likesCountElement = document.getElementById(`likes-count-${postId}`);
             
-            const heartIcon = this.querySelector('i.fas.fa-heart');
-            const isCurrentlyLiked = heartIcon.style.color === 'var(--red)' || 
-                                     heartIcon.style.color === 'red';
+            if (!heartIcon || !likesCountElement) {
+                console.error('Missing required elements:', { heartIcon, likesCountElement });
+                return;
+            }
             
-            // Toggle heart color for immediate feedback
-            heartIcon.style.color = isCurrentlyLiked ? '' : 'var(--red)';
+            // Send AJAX request
+            const formData = new FormData();
+            formData.append('post_id', postId);
             
-            // Use fetch for the AJAX request
-            fetch('components/like_post.php', {
+            fetch('../ajax_handlers/like_handler.php', {
                 method: 'POST',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: 'post_id=' + postId
+                body: formData
             })
-            .then(response => {
-                console.log('Response status:', response.status);
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                console.log('Response data:', data);
-                
                 if (data.status === 'success') {
-                    // Update like count 
-                    const likeCount = this.querySelector('span');
-                    likeCount.textContent = '(' + data.likes + ')';
+                    // Update like count
+                    likesCountElement.textContent = `(${data.likes})`;
                     
-                    // Update heart color based on server response
+                    // Update heart icon color without showing messages
                     if (data.action === 'liked') {
                         heartIcon.style.color = 'var(--red)';
                     } else {
                         heartIcon.style.color = '';
                     }
                 } else {
-                    console.error('Error response:', data.message);
-                    heartIcon.style.color = isCurrentlyLiked ? 'var(--red)' : '';
+                    // Only show error messages
+                    showMessage(data.message);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                heartIcon.style.color = isCurrentlyLiked ? 'var(--red)' : '';
+                showMessage('An error occurred. Please try again.');
             });
-            
-            return false;
-        });
+        }
     });
+    
+    // Helper function to show messages (keep this for error messages)
+    function showMessage(msg) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message';
+        messageDiv.innerHTML = `<span>${msg}</span><i class="fas fa-times" onclick="this.parentElement.remove();"></i>`;
+        
+        document.body.prepend(messageDiv);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            messageDiv.remove();
+        }, 5000);
+    }
 });

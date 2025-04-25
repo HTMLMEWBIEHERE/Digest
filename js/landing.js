@@ -143,3 +143,4 @@ function loadCarousel() {
         dataType: "json"
     });
 }
+

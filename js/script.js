@@ -1,208 +1,261 @@
-//generalized script//
-let navbar = document.querySelector('.header .flex .navbar');
+/**
+ * University Digest Blog - Main JavaScript
+ * This file contains all client-side functionality for the blog
+ */
 
-document.querySelector('#menu-btn').onclick = () =>{
-   navbar.classList.toggle('active');
-   searchForm.classList.remove('active');
-   profile.classList.remove('active');
-}
+// Wait for DOM to be fully loaded
+$(document).ready(function() {
 
-let profile = document.querySelector('.header .flex .profile');
-
-document.querySelector('#user-btn').onclick = () =>{
-   profile.classList.toggle('active');
-   searchForm.classList.remove('active');
-   navbar.classList.remove('active');
-}
-
-let searchForm = document.querySelector('.header .flex .search-form');
-
-document.querySelector('#search-btn').onclick = () =>{
-   searchForm.classList.toggle('active');
-   navbar.classList.remove('active');
-   profile.classList.remove('active');
-}
-
-window.onscroll = () =>{
-   profile.classList.remove('active');
-   navbar.classList.remove('active');
-   searchForm.classList.remove('active');
-}
-
-document.querySelectorAll('.content-150').forEach(content => {
-   if(content.innerHTML.length > 150) content.innerHTML = content.innerHTML.slice(0, 150);
+    // ============================================
+    // HEADER NAVIGATION & USER MENU FUNCTIONALITY
+    // ============================================
+    
+    // Element selection
+    const navbar = $('.header .flex .navbar');
+    const searchForm = $('.header .flex .search-form');
+    const profile = $('.header .flex .profile');
+    const menuBtn = $('#menu-btn');
+    const searchBtn = $('#search-btn');
+    const userBtn = $('#user-btn');
+    
+    // Menu button click handler
+    menuBtn.on('click', function() {
+        navbar.toggleClass('active');
+        searchForm.removeClass('active');
+        profile.removeClass('active');
+    });
+    
+    // Search button click handler
+    searchBtn.on('click', function() {
+        searchForm.toggleClass('active');
+        navbar.removeClass('active');
+        profile.removeClass('active');
+    });
+    
+    // User button click handler
+    userBtn.on('click', function(e) {
+        e.stopPropagation();
+        
+        // Toggle dropdown visibility
+        profile.toggleClass('active');
+        searchForm.removeClass('active');
+        navbar.removeClass('active');
+        
+        // Position dropdown relative to user button if visible
+        if(profile.hasClass('active')) {
+            const rect = userBtn[0].getBoundingClientRect();
+            profile.css({
+                'position': 'fixed',
+                'top': (rect.bottom + 10) + 'px',
+                'right': '20px',
+                'z-index': 1000
+            });
+        }
+    });
+    
+    // Close dropdown when clicking outside
+    $(document).on('click', function(e) {
+        if(!$(e.target).closest('#user-btn').length && !$(e.target).closest('.profile').length) {
+            profile.removeClass('active');
+        }
+    });
+    
+    // Hide all dropdowns when scrolling
+    let lastScrollTop = 0;
+    $(window).on('scroll', function() {
+        const currentScroll = $(window).scrollTop();
+        
+        // Only trigger on significant scroll (not small movements)
+        if(Math.abs(lastScrollTop - currentScroll) > 5) {
+            profile.removeClass('active');
+            navbar.removeClass('active');
+            searchForm.removeClass('active');
+        }
+        
+        lastScrollTop = currentScroll;
+    });
+    
+    // ============================================
+    // CONTENT FORMATTING
+    // ============================================
+    
+    // Trim content to 150 characters
+    $('.content-150').each(function() {
+        const content = $(this).html();
+        if(content.length > 150) {
+            $(this).html(content.slice(0, 150) + '...');
+        }
+    });
+    
+    // ============================================
+    // SEARCH FUNCTIONALITY 
+    // ============================================
+    
+    $("#search").on("keyup", function() {
+        const query = $(this).val();
+        if (query.length > 2) {
+            $.ajax({
+                url: "search.php",
+                method: "POST",
+                data: { search: query },
+                success: function(data) {
+                    $("#search-results").html(data).show();
+                }
+            });
+        } else {
+            $("#search-results").hide();
+        }
+    });
+    
+    // Hide search results when clicking outside
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.search-box').length) {
+            $("#search-results").hide();
+        }
+    });
+    
+    // ============================================
+    // CAROUSEL FUNCTIONALITY
+    // ============================================
+    
+    let currentSlide = 0;
+    
+    function updateSlidePosition() {
+        const carouselInner = $('.carousel-inner');
+        const slideWidth = $('.carousel-item').first().width();
+        carouselInner.css('transform', `translateX(-${currentSlide * slideWidth}px)`);
+    }
+    
+    function moveSlide(n) {
+        const slides = $('.carousel-item');
+        currentSlide = (currentSlide + n + slides.length) % slides.length;
+        updateSlidePosition();
+        updateIndicators();
+    }
+    
+    function goToSlide(n) {
+        currentSlide = n;
+        updateSlidePosition();
+        updateIndicators();
+    }
+    
+    function updateIndicators() {
+        $('.indicator').each(function(index) {
+            $(this).toggleClass('active', index === currentSlide);
+        });
+    }
+    
+    // Set up carousel controls
+    $(document).ready(function() {
+        $('.indicator').on('click', function() {
+            goToSlide($(this).index());
+        });
+        
+        $('.prev').on('click', function() { moveSlide(-1); });
+        $('.next').on('click', function() { moveSlide(1); });
+        
+        updateSlidePosition();
+        updateIndicators();
+        
+        // Auto-advance slides
+        setInterval(function() { moveSlide(1); }, 5000);
+    });
+    
+    // ============================================
+    // AJAX DATA LOADING
+    // ============================================
+    
+    // Load initial data for dashboard
+    function initializeDashboard() {
+        loadCarousel();
+        loadAnnouncements();
+        loadArticles();
+        loadMagazines();
+        loadTejidos();
+    }
+    
+    // Try to initialize dashboard components if on dashboard page
+    if($('#carousel-images').length || $('#announcements').length) {
+        initializeDashboard();
+    }
+    
+    function loadCarousel() {
+        $.ajax({
+            url: "./ajax/fetch_carousel.php",
+            method: "GET",
+            success: function(data) {
+                $("#carousel-images").html(data.images);
+                $("#carousel-indicators").html(data.indicators);
+                updateIndicators();
+            },
+            dataType: "json"
+        });
+    }
+    
+    function loadAnnouncements() {
+        $.ajax({
+            url: "./ajax/fetch_announcements.php",
+            method: "GET",
+            success: function(data) {
+                $("#announcements").html(data);
+            }
+        });
+    }
+    
+    function loadArticles() {
+        $.ajax({
+            url: "./ajax/fetch_articles.php",
+            method: "GET",
+            success: function(data) {
+                $("#articles").html(data);
+            }
+        });
+    }
+    
+    function loadMagazines() {
+        $.ajax({
+            url: "./ajax/fetch_magazines.php",
+            method: "GET",
+            success: function(data) {
+                $("#magazines").html(data);
+            }
+        });
+    }
+    
+    function loadTejidos() {
+        // Add implementation as needed
+    }
+    
+    // ============================================
+    // POST FILTERING
+    // ============================================
+    
+    // Filter posts by category
+    function filterPosts(category) {
+        $('.card').each(function() {
+            if (category === 'all' || $(this).data('category') === category) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+    
+    // Toggle category dropdown
+    $('#dropdownBtn').on('click', function() {
+        $('#dropdownContent').toggleClass('show');
+    });
+    
+    // Close dropdown on outside click
+    $(document).on('click', function(event) {
+        if (!$(event.target).closest('.filter-button').length) {
+            $('#dropdownContent').removeClass('show');
+        }
+    });
+    
+    // Show all posts by default
+    filterPosts('all');
 });
-
-
-
-
-//For Landing Page//
-
-$(document).ready(function(){
-   // Search functionality
-   $("#search").on("keyup", function(){
-       let query = $(this).val();
-       if (query.length > 2) {
-           $.ajax({
-               url: "search.php",
-               method: "POST",
-               data: { search: query },
-               success: function(data){
-                   $("#search-results").html(data).show();
-               }
-           });
-       } else {
-           $("#search-results").hide();
-       }
-   });
-
-   $(document).click(function(event) {
-       if (!$(event.target).closest('.search-box').length) {
-           $("#search-results").hide();
-       }
-   });
-
-   // Carousel functionality
-   let currentSlide = 0;
-
-   function updateSlidePosition() {
-       const carouselInner = document.querySelector('.carousel-inner');
-       const slideWidth = document.querySelector('.carousel-item').clientWidth;
-       carouselInner.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
-   }
-   
-   function moveSlide(n) {
-       const slides = document.querySelectorAll('.carousel-item');
-       currentSlide = (currentSlide + n + slides.length) % slides.length;
-       updateSlidePosition();
-       updateIndicators();
-   }
-   
-   function goToSlide(n) {
-       currentSlide = n;
-       updateSlidePosition();
-       updateIndicators();
-   }
-   
-   function updateIndicators() {
-       const indicators = document.querySelectorAll('.indicator');
-       indicators.forEach((indicator, index) => {
-           indicator.classList.toggle('active', index === currentSlide);
-       });
-   }
-   
-   document.addEventListener('DOMContentLoaded', () => {
-       const indicators = document.querySelectorAll('.indicator');
-       indicators.forEach((indicator, index) => {
-           indicator.addEventListener('click', () => goToSlide(index));
-       });
-   
-       document.querySelector('.prev').addEventListener('click', () => moveSlide(-1));
-       document.querySelector('.next').addEventListener('click', () => moveSlide(1));
-   
-       updateSlidePosition();
-       updateIndicators();
-   
-       // Automatically move to the next slide every 5 seconds
-       setInterval(() => moveSlide(1), 5000);
-   });
-   
-   
-   // USER DASHBOARD 
-   loadCarousel();
-   loadAnnouncements();
-   loadArticles();
-   loadMagazines();
-   loadTejidos();
-
-   // Load carousel images
-   function loadCarousel() {
-       $.ajax({
-           url: "./ajax/fetch_carousel.php",
-           method: "GET",
-           success: function (data) {
-               $("#carousel-images").html(data.images);
-               $("#carousel-indicators").html(data.indicators);
-               // Reinitialize carousel indicators after loading new content
-               updateIndicators();
-           },
-           dataType: "json"
-       });
-   }
-
-   // Load announcements
-   function loadAnnouncements() {
-       $.ajax({
-           url: "./ajax/fetch_announcements.php",
-           method: "GET",
-           success: function (data) {
-               $("#announcements").html(data);
-           }
-       });
-   }
-
-   // Load articles
-   function loadArticles() {
-       $.ajax({
-           url: "./ajax/fetch_articles.php",
-           method: "GET",
-           success: function (data) {
-               $("#articles").html(data);
-           }
-       });
-   }
-
-   // Load magazines
-   function loadMagazines() {
-       $.ajax({
-           url: "./ajax/fetch_magazines.php",
-           method: "GET",
-           success: function (data) {
-               $("#magazines").html(data);
-           }
-       });
-   }
-
-   // Load tejidos
-   function loadTejidos() {
-       // Add your tejidos loading logic here
-   }
-
-   // All category drop down scripts
-   function filterPosts(category) {
-       var cards = document.querySelectorAll('.card');
-
-       cards.forEach(function(card) {
-           if (category === 'all' || card.getAttribute('data-category') === category) {
-               card.style.display = 'block';
-           } else {
-               card.style.display = 'none';
-           }
-       });
-   }
-
-   function toggleDropdown() {
-       document.getElementById("dropdownContent").classList.toggle("show");
-   }
-
-   // Close the dropdown if the user clicks outside of it
-   window.onclick = function(event) {
-       if (!event.target.matches('.filter-button')) {
-           var dropdowns = document.getElementsByClassName("dropdown-content");
-           for (var i = 0; i < dropdowns.length; i++) {
-               var openDropdown = dropdowns[i];
-               if (openDropdown.classList.contains('show')) {
-                   openDropdown.classList.remove('show');
-               }
-           }
-       }
-   }
-
-   // Display all posts by default
-   filterPosts('all');
-});
-
-//end of script for landing page//
 
 
 

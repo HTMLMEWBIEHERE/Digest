@@ -47,6 +47,16 @@ $is_logged_in = isset($admin_id) && ($admin_role === 'superadmin' || $admin_role
          // Only display profile info if found
          if($fetch_profile) {
       ?>
+      <!-- Add profile image with correct path -->
+      <div class="profile-image">
+         <?php if(!empty($fetch_profile['image'])): ?>
+            <img src="../uploads/profiles/<?= htmlspecialchars($fetch_profile['image']); ?>" 
+                 alt="Profile Image"
+                 onerror="this.src='../imgs/default-avatar.png'; this.onerror=null;">
+         <?php else: ?>
+            <img src="../imgs/default-avatar.png" alt="Default Profile">
+         <?php endif; ?>
+      </div>
       <p><?= $fetch_profile['firstname'] . ' ' . $fetch_profile['lastname']; ?></p>
       <a href="../admin/update_profile.php" class="btn">update profile</a>
       <?php 

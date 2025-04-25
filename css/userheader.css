@@ -93,6 +93,7 @@ header .search-box {
     text-align: center;
     padding: 5px 15px;
     font-size: 14px;
+    font-weight: normal; /* Add this line to ensure consistency */
 }
 
 .search-box button {
@@ -346,9 +347,56 @@ header ul li:hover ul.dropdown {
     }
 }
 
+/* Improved Profile Dropdown Responsive Positioning */
+@media (max-width: 768px) {
+    /* Fix the profile dropdown for mobile */
+    .profile {
+        position: fixed;
+        top: 170px !important; /* Position it below header */
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) scale(0);
+        width: 280px;
+        max-width: 90%;
+        padding: 1.5rem;
+        z-index: 9999;
+    }
+    
+    .profile.active {
+        transform: translateX(-50%) scale(1);
+    }
+    
+    /* Make login/register buttons more touch-friendly */
+    .profile .flex-btn {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .profile .option-btn {
+        padding: 10px;
+        width: 100%;
+        font-size: 16px;
+        min-height: 44px; /* Better for touch */
+    }
+}
+
 @media (max-width: 768px) {
     header .logo h3 {
         font-size: 18px;
+    }
+}
+
+/* Further refinements for very small screens */
+@media (max-width: 480px) {
+    .profile {
+        top: 150px !important;
+        width: 260px;
+    }
+    
+    .profile .name {
+        font-size: 16px;
+        margin-bottom: 12px;
     }
 }
 
