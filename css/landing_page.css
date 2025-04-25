@@ -1266,62 +1266,146 @@ body {
     }
 }
 
-/* tejido section */
+/* Tejido Section */
+.tejido-header {
+    background-color: #4F0003;
+    color: #EEA61A;
+    text-align: center;
+    border-radius: 12px;
+    padding: 0.20rem; /* Reduced padding */
+    margin-bottom: 10px;
 
-/* Tejido Container - Full width */
-.tejido-container {
-    width: 100vw; /* Full viewport width */
-    margin: 40px 0;
-    padding: 0;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-    overflow: hidden;
+}
+.tejido-header h2 {
+    background: #4F0003;
+    color: #EEA61A;
+    font-weight: bold;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
 }
 
-/* Update card inside tejido container */
-.tejido-container .card {
-    width: 80%; /* Wider card within the container */
+/* Card Wrapper */
+.tejido-container-wrapper {
+    width: 100%; /* Wider card within the container */
     max-width: 1400px;
-    height: 500px;
     margin: 0 auto;
+    height: auto;
     background: #fff;
     border-radius: 12px;
     overflow: hidden;
     transition: transform 0.3s ease-in-out;
     text-align: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    padding: 20px;
 }
 
-.tejido-container .card-img4 {
-    height: 350px; /* Taller image */
+/* Horizontal Scroll Container with Overlapping Cards inside the card */
+.tejido-container {
+    width: 100%; /* Use full width of the card */
+    padding: 0 40px;
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+.tejido-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Individual Tejido Card Styles */
+.tejido-card {
+    flex: 0 0 auto;
+    width: 220px;
+    margin-left: -40px; /* Creates the overlap */
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    z-index: 1;
+}
+.tejido-card:first-child {
+    margin-left: 0;
+}
+.tejido-card:hover {
+    transform: scale(1.08);
+    z-index: 5;
+}
+
+/* Image Styling */
+.tejido-card img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    object-position: center;
+    display: block;
+    border-radius: 16px;
 }
 
-/* Responsive adjustments */
-@media (max-width: 992px) {
-    .tejido-container .card {
-        width: 90%;
-    }
+/* Alternating Heights for a Dynamic Feel */
+.tejido-card:nth-child(1) { height: 360px; }
+.tejido-card:nth-child(2) { height: 320px; }
+.tejido-card:nth-child(3) { height: 340px; }
+.tejido-card:nth-child(4) { height: 300px; }
+.tejido-card:nth-child(5) { height: 330px; }
+.tejido-card:nth-child(6) { height: 310px; }
+.tejido-card:nth-child(7) { height: 340px; }
+
+.tejido-button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    width: 100%;
 }
 
-@media (max-width: 576px) {
-    .tejido-container .card {
-        width: 95%;
-        height: auto;
-    }
-    
-    .tejido-container .card-img4 {
-        height: 250px;
-    }
+.tejido-view-button {
+    display: inline-block;
+    background-color: #4F0003;
+    color: #EEA61A;
+    padding: 16px 36px; /* Bigger button */
+    font-size: 1.2rem;   /* Bigger text */
+    font-weight: 800;    /* Bolder */
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(79, 0, 3, 0.2);
 }
+
+.tejido-view-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(79, 0, 3, 0.3);
+    background-color: #690004;
+}
+
+/* Prevent Horizontal Scroll on Body */
+body {
+    overflow-x: hidden;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .teijdo-container {
+        padding: 0 20px;
+    }
+    .teijdo-card {
+        width: 160px;
+        margin-left: -30px;
+    }
+    .teijdo-card:nth-child(1) { height: 260px; }
+    .teijdo-card:nth-child(2) { height: 220px; }
+    .teijdo-card:nth-child(3) { height: 240px; }
+    .teijdo-card:nth-child(4) { height: 200px; }
+    .teijdo-card:nth-child(5) { height: 230px; }
+    .teijdo-card:nth-child(6) { height: 210px; }
+    .teijdo-card:nth-child(7) { height: 240px; }
+}
+
 
 /* Announcements Section - Card Style Container */
 .announcements-section {

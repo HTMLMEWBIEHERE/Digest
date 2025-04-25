@@ -48,6 +48,16 @@ try {
 } catch (PDOException $e) {
     echo "Error fetching magazines: " . $e->getMessage();
 }
+
+// Fetch tejidos
+try {
+    $stmt = $conn->prepare("SELECT * FROM tejido WHERE status = 'published' ORDER BY created_at DESC");
+    $stmt->execute();
+    $tejidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Error fetching tejidos: " . $e->getMessage();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -190,16 +200,32 @@ try {
             </div>
         </div>
 
-        <!-- Tejido Section -->
-        <div class="tejido-container">
-            <div class="card">
-                <h5 class="card-header">Tejidos</h5>
-                <img src="../imgs/tejidos.jpg" alt="Tejidos Image" class="card-img4">
-                <div class="card-body">
-                    <a href="more_tejidos.php" class="btn">View Now</a>
-                </div>
+<!-- Card Wrapper for Tejido Section -->
+<div class="tejido-container-wrapper">
+
+    <!-- Tejidos Header -->
+    <div class="tejido-header">
+        <h2>Tejidos</h2>
+    </div>
+
+    <!-- Horizontal Overlapping Cards -->
+    <div class="tejido-container">
+        <?php foreach ($tejidos as $tejido): ?>
+            <div class="tejido-card">
+                <img src="../uploaded_img/<?php echo htmlspecialchars($tejido['img']); ?>" alt="Tejido Cover">
             </div>
-        </div>
+        <?php endforeach; ?>
+    </div>
+
+    <!-- Optional View All Button -->
+    <div class="tejido-button-wrapper">
+        <a href="more_tejidos.php" class="tejido-view-button">View All</a>
+    </div>
+
+</div>
+
+
+
 
         <!-- Magazine Carousel -->
         <div class="magazine-carousel-container">
