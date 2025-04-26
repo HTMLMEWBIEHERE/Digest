@@ -49,14 +49,15 @@ try {
     echo "Error fetching magazines: " . $e->getMessage();
 }
 
-// Fetch tejidos
+// Fetch newest 8 tejidos
 try {
-    $stmt = $conn->prepare("SELECT * FROM tejido WHERE status = 'published' ORDER BY created_at DESC");
+    $stmt = $conn->prepare("SELECT * FROM tejido WHERE status = 'published' ORDER BY created_at DESC LIMIT 8");
     $stmt->execute();
     $tejidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Error fetching tejidos: " . $e->getMessage();
 }
+
 
 ?>
 

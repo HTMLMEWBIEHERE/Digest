@@ -214,62 +214,80 @@ section{
    border-radius: .5rem;
 }
 
-.header{
-   position: fixed;
-   top:0; left:0;
-   background-color: var(--white);
-   z-index: 1000;
-   border-right: var(--border);
-   width: 35rem;
-   padding:2rem;
-   min-height: 100vh;
-   text-align: center;
-}
+/* SIDEBAR */
+.header {
+    position: fixed;
+    top: 0; 
+    left: 0;
+    background-color: var(--white);
+    z-index: 1000;
+    border-right: var(--border);
+    width: 35rem;
+    padding: 1rem;  /* Reduced padding */
+    height: 100vh;  /* Changed from min-height to fixed height */
+    text-align: center;
+    overflow-y: auto;  /* Allow scrolling if content exceeds height */
+ }
+ 
+ .header .logo {
+    font-size: 2rem;  /* Slightly smaller */
+    color: var(--black);
+    margin-bottom: 1rem;  /* Add some spacing */
+ }
+ 
+ .header .logo span {
+    color: var(--main-color);
+ }
+ 
+ .header .profile {
+    padding: 1rem;  /* Reduced padding */
+    border-radius: .5rem;
+    background-color: var(--light-bg);
+    margin: 1rem 0;  /* Reduced margin */
+    border: var(--border);
+ }
+ 
+ .header .profile p {
+    margin-bottom: 1rem;  /* Reduced margin */
+    font-size: 1.6rem;  /* Smaller font */
+    color: var(--black);
+ }
+ 
+ .header .navbar {
+    padding: 0.5rem;  /* Reduced padding */
+ }
+ 
+ .header .navbar a {
+    display: block;
+    padding: 1rem 0;  /* Reduced padding */
+    font-size: 1.6rem;  /* Smaller font */
+    color: var(--black);
+    text-align: left;
+ }
+ 
+ .header .navbar a i {
+    margin-right: 1rem;  /* Reduced margin */
+    color: var(--main-color);
+    transition: .2s linear;
+ }
+ 
+ .header .navbar a:hover i {
+    margin-right: 2rem;  /* Reduced hover margin */
+ }
+ 
+ .header .flex-btn {
+    margin-top: 1rem;  /* Reduced margin */
+    display: flex;
+    gap: 0.5rem;  /* Tighter gap */
+ }
+ 
+ .header .flex-btn .option-btn {
+    padding: 0.8rem;  /* Smaller padding */
+    font-size: 1.4rem;  /* Smaller font */
+ }
 
-.header .logo{
-   font-size: 2.5rem;
-   color:var(--black);
-}
-
-.header .logo span{
-   color:var(--main-color);
-}
-
-.header .profile{
-   padding:2rem;
-   border-radius: .5rem;
-   background-color: var (--light-bg);
-   margin:2rem 0;
-   border:var(--border);
-}
-
-.header .profile p{
-   margin-bottom: 1.5rem;
-   font-size: 2rem;
-   color:var(--black);
-}
-
-.header .navbar{
-   padding:1rem;
-}
-
-.header .navbar a{
-   display: block;
-   padding:2rem 0;
-   font-size: 2rem;
-   color:var(--black);
-   text-align: left;
-}
-
-.header .navbar a i{
-   margin-right: 1.5rem;
-   color:var(--main-color);
-   transition: .2s linear;
-}
-
-.header .navbar a:hover i{
-   margin-right: 3rem;
-}
+ /* END SIDEBAR */
+ 
 
 #menu-btn{
    display: none;

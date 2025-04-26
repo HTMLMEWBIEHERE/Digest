@@ -18,14 +18,15 @@ body {
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 0 auto; 
 }
+
 
 /* Hero Carousel Container - Remove any padding or margins */
 .hero-carousel-container {
-    width: 100vw; /* Full viewport width */
+    width: 100vw;
     height: 600px;
-    margin: 0;
+    margin: -20px 0 0 0; /* Adjust to remove space */
     padding: 0;
     position: relative;
     left: 50%;
@@ -34,6 +35,7 @@ body {
     margin-right: -50vw;
     overflow: hidden;
 }
+
 
 /* Hero Carousel */
 .hero-carousel {
@@ -1270,20 +1272,24 @@ body {
     background-color: #4F0003;
     color: #EEA61A;
     text-align: center;
-    border-radius: 12px;
-    padding: 0.20rem; /* Reduced padding */
+    border-radius: 8px;
+    padding: 0.20rem; /* Still small padding */
     margin-bottom: 10px;
-
+    overflow: hidden; /* Prevents any overflow if text is big */
 }
+
 .tejido-header h2 {
     background: #4F0003;
     color: #EEA61A;
     font-weight: bold;
     width: 100%;
-    margin-bottom: 20px;
-    padding: 10px;
+    font-size: 2rem; /* 🎯 Font size bigger (about 32px) */
+    line-height: 1; /* Keeps text tight vertically */
+    margin: 0; /* Remove default margin to avoid extra height */
+    padding: 10px; /* Keep nice inside padding */
     border-radius: 5px;
 }
+
 
 /* Card Wrapper */
 .tejido-container-wrapper {
@@ -1347,7 +1353,7 @@ body {
 }
 
 /* Alternating Heights for a Dynamic Feel */
-.tejido-card:nth-child(1) { height: 360px; }
+.tejido-card:nth-child(1) { height: 340px; }
 .tejido-card:nth-child(2) { height: 320px; }
 .tejido-card:nth-child(3) { height: 340px; }
 .tejido-card:nth-child(4) { height: 300px; }
