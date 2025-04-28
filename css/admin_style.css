@@ -1905,6 +1905,8 @@ body.login-body {
     outline: none;
 }
 
+
+
 .show-org-members {
     max-width: 1200px;
     margin: 2rem auto;
@@ -1958,6 +1960,7 @@ body.login-body {
     margin-top: auto;
 }
 
+
 .show-org-members .box .delete-btn {
     width: 100%;
     background-color: var(--red);
@@ -1984,6 +1987,59 @@ body.login-body {
     margin: auto;
 }
 
+
+/* MEMBERS TAB */
+
+.tab-buttons {
+    display: flex;
+    justify-content: flex-start; /* align to the left */
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap; /* mobile responsiveness */
+}
+
+.tab-btn {
+    padding: 15px 35px;
+    font-size: 1.2rem; 
+    font-weight: 600; 
+    cursor: pointer;
+    border: 2px solid #EEA61A;
+    border-radius: 30px; /* pill shape */
+    background-color: transparent;
+    color: var(--main-color);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.tab-btn:hover {
+    background-color: var(--main-color);
+    color: #fff;
+}
+
+.tab-btn.active {
+    background-color: var(--main-color);
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+
+
+/* END */
 .btn {
     background-color: #4F0003;
     color: white;

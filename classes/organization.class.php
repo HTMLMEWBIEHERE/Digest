@@ -197,4 +197,5 @@ private function uploadImage($image) {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
+
 ?>

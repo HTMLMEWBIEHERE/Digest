@@ -8,6 +8,56 @@ function closeModal(id) {
     document.getElementById(id).style.display = 'none';
 }
 
+
+function showTab(tabName) {
+    // Hide all tab contents
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabContents.forEach(tab => tab.classList.remove('active'));
+
+    // Remove active class from all tab buttons
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    tabButtons.forEach(btn => btn.classList.remove('active'));
+
+    // Show the selected tab content
+    const selectedTab = document.getElementById(tabName);
+    if (selectedTab) {
+        selectedTab.classList.add('active');
+    }
+
+    // Activate the corresponding tab button
+    const clickedButton = Array.from(tabButtons).find(btn => btn.textContent.toLowerCase().includes(tabName));
+    if (clickedButton) {
+        clickedButton.classList.add('active');
+    }
+}
+
+// Remove the PHP-specific code block
+document.addEventListener('DOMContentLoaded', () => {
+    const categoryFilter = document.getElementById('filterCategory');
+    const positionFilter = document.getElementById('filterPosition');
+    const memberBoxes = document.querySelectorAll('.box-container .box');
+
+    function filterMembers() {
+        const catVal = categoryFilter.value.toLowerCase();
+        const posVal = positionFilter.value.toLowerCase();
+
+        memberBoxes.forEach(box => {
+            const categoryText = box.querySelector('p:nth-of-type(2)').textContent.toLowerCase();
+            const positionText = box.querySelector('p:nth-of-type(1)').textContent.toLowerCase();
+
+            const show = (catVal === 'all' || categoryText.includes(catVal)) &&
+                         (posVal === 'all' || positionText.includes(posVal));
+            box.style.display = show ? 'block' : 'none';
+        });
+    }
+
+    if (categoryFilter && positionFilter) {
+        categoryFilter.addEventListener('change', filterMembers);
+        positionFilter.addEventListener('change', filterMembers);
+    }
+});
+
+
 // Handle the add category form submission
 document.getElementById('addCategoryForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -246,6 +296,20 @@ $('#editMemberForm').submit(function(e) {
 // Function to close the modal
 function closeModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
+}
+
+
+function showTab(tabName) {
+    // Remove 'active' class from all tab buttons and content
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(btn => btn.classList.remove('active'));
+    tabContents.forEach(content => content.classList.remove('active'));
+
+    // Add 'active' class to selected tab button and content
+    document.querySelector(`.tab-btn[onclick="showTab('${tabName}')"]`).classList.add('active');
+    document.getElementById(tabName).classList.add('active');
 }
 
 // Close modal when clicking outside it
