@@ -14,7 +14,7 @@ $user_role = $_SESSION['role'] ?? null;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The University Digest</title>
-    <link rel="stylesheet" href="../css/userheader.css">
+    <link rel="stylesheet" href="../css/user_header.css">
     <!-- Updated Material Icons Import -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
@@ -29,11 +29,6 @@ $user_role = $_SESSION['role'] ?? null;
             <div class="logo"><h3>The University Digest</h3></div>
         </a>
     </div>
-    <div class="search-box">
-        <input type="text" name="search" id="search" placeholder="Search">
-        <button type="submit"><span class="material-symbols-outlined">search</span></button>
-        <div id="search-results"></div>
-    </div>
 
     <div class="header-right">
         <ul class="nav-menu">
@@ -41,7 +36,16 @@ $user_role = $_SESSION['role'] ?? null;
             <li><a href="../user_content/more_announcement.php">Announcements</a></li>
             <li><a href="../user_content/authors.php">Creators</a></li>
             <li><a href="../user_content/about_us.php">About</a></li>
-            <li><a href="../user_content/more_tejidos.php">Tejidos</a></li>
+            <li class="dropdown">
+            <a href="#" class="dropbtn">Articles</a>
+            <div class="dropdown-content">
+                <a href="../user_content/news.php">News</a>
+                <a href="../user_content/comics.php">Comics</a>
+                <a href="../user_content/editorial.php">Editorial</a>
+                <a href="../user_content/misc.php">Miscellaneous</a>
+            </div>
+        </li>
+        <li><a href="../user_content/more_tejidos.php">Tejidos</a></li>
             <li><a href="../user_content/more_magazines.php">Magazines</a></li>
         </ul>
         

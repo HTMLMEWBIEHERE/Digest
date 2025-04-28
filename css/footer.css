@@ -1,3 +1,17 @@
+/* Make the page a flex container */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main content stretches to fill space */
+main {
+    flex: 1;
+}
+
 .footer {
     background-color: #4F0003;
     color: #D9D9D9;
@@ -5,25 +19,7 @@
     width: 100%;
     font-family: "Poppins", sans-serif;
     font-size: 12px;
-    
-    /* Force footer to normal positioning - keep this */
-    position: static !important;
-    z-index: auto !important;
-    bottom: auto !important;
-    left: auto !important;
-    top: auto !important;
-    right: auto !important;
-    transform: none !important;
-    clear: both;
-    
-    /* Add space above footer */
     margin-top: 50px;
-    
-    /* NEW: Minimum height to fill bottom space */
-    min-height: 200px; /* Adjust this value as needed */
-    
-    /* NEW: Add bottom padding to fill space */
-    padding-bottom: 40px;
 }
 
 .footer-container {
@@ -43,7 +39,7 @@
     list-style: none; 
 }
 
-\.footer-section.logo {
+.footer-section.logo {
     display: flex;
     flex-direction: column; 
     align-items: center; 
@@ -102,7 +98,6 @@
     font-size: 10px;
     color: #D9D9D9;
 }
-
 
 /* TABLET */
 @media (max-width: 768px) {
