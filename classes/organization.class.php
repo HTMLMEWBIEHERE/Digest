@@ -43,26 +43,25 @@ class Organization {
         return true;
     }
     
-
-    // Add Organization Member
+    // Add a new organization member
     public function addOrganization($data) {
         // If a new category is provided, insert it first
         if (isset($data['category']) && $data['category'] === 'new' && !empty($data['new_category'])) {
             $data['category_id'] = $this->addCategory($data['new_category']);
         }
-
+    
         // Check required fields
-        if (empty($data['name']) || empty($data['position']) || empty($data['category_id']) || empty($data['date_appointed'])) {
+        if (empty($data['name']) || empty($data['position']) || empty($data['category_id']) || empty($data['date_appointed']) || empty($data['created_by'])) {
             throw new Exception('Missing required member fields.');
         }
-
+    
         // Prepare image upload
         $imagePath = $this->uploadImage($_FILES['image']);
-
+    
         // Insert organization member
         $query = "INSERT INTO organizational_chart 
-                  (name, image, position, category_id, date_appointed, date_ended, created_at, updated_at, is_deleted) 
-                  VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)";
+                  (name, image, position, category_id, date_appointed, date_ended, created_by, created_at, updated_at, is_deleted) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 0)";
         $stmt = $this->conn->prepare($query);
         $stmt->execute([
             $data['name'],
@@ -70,11 +69,13 @@ class Organization {
             $data['position'],
             $data['category_id'],
             $data['date_appointed'],
-            $data['date_ended'] ?? null
+            $data['date_ended'] ?? null,
+            $data['created_by']
         ]);
-
+    
         return 'Member Added Successfully!';
     }
+    
 
     public function editOrganization($org_id, $data) {
         // Only validate org_id exists
@@ -137,13 +138,24 @@ class Organization {
     }
 
 
-    // Soft Delete Organization Member
-    public function deleteOrganization($org_id) {
-        $query = "UPDATE organizational_chart SET is_deleted = 1, updated_at = NOW() WHERE org_id = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$org_id]);
-        return 'Member Deleted Successfully!';
+ 
+
+// Soft Delete Organization Member and set date_ended
+public function deleteOrganization($org_id) {
+    $query = "UPDATE organizational_chart 
+              SET is_deleted = 1, 
+                  updated_at = NOW(), 
+                  date_ended = CURDATE() 
+              WHERE org_id = ?";
+    $stmt = $this->conn->prepare($query);
+    
+    if (!$stmt->execute([$org_id])) {
+        $error = $stmt->errorInfo();
+        throw new Exception("Failed to delete member: " . $error[2]);
     }
+
+    return 'Member Deleted Successfully!';
+}
 
     // Get Organization Members
     public function getOrganizations() {
@@ -197,5 +209,6 @@ private function uploadImage($image) {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
-
 ?>
+
+

@@ -7,57 +7,6 @@ function openModal(id) {
 function closeModal(id) {
     document.getElementById(id).style.display = 'none';
 }
-
-
-function showTab(tabName) {
-    // Hide all tab contents
-    const tabContents = document.querySelectorAll('.tab-content');
-    tabContents.forEach(tab => tab.classList.remove('active'));
-
-    // Remove active class from all tab buttons
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    tabButtons.forEach(btn => btn.classList.remove('active'));
-
-    // Show the selected tab content
-    const selectedTab = document.getElementById(tabName);
-    if (selectedTab) {
-        selectedTab.classList.add('active');
-    }
-
-    // Activate the corresponding tab button
-    const clickedButton = Array.from(tabButtons).find(btn => btn.textContent.toLowerCase().includes(tabName));
-    if (clickedButton) {
-        clickedButton.classList.add('active');
-    }
-}
-
-// Remove the PHP-specific code block
-document.addEventListener('DOMContentLoaded', () => {
-    const categoryFilter = document.getElementById('filterCategory');
-    const positionFilter = document.getElementById('filterPosition');
-    const memberBoxes = document.querySelectorAll('.box-container .box');
-
-    function filterMembers() {
-        const catVal = categoryFilter.value.toLowerCase();
-        const posVal = positionFilter.value.toLowerCase();
-
-        memberBoxes.forEach(box => {
-            const categoryText = box.querySelector('p:nth-of-type(2)').textContent.toLowerCase();
-            const positionText = box.querySelector('p:nth-of-type(1)').textContent.toLowerCase();
-
-            const show = (catVal === 'all' || categoryText.includes(catVal)) &&
-                         (posVal === 'all' || positionText.includes(posVal));
-            box.style.display = show ? 'block' : 'none';
-        });
-    }
-
-    if (categoryFilter && positionFilter) {
-        categoryFilter.addEventListener('change', filterMembers);
-        positionFilter.addEventListener('change', filterMembers);
-    }
-});
-
-
 // Handle the add category form submission
 document.getElementById('addCategoryForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -94,6 +43,8 @@ document.getElementById('addCategoryForm').addEventListener('submit', function(e
     });
 });
 
+
+
 // Handle the add member form submission using AJAX
 document.getElementById('addMemberForm').addEventListener('submit', function (e) {
     e.preventDefault();  // Prevent default form submission
@@ -114,25 +65,31 @@ document.getElementById('addMemberForm').addEventListener('submit', function (e)
         formData.append('category_id', selectedCategory);
     }
 
-    fetch('../superadmin_content/add_member.php', {
+    $.ajax({
+        url: '../superadmin_content/add_member.php',
         method: 'POST',
-        body: formData
-    })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                alert('Member added!');
-                closeModal('addMemberModal');
-                form.reset();
-                loadOrganizationList(); // Refresh member list via AJAX
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: 'json', // Explicitly set expected data type
+        success: function(response) {
+            console.log('Raw server response:', response);
+            if (response.success) {
+                // Handle success
+                alert(response.message);
+                location.reload();
             } else {
-                alert(data.message || 'Something went wrong.');
+                // Handle error
+                alert('Error: ' + response.message);
             }
-        })
-        .catch(err => {
-            console.error('AJAX Error:', err);
-            alert('Something went wrong!');
-        });
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', status, error);
+            console.log('Response Text:', xhr.responseText); // Log full response for debugging
+            alert('An error occurred: ' + xhr.responseText);
+        }
+    });
+    
 });
 
 
@@ -218,53 +175,6 @@ function openDeleteCategoryModal() {
     });
 }
 
-function editMember(org_id) {
-    fetch(`../superadmin_content/get_member_details.php?org_id=${org_id}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                // Set form values
-                document.getElementById('edit_org_id').value = data.member.org_id;
-                document.getElementById('edit_name').value = data.member.name;
-                document.getElementById('edit_position').value = data.member.position;
-                document.getElementById('edit_date_appointed').value = data.member.date_appointed;
-                document.getElementById('edit_date_ended').value = data.member.date_ended || '';
-                document.getElementById('edit_existing_image').src = '../' + data.member.image;
-                
-                // Load categories
-                loadCategoriesForEdit(data.member.category_id);
-                
-                // Show modal
-                document.getElementById('editMemberModal').style.display = 'block';
-            } else {
-                alert('Error loading member details: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Failed to load member details');
-        });
-}
-
-function loadCategoriesForEdit(selectedCategoryId) {
-    fetch('../superadmin_content/get_categories.php')
-        .then(response => response.json())
-        .then(categories => {
-            const select = document.getElementById('edit_category_id');
-            select.innerHTML = '';
-            
-            categories.forEach(category => {
-                const option = document.createElement('option');
-                option.value = category.category_id;
-                option.textContent = category.category_name;
-                if (category.category_id == selectedCategoryId) {
-                    option.selected = true;
-                }
-                select.appendChild(option);
-            });
-        });
-}
-
 $('#editMemberForm').submit(function(e) {
     e.preventDefault();
     
@@ -276,40 +186,101 @@ $('#editMemberForm').submit(function(e) {
         data: formData,
         contentType: false,
         processData: false,
-        dataType: 'json', // 👈 Tells jQuery to expect JSON response
+        dataType: 'json',
         success: function(data) {
             if (data.status === 'success') {
                 alert('Member updated successfully');
                 closeModal('editMemberModal');
-                loadOrganizationList(); // Refresh the list
+                
+                // Reload the page or update the organization list
+                location.reload(); // Or use loadOrganizationList() if defined
             } else {
-                alert('Error: ' + data.message);
+                // Handle specific error scenarios
+                alert('Error: ' + (data.message || 'Failed to update member'));
             }
         },
-        error: function(xhr) {
-            alert('Error: ' + xhr.responseText);
+        error: function(xhr, status, error) {
+            // More detailed error logging and user feedback
+            console.error('AJAX Error:', status, error);
+            console.log('Response Text:', xhr.responseText);
+            
+            try {
+                // Try to parse error response
+                let errorResponse = JSON.parse(xhr.responseText);
+                alert('Error: ' + (errorResponse.message || 'An unexpected error occurred'));
+            } catch (e) {
+                // Fallback error message if JSON parsing fails
+                alert('An unexpected error occurred. Please try again.');
+            }
         }
     });
 });
 
+// Supporting function to load categories for edit
+function loadCategoriesForEdit(selectedCategoryId) {
+    fetch('../superadmin_content/get_categories.php')
+        .then(response => response.json())
+        .then(categories => {
+            const select = document.getElementById('edit_category_id');
+            select.innerHTML = ''; // Clear existing options
+            
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.category_id;
+                option.textContent = category.category_name;
+                
+                // Select the current category
+                if (category.category_id == selectedCategoryId) {
+                    option.selected = true;
+                }
+                
+                select.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error loading categories:', error);
+            alert('Failed to load categories');
+        });
+}
+
+// Edit member function
+function editMember(org_id) {
+    fetch(`../superadmin_content/get_member_details.php?org_id=${org_id}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Populate form fields
+                document.getElementById('edit_org_id').value = data.member.org_id;
+                document.getElementById('edit_name').value = data.member.name;
+                document.getElementById('edit_position').value = data.member.position;
+                document.getElementById('edit_date_appointed').value = data.member.date_appointed;
+                document.getElementById('edit_date_ended').value = data.member.date_ended || '';
+                
+                // Update existing image
+                const existingImageEl = document.getElementById('edit_existing_image');
+                if (existingImageEl) {
+                    existingImageEl.src = '../' + data.member.image;
+                }
+                
+                // Load categories and pre-select current category
+                loadCategoriesForEdit(data.member.category_id);
+                
+                // Show edit modal
+                document.getElementById('editMemberModal').style.display = 'block';
+            } else {
+                // Handle error scenario
+                alert('Error loading member details: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching member details:', error);
+            alert('Failed to load member details');
+        });
+}
 
 // Function to close the modal
 function closeModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
-}
-
-
-function showTab(tabName) {
-    // Remove 'active' class from all tab buttons and content
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    tabButtons.forEach(btn => btn.classList.remove('active'));
-    tabContents.forEach(content => content.classList.remove('active'));
-
-    // Add 'active' class to selected tab button and content
-    document.querySelector(`.tab-btn[onclick="showTab('${tabName}')"]`).classList.add('active');
-    document.getElementById(tabName).classList.add('active');
 }
 
 // Close modal when clicking outside it
@@ -318,4 +289,8 @@ window.onclick = function(event) {
     if (event.target === modal) {
         modal.style.display = "none";
     }
+
+
+    
 };
+

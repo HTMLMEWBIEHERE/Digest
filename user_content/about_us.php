@@ -82,7 +82,6 @@ $categories = $select_categories->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                         <div class="card-content">
                             <h2><?= htmlspecialchars($member['name']); ?></h2>
-                            <p><?= htmlspecialchars($position); ?></p>
                         </div>
                     </div>
                     <?php } ?>

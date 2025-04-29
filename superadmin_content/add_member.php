@@ -1,5 +1,19 @@
 <?php
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once '../classes/organization.class.php';
+
+// Check if admin is logged in
+if (!isset($_SESSION['admin_id'])) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'User not authenticated. Please log in.'
+    ]);
+    exit();
+}
 
 header('Content-Type: application/json');
 
@@ -36,7 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'new_category' => $new_category,
             'date_appointed' => $date_appointed,
             'date_ended' => $date_ended,
-            'image' => $image
+            'image' => $image,
+            'created_by' => $_SESSION['admin_id'] // Ensure this is set before use
         ];
 
         // Add the organization member

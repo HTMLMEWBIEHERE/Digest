@@ -6,7 +6,6 @@ $conn = $db->connect();
 
 // Initialize Organization class
 $organization = new Organization();
-$members = $organization->getOrganizations();
 
 session_start();
 
@@ -18,9 +17,6 @@ if (!isset($admin_id) || $admin_role != 'superadmin') {
     header('location:../admin/admin_login.php');
     exit();
 }
-
-// Initialize messages array
-$message = [];
 
 // Handle Delete Member
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_member'])) {
@@ -34,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_member'])) {
             $_SESSION['message'] = 'Invalid member ID.';
         }
 
+        // Redirect to prevent form resubmission
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     } catch (Exception $e) {
@@ -43,18 +40,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_member'])) {
     }
 }
 
+// Initialize messages array
+$message = [];
+
+// Display session message if it exists
+if (isset($_SESSION['message'])) {
+    $message[] = $_SESSION['message'];
+    unset($_SESSION['message']);
+}
+
 // Handle Delete Category
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_category'])) {
     try {
         $category_id = $_POST['category_id'] ?? null;
 
         if ($category_id) {
-            $organization->deleteCategory($category_id);
+            $organization->deleteCategory($category_id);  // Assuming you have a deleteCategory method
             $_SESSION['message'] = 'Category removed successfully.';
         } else {
             $_SESSION['message'] = 'Invalid category ID.';
         }
 
+        // Redirect to prevent form resubmission
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     } catch (Exception $e) {
@@ -64,30 +71,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_category'])) {
     }
 }
 
+// Initialize messages array
+$message = [];
+
 // Display session message if it exists
 if (isset($_SESSION['message'])) {
     $message[] = $_SESSION['message'];
     unset($_SESSION['message']);
 }
 
-// Fetch organization members
+// Fetch org members
 try {
-    $org_members = $organization->getOrganizations(); // <-- Important
+    $org_members = $organization->getOrganizations();
 } catch (Exception $e) {
-    $message[] = 'Error fetching organization members: ' . $e->getMessage();
-    $org_members = [];
-}
-
-// Separate current and past members
-$current_members = [];
-$past_members = [];
-
-foreach ($org_members as $member) {
-    if (empty($member['date_ended'])) {
-        $current_members[] = $member;
-    } else {
-        $past_members[] = $member;
-    }
+    $message[] = 'Error fetching org members: ' . $e->getMessage();
 }
 
 // Fetch categories for the dropdown
@@ -95,13 +92,19 @@ try {
     $categories = $organization->getCategories();
 } catch (Exception $e) {
     $message[] = 'Error fetching categories: ' . $e->getMessage();
-    $categories = [];
 }
 ?>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Organizational Chart</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="../css/admin_style.css">
+</head>
 <body>
 
 <?php include '../components/superadmin_header.php' ?>
@@ -109,7 +112,16 @@ try {
 <section class="org-chart-controls">
     <h1 class="heading">Organizational Chart Management</h1>
 
-
+    <?php
+    if (isset($message) && is_array($message)) {
+        foreach ($message as $msg) {
+            echo '<div class="message">
+                <span>' . htmlspecialchars($msg) . '</span>
+                <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+            </div>';
+        }
+    }
+    ?>
 
     <!-- Trigger Buttons -->
     <div class="flex-btn">
@@ -122,60 +134,47 @@ try {
 </section>
 
 
+<ul id="membersList" style="display: none;"></ul>
 
+<ul id="categoryList" style="display: none;">
+    <!-- Categories will be appended here dynamically -->
+</ul>
 
-<h1 class="heading">Organizational Members</h1>
+<section class="show-org-members">
+    <h1 class="heading">Organizational Members</h1>
+    <div class="filters-minimal">
+    <select id="filterCategory">
+        <option value="all">All Categories</option>
+        <?php foreach ($categories as $cat): ?>
+            <option value="<?= htmlspecialchars($cat['category_name']) ?>">
+                <?= htmlspecialchars($cat['category_name']) ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
 
-<!-- Tabs -->
-<div class="tab-buttons">
-    <button class="tab-btn active" onclick="showTab('current')">Current Members</button>
-    <button class="tab-btn" onclick="showTab('past')">Past Members</button>
+    <select id="filterPosition">
+        <option value="all">All Positions</option>
+        <?php
+        $positions = array_unique(array_column($org_members, 'position'));
+        foreach ($positions as $pos):
+        ?>
+            <option value="<?= htmlspecialchars($pos) ?>"><?= htmlspecialchars($pos) ?></option>
+        <?php endforeach; ?>
+    </select>
 </div>
-
-<!-- Filter Members -->
-
-<div class="filters-minimal">
-        <select id="filterCategory">
-            <option value="all">All Categories</option>
-            <?php foreach ($categories as $cat): ?>
-                <option value="<?= htmlspecialchars($cat['category_name']) ?>">
-                    <?= htmlspecialchars($cat['category_name']) ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-
-        <select id="filterPosition">
-            <option value="all">All Positions</option>
-            <?php
-            $positions = array_unique(array_column($org_members, 'position'));
-            foreach ($positions as $pos):
-            ?>
-                <option value="<?= htmlspecialchars($pos) ?>"><?= htmlspecialchars($pos) ?></option>
-            <?php endforeach; ?>
-        </select>
-
-        
-
-    </div>
-
-
-
-
-<!-- Current Members -->
-<div id="current" class="tab-content show-org-members active">
-
     <div class="box-container">
-        <?php if (count($current_members) > 0): ?>
-            <?php foreach ($current_members as $member): ?>
+        <?php if (count($org_members) > 0): ?>
+            <?php foreach ($org_members as $member): ?>
                 <div class="box">
                     <h3><?= htmlspecialchars($member['name']); ?></h3>
+                    <p><?= htmlspecialchars($member['position']); ?></p>
+                    <p>Category: <?= htmlspecialchars($member['category_name'] ?? 'Uncategorized'); ?></p>
                     <?php if (!empty($member['image'])): ?>
                         <img src="../<?= htmlspecialchars($member['image']); ?>" alt="<?= htmlspecialchars($member['name']); ?>">
                     <?php endif; ?>
-                    <p><?= htmlspecialchars($member['position']); ?></p>
-                    <p>Category: <?= htmlspecialchars($member['category_name'] ?? 'Uncategorized'); ?></p>
                     <p>Appointed: <?= htmlspecialchars($member['date_appointed']); ?></p>
                     <div class="flex-btn">
+                        <!-- Remove Button -->
                         <form action="" method="post" onsubmit="return confirm('Remove this member?');">
                             <input type="hidden" name="org_id" value="<?= $member['org_id']; ?>">
                             <button type="submit" name="delete_member" class="delete-btn">Remove</button>
@@ -185,48 +184,13 @@ try {
                             <i class="bi bi-pencil-square"></i> Edit
                         </button>
                     </div>
-
-                </div>
-                
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p class="empty">No current members found!</p>
-        <?php endif; ?>
-    </div>
-</div>
-
-<!-- Past Members -->
-<div id="past" class="tab-content show-org-members">
-    <div class="box-container">
-        <?php if (count($past_members) > 0): ?>
-            <?php foreach ($past_members as $member): ?>
-                <div class="box">
-                    <h3><?= htmlspecialchars($member['name']); ?></h3>
-                    <?php if (!empty($member['image'])): ?>
-                        <img src="../<?= htmlspecialchars($member['image']); ?>" alt="<?= htmlspecialchars($member['name']); ?>">
-                    <?php endif; ?>
-                    <p><?= htmlspecialchars($member['position']); ?></p>
-                    <p>Category: <?= htmlspecialchars($member['category_name'] ?? 'Uncategorized'); ?></p>
-                    <p>Appointed: <?= htmlspecialchars($member['date_appointed']); ?></p>
-                    <p>Ended: <?= htmlspecialchars($member['date_ended']); ?></p>
-                    <div class="flex-btn">
-                        <form action="" method="post" onsubmit="return confirm('Remove this member?');">
-                            <input type="hidden" name="org_id" value="<?= $member['org_id']; ?>">
-                            <button type="submit" name="delete_member" class="delete-btn">Remove</button>
-                        </form>
-
-                        <button class="btn edit-btn" onclick="editMember(<?= $member['org_id']; ?>)">
-                            <i class="bi bi-pencil-square"></i> Edit
-                        </button>
-                    </div>
-
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <p class="empty">No past members found!</p>
+            <p class="empty">No org members found!</p>
         <?php endif; ?>
     </div>
-</div>
+</section>
 
 <div id="category-container">
     <!-- delete_category_modal.php content will load here via AJAX -->
@@ -238,7 +202,59 @@ include('../modals/add_member_modal.php');
 include('../modals/add_category_modal.php');
 ?>
 
+<script>
+    // Populate category dropdown
+    const categories = <?php echo json_encode($categories); ?>;
+    const categorySelect = document.getElementById('category_id');
+
+    if (categorySelect && categories.length > 0) {
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.category_id;
+            option.textContent = category.category_name;
+            categorySelect.appendChild(option);
+        });
+    }
+
+    // Toggle new category input
+    if (categorySelect) {
+        categorySelect.addEventListener('change', function () {
+            const newCategoryBox = document.getElementById('new-category-box');
+            if (this.value === 'new') {
+                newCategoryBox.style.display = 'block';
+            } else {
+                newCategoryBox.style.display = 'none';
+            }
+        });
+    }
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+    const categoryFilter = document.getElementById('filterCategory');
+    const positionFilter = document.getElementById('filterPosition');
+    const memberBoxes = document.querySelectorAll('.box-container .box');
+
+    function filterMembers() {
+        const catVal = categoryFilter.value.toLowerCase();
+        const posVal = positionFilter.value.toLowerCase();
+
+        memberBoxes.forEach(box => {
+            const categoryText = box.querySelector('p:nth-of-type(2)').textContent.toLowerCase();
+            const positionText = box.querySelector('p:nth-of-type(1)').textContent.toLowerCase();
+
+            const show = (catVal === 'all' || categoryText.includes(catVal)) &&
+                         (posVal === 'all' || positionText.includes(posVal));
+            box.style.display = show ? 'block' : 'none';
+        });
+    }
+
+    categoryFilter.addEventListener('change', filterMembers);
+    positionFilter.addEventListener('change', filterMembers);
+});
+</script>
 
 <script src="../js/org_chart.js"></script>
+<script src="../js/admin_script.js"></script>
+
 </body>
 </html>
