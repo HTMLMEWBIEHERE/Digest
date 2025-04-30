@@ -157,6 +157,25 @@ public function deleteOrganization($org_id) {
     return 'Member Deleted Successfully!';
 }
 
+
+// Revert a past member back to current members
+public function revertMember($org_id) {
+    $query = "UPDATE organizational_chart 
+              SET is_deleted = 0, 
+                  date_ended = NULL, 
+                  updated_at = NOW() 
+              WHERE org_id = ?";
+    $stmt = $this->conn->prepare($query);
+    
+    if (!$stmt->execute([$org_id])) {
+        $error = $stmt->errorInfo();
+        throw new Exception("Failed to revert member: " . $error[2]);
+    }
+
+    return 'Member Reverted Successfully!';
+}
+
+
     // Get Organization Members
     public function getOrganizations() {
         $query = "SELECT oc.*, cat.category_name 
@@ -208,7 +227,38 @@ private function uploadImage($image) {
         $stmt->execute([$org_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+
+    public function getMembersWithEndedDate() {
+        $sql = "SELECT 
+                    oc.org_id, 
+                    oc.name, 
+                    oc.position, 
+                    oc.image, 
+                    oc.date_appointed, 
+                    oc.date_ended,
+                    c.category_name
+                FROM organizational_chart oc
+                LEFT JOIN org_categories c ON oc.category_id = c.category_id
+                WHERE oc.date_ended IS NOT NULL
+                ORDER BY oc.date_ended DESC";
+        
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            // Log the error
+            error_log("Error fetching ended members: " . $e->getMessage());
+            throw new Exception("Unable to retrieve ended members: " . $e->getMessage());
+        }
+    }
+    
+    
 }
+
+
+
 ?>
 
 

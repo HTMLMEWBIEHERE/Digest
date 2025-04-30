@@ -93,6 +93,15 @@ try {
 } catch (Exception $e) {
     $message[] = 'Error fetching categories: ' . $e->getMessage();
 }
+
+
+// Fetch members with non-null date_ended
+try {
+    $ended_members = $organization->getMembersWithEndedDate();
+} catch (Exception $e) {
+    $message[] = 'Error fetching ended members: ' . $e->getMessage();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -131,7 +140,7 @@ try {
     </div>
 
     <div id="formContainer"></div>
-</section>
+
 
 
 <ul id="membersList" style="display: none;"></ul>
@@ -140,9 +149,13 @@ try {
     <!-- Categories will be appended here dynamically -->
 </ul>
 
-<section class="show-org-members">
-    <h1 class="heading">Organizational Members</h1>
-    <div class="filters-minimal">
+<div class="tab-container">
+<div class="tabs">
+        <button class="tab-btn active" onclick="showTab('membersTab', this)">Current Members</button>
+        <button class="tab-btn" onclick="showTab('endedTab', this)">Past Members</button>
+    </div>
+</div>
+<div class="filters-minimal">
     <select id="filterCategory">
         <option value="all">All Categories</option>
         <?php foreach ($categories as $cat): ?>
@@ -162,6 +175,9 @@ try {
         <?php endforeach; ?>
     </select>
 </div>
+<section id="membersTab" class="tab-content active">
+<h1 class="heading">Organizational Members</h1>
+    
     <div class="box-container">
         <?php if (count($org_members) > 0): ?>
             <?php foreach ($org_members as $member): ?>
@@ -191,6 +207,44 @@ try {
         <?php endif; ?>
     </div>
 </section>
+</div>
+
+
+
+<section id="endedTab" class="tab-content">
+<h1 class="heading">Members with Ended Dates</h1>
+    <div class="box-container">
+        <?php if (count($ended_members) > 0): ?>
+            <?php foreach ($ended_members as $member): ?>
+                <div class="box">
+                    <h3><?= htmlspecialchars($member['name']); ?></h3>
+                    <p><?= htmlspecialchars($member['position']); ?></p>
+                    <p>Category: <?= htmlspecialchars($member['category_name'] ?? 'Uncategorized'); ?></p>
+                    <?php if (!empty($member['image'])): ?>
+                        <img src="../<?= htmlspecialchars($member['image']); ?>" alt="<?= htmlspecialchars($member['name']); ?>">
+                    <?php endif; ?>
+                    <p>Appointed: <?= htmlspecialchars($member['date_appointed']); ?></p>
+                    <p>Ended: <?= htmlspecialchars($member['date_ended']); ?></p>
+                    <div class="flex-btn">
+                         <!-- New Revert Button -->
+                         <button class="btn revert-btn" onclick="revertMember(<?= $member['org_id']; ?>)">
+                            <i class="bi bi-arrow-clockwise"></i> Reinstate
+                        </button>
+
+                        <!-- Edit Button -->
+                        <!-- <button class="btn edit-btn" onclick="editMember(<?= $member['org_id']; ?>)">
+                            <i class="bi bi-pencil-square"></i> Edit
+                        </button> -->
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p class="empty">No members with ended dates found!</p>
+        <?php endif; ?>
+    </div>
+</section>
+</section>
+
 
 <div id="category-container">
     <!-- delete_category_modal.php content will load here via AJAX -->
@@ -203,6 +257,22 @@ include('../modals/add_category_modal.php');
 ?>
 
 <script>
+
+    function showTab(tabId) {
+    // Hide all tab contents
+    document.querySelectorAll('.tab-content').forEach(section => {
+        section.classList.remove('active');
+    });
+
+    // Remove active class from all buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    // Show the selected tab and mark the button active
+    document.getElementById(tabId).classList.add('active');
+    event.target.classList.add('active');
+}
     // Populate category dropdown
     const categories = <?php echo json_encode($categories); ?>;
     const categorySelect = document.getElementById('category_id');

@@ -59,6 +59,7 @@ $admin_name = $fetch_profile ? htmlspecialchars($fetch_profile['firstname'] . ' 
     <a href="../superadmin_content/sa_admin_accounts.php"><i class="fas fa-user-shield"></i> <span>Admin Accounts</span></a>
     <a href="../superadmin_content/sa_manage_emagazines.php"><i class="fas fa-book"></i> <span>E-Magazines</span></a>
     <a href="../superadmin_content/sa_manage_announcements.php"><i class="fas fa-bullhorn"></i> <span>Announcements</span></a>
+    <a href="../superadmin_content/sa_manage_org_chart.php"><i class="fas fa-sitemap"></i> <span>Organizational Chart</span></a>
     <a href="../superadmin_content/sa_activity_logs.php"><i class="fas fa-clipboard-list"></i> <span>Activity Logs</span></a>
     <a href="../components/admin_logout.php" class="logout-link" onclick="return confirm('Logout from the website?');"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
 </nav>

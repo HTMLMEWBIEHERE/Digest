@@ -161,6 +161,33 @@ function bindDeleteButtons() {
     });
 }
 
+
+// Add this function to the existing code
+function revertMember(org_id) {
+    if (confirm('Are you sure you want to revert this member to the current members list?')) {
+        fetch('../superadmin_content/revert_member.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'org_id=' + encodeURIComponent(org_id)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                location.reload(); // Reload to reflect changes
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Revert member error:', error);
+            alert('An error occurred while reverting the member.');
+        });
+    }
+}
+
 // Optional: Open delete modal and load its content
 function openDeleteCategoryModal() {
     fetch('../modals/delete_category_modal.php')

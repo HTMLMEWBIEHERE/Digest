@@ -48,8 +48,8 @@
     <label for="edit_date_appointed">Date Appointed:</label>
     <input type="date" id="edit_date_appointed" name="date_appointed">
     
-    <label for="edit_date_ended">Date Ended: (optional)</label>
-    <input type="date" id="edit_date_ended" name="date_ended">
+    <label for="edit_date_ended" style="display: none;">Date Ended: (optional)</label>
+    <input type="date" id="edit_date_ended" name="date_ended" style="display: none;">
     
     <label>Current Image:</label>
     <img id="edit_existing_image" src="" class="member-image" style="max-width: 200px;">

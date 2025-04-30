@@ -38,7 +38,7 @@ if (isset($_POST['upload_carousel'])) {
         $new_image_name = uniqid('carousel_') . '.' . $image_extension;
         $image_folder = '../uploaded_img/' . $new_image_name;
 
-        $allowed_exts = ['jpg', 'jpeg', 'png', 'gif'];
+        $allowed_exts = ['jpg', 'jpeg', 'png', 'gif',];
 
         if (!in_array($image_extension, $allowed_exts)) {
             $message[] = 'Invalid image format! Allowed formats: JPG, JPEG, PNG, GIF';

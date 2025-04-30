@@ -1,0 +1,149 @@
+-- Accounts Table
+CREATE TABLE accounts (
+    account_id INT AUTO_INCREMENT PRIMARY KEY,
+    firstname VARCHAR(255) NOT NULL,
+    lastname VARCHAR(255) NOT NULL,
+    middlename VARCHAR(255),
+    user_name VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('superadmin', 'subadmin', 'user') NOT NULL,
+    image VARCHAR(100)
+);
+
+-- Category Table
+CREATE TABLE category (
+    category_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+-- Posts Table
+CREATE TABLE posts (
+    post_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    content TEXT NOT NULL,
+    image VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    status ENUM('draft', 'published') NOT NULL,
+    created_by INT,
+    category_id INT,
+    FOREIGN KEY (created_by) REFERENCES accounts(account_id),
+    FOREIGN KEY (category_id) REFERENCES category(category_id)
+);
+
+-- Announcements Table
+CREATE TABLE announcements (
+    announcement_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    image VARCHAR(255),
+    created_by INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (created_by) REFERENCES accounts(account_id)
+);
+
+-- Likes Table
+CREATE TABLE likes (
+    like_id INT AUTO_INCREMENT PRIMARY KEY,
+    account_id INT,
+    post_id INT,
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id),
+    FOREIGN KEY (post_id) REFERENCES posts(post_id)
+);
+
+-- Comments Table
+CREATE TABLE comments (
+    comment_id INT AUTO_INCREMENT PRIMARY KEY,
+    post_id INT,
+    commented_by INT,
+    comment TEXT NOT NULL,
+    commented_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts(post_id),
+    FOREIGN KEY (commented_by) REFERENCES accounts(account_id)
+);
+
+-- E-magazines Table
+CREATE TABLE e_magazines (
+    magazine_id INT AUTO_INCREMENT PRIMARY KEY,
+    author VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    context TEXT NOT NULL,
+    link VARCHAR(255) NOT NULL,
+    image VARCHAR(255),
+    created_by INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    category_id INT,
+    FOREIGN KEY (created_by) REFERENCES accounts(account_id),
+    FOREIGN KEY (category_id) REFERENCES category(category_id)
+);
+
+-- Tejido Table
+CREATE TABLE tejido (
+    tejido_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    category_id INT,
+    img VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    status ENUM('draft', 'published') NOT NULL,
+    created_by INT,
+    FOREIGN KEY (category_id) REFERENCES category(category_id),
+    FOREIGN KEY (created_by) REFERENCES accounts(account_id)
+);
+
+-- Carousel Images Table
+CREATE TABLE carousel_images (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    image_url VARCHAR(255) NOT NULL,
+    display_order INT NOT NULL,
+    account_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id) ON DELETE CASCADE
+);
+
+-- New Articles Table
+CREATE TABLE articles (
+    article_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    content TEXT NOT NULL,
+    image VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    status ENUM('draft', 'published') NOT NULL,  -- Added status
+    category_id INT,
+    created_by INT,
+    FOREIGN KEY (category_id) REFERENCES category(category_id),
+    FOREIGN KEY (created_by) REFERENCES accounts(account_id)
+);
+
+
+
+CREATE TABLE organizational_chart (
+  org_id int(11) NOT NULL AUTO_INCREMENT,
+  name varchar(255) NOT NULL,
+  image varchar(255) DEFAULT NULL,
+  position varchar(255) NOT NULL,
+  date_appointed date NOT NULL,
+  date_ended date DEFAULT NULL,
+  created_at timestamp NULL DEFAULT current_timestamp(),
+  updated_at timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  is_deleted tinyint(1) DEFAULT 0,
+  category_id int(11) DEFAULT NULL,
+  created_by int(11) DEFAULT NULL,
+  PRIMARY KEY (org_id),
+  KEY fk_category (category_id),
+  KEY fk_account_id (account_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE org_categories (
+  category_id int(11) NOT NULL AUTO_INCREMENT,
+  category_name varchar(255) NOT NULL,
+  created_at timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (category_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8
