@@ -11,6 +11,15 @@ session_start();
 $select_categories = $conn->prepare("SELECT * FROM org_categories ORDER BY category_name ASC");
 $select_categories->execute();
 $categories = $select_categories->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch "About Us" content from the database
+try {
+    $stmt = $conn->prepare("SELECT title, description, image FROM about_us ORDER BY about_id DESC LIMIT 1");
+    $stmt->execute();
+    $about_us = $stmt->fetch(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Error fetching About Us content: " . $e->getMessage();
+}
 ?>
 
 <!DOCTYPE html>
@@ -25,15 +34,20 @@ $categories = $select_categories->fetchAll(PDO::FETCH_ASSOC);
     <?php include '../components/user_header.php'; ?>  <!-- Fixed path with ../ -->
     
     <div class="main">
-        <div class="card-2">
-            <div class="card-content">
-                <h2 style="color:#4F0003;">About The University Digest</h2>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </div>
-            <div class="logo-image">
-                <img src="../imgs/logo_trans.png" alt="Sample Image">  <!-- Fixed path with ../ -->
-            </div>
+    <div class="card-2">
+        <div class="card-content">
+            <h2 style="color:#4F0003;">
+                <?php echo htmlspecialchars($about_us['title'] ?? 'About The University Digest'); ?>
+            </h2>
+            <p>
+                <?php echo htmlspecialchars($about_us['description'] ?? '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."'); ?>
+            </p>
         </div>
+        <div class="logo-image">
+            <img src="<?php echo htmlspecialchars($about_us['image'] ? '../uploads/' . $about_us['image'] : '../imgs/logo_trans.png'); ?>" alt="About Us Image">
+        </div>
+    </div>
+</div>
 
         <?php 
         // Loop through each category and display its members
