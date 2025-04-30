@@ -1,31 +1,24 @@
 <?php
 // Include your database connection
 include '../components/connect.php';
-
-// Start the session if needed
 session_start();
 
-// Initialize variables to avoid "undefined variable" warnings
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $sort = isset($_GET['sort']) ? $_GET['sort'] : 'newest';
 
-// Establish a database connection using your Database class
 $db = new Database();
 $conn = $db->connect();
 
-// Prepare the query with LEFT JOIN to get author's full name
 $query = "SELECT a.*, 
           CONCAT(ac.firstname, ' ', COALESCE(ac.middlename, ''), ' ', ac.lastname) AS author_name 
           FROM `announcements` a 
           LEFT JOIN `accounts` ac ON a.created_by = ac.account_id";
 
-// Apply search filter if search keyword is provided
 if (!empty($search)) {
     $search_param = "%" . $search . "%";
     $query .= " WHERE a.`title` LIKE :search OR a.`content` LIKE :search";
 }
 
-// Apply sorting based on the selected option
 switch ($sort) {
     case 'oldest':
         $query .= " ORDER BY a.`created_at` ASC";
@@ -42,7 +35,6 @@ switch ($sort) {
         break;
 }
 
-// Prepare and execute the query
 $select_announcements = $conn->prepare($query);
 if (!empty($search)) {
     $select_announcements->bindParam(':search', $search_param, PDO::PARAM_STR);
@@ -55,13 +47,15 @@ $select_announcements->execute();
 <head>
     <meta charset="UTF-8">
     <title>All Announcements</title>
-    <link rel="stylesheet" href="../css/announcement.css">
+    <link rel="stylesheet" href="../css/announcements.css">
     <link rel="stylesheet" href="../css/userheader.css">
     <link rel="stylesheet" href="../css/footer.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
 
-<!-- Fixed path: added ../ prefix -->
+
 <?php include '../components/user_header.php'; ?>
 
 <div class="management-section">
@@ -70,26 +64,23 @@ $select_announcements->execute();
     <!-- Filter Form -->
     <div class="filter-container">
         <form action="" method="GET" class="filter-form">
-            <div class="input-field">
+            <div class="input-field search-field">
+                <i class="fas fa-search search-icon"></i>
                 <input type="text" name="search" placeholder="Search announcements..." class="box" value="<?= htmlspecialchars($search); ?>">
             </div>
-            <br>
-            <div class="input-field">
-                <select name="sort" class="box" onchange="this.form.submit()">
-                    <option value="newest" <?= ($sort === 'newest') ? 'selected' : ''; ?>>Newest First</option>
-                    <option value="oldest" <?= ($sort === 'oldest') ? 'selected' : ''; ?>>Oldest First</option>
-                    <option value="a-z" <?= ($sort === 'a-z') ? 'selected' : ''; ?>>A-Z</option>
-                    <option value="z-a" <?= ($sort === 'z-a') ? 'selected' : ''; ?>>Z-A</option>
-                </select>
-            </div>
 
-            <button type="submit" class="inline-btn">Apply Filters</button>
-            <a href="more_announcement.php?search=&sort=newest" class="inline-option-btn">Reset</a>
+            <button type="button" class="inline-btn" onclick="openModal()">
+                <i class="fas fa-sort"></i> 
+            </button>
+
+            <a href="more_announcement.php?search=&sort=newest" class="inline-option-btn">
+                <i class="fas fa-undo"></i> 
+            </a>
         </form>
     </div>
 
-    <!-- Announcements Display Section -->
-    <section class="announcements">
+   <!-- Announcements Display Section -->
+   <section class="announcements">
         <div class="card-announcements-container">
             <?php
             if ($select_announcements->rowCount() > 0) {
@@ -125,8 +116,33 @@ $select_announcements->execute();
     </section>
 </div>
 
-<!-- Fixed path: added ../ prefix -->
+<!-- Modal -->
+<div id="filterModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Filter Options</h2>
+        <form action="" method="GET">
+            <div class="input-field">
+                <label for="sort">Sort by:</label>
+                <select name="sort" class="box">
+                    <option value="newest" <?= ($sort === 'newest') ? 'selected' : ''; ?>>Newest First</option>
+                    <option value="oldest" <?= ($sort === 'oldest') ? 'selected' : ''; ?>>Oldest First</option>
+                    <option value="a-z" <?= ($sort === 'a-z') ? 'selected' : ''; ?>>A-Z</option>
+                    <option value="z-a" <?= ($sort === 'z-a') ? 'selected' : ''; ?>>Z-A</option>
+                </select>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" class="inline-option-btn" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="inline-btn">Confirm</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <?php include '../components/footer.php'; ?>
+
+<script src="../js/filters.js"></script>
+
 
 </body>
 </html>

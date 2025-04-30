@@ -49,15 +49,14 @@ try {
     echo "Error fetching magazines: " . $e->getMessage();
 }
 
-// Fetch newest 8 tejidos
+// Fetch "About Us" content from the database
 try {
-    $stmt = $conn->prepare("SELECT * FROM tejido WHERE status = 'published' ORDER BY created_at DESC LIMIT 8");
+    $stmt = $conn->prepare("SELECT title, description, image FROM about_us ORDER BY about_id DESC LIMIT 1");
     $stmt->execute();
-    $tejidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $about_us = $stmt->fetch(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    echo "Error fetching tejidos: " . $e->getMessage();
+    echo "Error fetching About Us content: " . $e->getMessage();
 }
-
 
 ?>
 
@@ -122,30 +121,55 @@ try {
             </div>
         </div>
 
-        <!-- Purpose Card -->
-        <div class="purpose-card">
-            <h2 class="purpose-title">Purpose of The University Digest</h2>
-            <p class="purpose-text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
-            <div class="info-icon-text">
-                <i class="fas fa-school"></i> <span>Western Mindanao <br> State University</span>
-                <i class="fas fa-map-marker-alt"></i> <span>WMSU <br> Campus A</span>
-                <i class="fas fa-calendar-alt"></i> <span>EST. <br> MCMLXXVIII</span>
-                <i class="fas fa-clock"></i> <span>Mon-Sat, <br> 8AM-5PM</span>
-            </div>
-        </div>
+<!-- Purpose Card -->
+<div class="purpose-card">
+    <h2 class="purpose-title">Purpose of The University Digest</h2>
+    <p class="purpose-text">
+        <?php
+        // Fetch the latest purpose card content from the database
+        try {
+            $stmt = $conn->prepare("SELECT purpose_text, school_name, campus_name, established_year, operating_hours FROM purpose_card ORDER BY purpose_id DESC LIMIT 1");
+            $stmt->execute();
+            $purpose_card = $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error fetching Purpose Card content: " . $e->getMessage();
+        }
+
+        // Display the purpose text or fallback to default
+        echo htmlspecialchars($purpose_card['purpose_text'] ?? '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."');
+        ?>
+    </p>
+    <div class="info-icon-text">
+        <i class="fas fa-school"></i> <span>
+            <?php echo htmlspecialchars($purpose_card['school_name'] ?? 'Western Mindanao <br> State University'); ?>
+        </span>
+        <i class="fas fa-map-marker-alt"></i> <span>
+            <?php echo htmlspecialchars($purpose_card['campus_name'] ?? 'WMSU <br> Campus A'); ?>
+        </span>
+        <i class="fas fa-calendar-alt"></i> <span>
+            <?php echo htmlspecialchars($purpose_card['established_year'] ?? 'EST. <br> MCMLXXVIII'); ?>
+        </span>
+        <i class="fas fa-clock"></i> <span>
+            <?php echo htmlspecialchars($purpose_card['operating_hours'] ?? 'Mon-Sat, <br> 8AM-5PM'); ?>
+        </span>
+    </div>
+</div>
 
         <!-- About Card -->
         <div class="about-card">
-            <div class="about-content">
-                <h2 class="about-title">About The University Digest</h2>
-                <p class="about-text">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
-                <a href="about_us.php" class="about-button">More About Us</a>
-            </div>
-            <div class="about-image">
-                <img src="../imgs/logo_trans.png" alt="Sample Image">
-            </div>
-        </div>
-
+    <div class="about-content">
+        <h2 class="about-title">
+            <?php echo htmlspecialchars($about_us['title'] ?? 'About The University Digest'); ?>
+        </h2>
+        <p class="about-text">
+            <?php echo htmlspecialchars($about_us['description'] ?? '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."'); ?>
+        </p>
+        <a href="about_us.php" class="about-button">More About Us</a>
+    </div>
+    <div class="about-image">
+        <img src="<?php echo htmlspecialchars($about_us['image'] ? '../uploads/' . $about_us['image'] : '../imgs/logo_trans.png'); ?>" alt="About Us Image">
+    </div>
+</div>
         <!-- Announcements Card -->
         <div class="card-announcements-container">
             <div class="card-announcements">
@@ -201,32 +225,16 @@ try {
             </div>
         </div>
 
-<!-- Card Wrapper for Tejido Section -->
-<div class="tejido-container-wrapper">
-
-    <!-- Tejidos Header -->
-    <div class="tejido-header">
-        <h2>Tejidos</h2>
-    </div>
-
-    <!-- Horizontal Overlapping Cards -->
-    <div class="tejido-container">
-        <?php foreach ($tejidos as $tejido): ?>
-            <div class="tejido-card">
-                <img src="../uploaded_img/<?php echo htmlspecialchars($tejido['img']); ?>" alt="Tejido Cover">
+        <!-- Tejido Section -->
+        <div class="tejido-container">
+            <div class="card">
+                <h5 class="card-header">Tejidos</h5>
+                <img src="../imgs/tejidos.jpg" alt="Tejidos Image" class="card-img4">
+                <div class="card-body">
+                    <a href="more_tejidos.php" class="btn">View Now</a>
+                </div>
             </div>
-        <?php endforeach; ?>
-    </div>
-
-    <!-- Optional View All Button -->
-    <div class="tejido-button-wrapper">
-        <a href="more_tejidos.php" class="tejido-view-button">View All</a>
-    </div>
-
-</div>
-
-
-
+        </div>
 
         <!-- Magazine Carousel -->
         <div class="magazine-carousel-container">

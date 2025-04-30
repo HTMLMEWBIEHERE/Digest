@@ -78,7 +78,7 @@ $select_editorial->execute();
     <title><?= $category_name ?> | The University Digest</title>
     
     <!-- CSS Files -->
-    <link rel="stylesheet" href="../css/articles.css">
+    <link rel="stylesheet" href="../css/article_style.css">
     <link rel="stylesheet" href="../css/userheader.css">
     <link rel="stylesheet" href="../css/footer.css">
     
@@ -99,28 +99,22 @@ $select_editorial->execute();
     <div class="article-card-wrapper">
         <div class="card-articles-header"><?= strtoupper($category_name) ?></div>
         
-        <!-- Filter Form -->
         <div class="filter-container">
-            <form action="" method="GET" class="filter-form">
-                <div class="input-field">
-                    <input type="text" name="search" placeholder="Search editorial articles..." class="box" value="<?= htmlspecialchars($search_term); ?>">
-                </div>
-                <div class="input-field">
-                    <select name="sort" class="box" onchange="this.form.submit()">
-                        <option value="newest" <?= ($sort === 'newest') ? 'selected' : ''; ?>>Newest First</option>
-                        <option value="oldest" <?= ($sort === 'oldest') ? 'selected' : ''; ?>>Oldest First</option>
-                        <option value="a-z" <?= ($sort === 'a-z') ? 'selected' : ''; ?>>A-Z</option>
-                        <option value="z-a" <?= ($sort === 'z-a') ? 'selected' : ''; ?>>Z-A</option>
-                        <option value="most-viewed" <?= ($sort === 'most-viewed') ? 'selected' : ''; ?>>Most Viewed</option>
-                    </select>
-                </div>
+        <form action="" method="GET" class="filter-form">
+            <div class="input-field search-field">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" name="search" placeholder="Search editorials..." class="box" value="<?= htmlspecialchars($search_term); ?>">
+            </div>
 
-                <div class="button-container">
-                    <button type="submit" class="inline-btn">Apply Filters</button>
-                    <a href="editorial.php" class="inline-option-btn">Reset</a>
-                </div>
-            </form>
-        </div>
+            <button type="button" class="inline-btn" onclick="openModal()">
+                <i class="fas fa-sort"></i> 
+            </button>
+
+            <a href="editorial.php?search=&sort=newest" class="inline-option-btn">
+                <i class="fas fa-undo"></i> 
+            </a>
+        </form>
+    </div>
 
         <!-- Editorial Articles Display Section -->
         <section class="articles">
@@ -170,9 +164,34 @@ $select_editorial->execute();
     </div>
 </div>
 
+<!-- Modal -->
+<div id="filterModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Filter Options</h2>
+        <form action="" method="GET">
+            <div class="input-field">
+                <label for="sort">Sort by:</label>
+                <select name="sort" class="box">
+                    <option value="newest" <?= ($sort === 'newest') ? 'selected' : ''; ?>>Newest First</option>
+                    <option value="oldest" <?= ($sort === 'oldest') ? 'selected' : ''; ?>>Oldest First</option>
+                    <option value="a-z" <?= ($sort === 'a-z') ? 'selected' : ''; ?>>A-Z</option>
+                    <option value="z-a" <?= ($sort === 'z-a') ? 'selected' : ''; ?>>Z-A</option>
+                </select>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" class="inline-option-btn" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="inline-btn">Confirm</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <?php include_once '../components/footer.php'; ?>
 
 <script src="../js/news.js"></script>
+<script src="../js/filters.js"></script>
+
 
 </body>
 </html>
