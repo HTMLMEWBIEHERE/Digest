@@ -19,7 +19,7 @@
 /* ========== HEADER LAYOUT ========== */
 header {
     width: 100%;
-    height: 110px; /* Fixed height */
+    height: 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -28,8 +28,8 @@ header {
     left: 0;
     z-index: 99;
     background: #4F0003;
-    }
-
+    padding: 0 20px;
+}
 
 /* Logo Section */
 header .logo-container {
@@ -72,6 +72,41 @@ header .logo h3 {
     padding: 0;
     letter-spacing: 1px;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5); /* Add subtle shadow for better contrast */
+}
+
+
+/* Style for the dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    text-decoration: none;
+    padding: 10px;
+    color: white;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #4F0003;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(255, 255, 255, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 10px 12px;
+    text-decoration: none;
+    display: block;
+}
+
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
 }
 
 /* ========== SEARCH BOX ========== */
