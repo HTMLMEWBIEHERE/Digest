@@ -19,11 +19,13 @@ $message = [];
 // Handle update
 if (isset($_POST['update_purpose'])) {
     $purpose_id = $_POST['purpose_id'];
-    $purpose_text = filter_var($_POST['purpose_text'], FILTER_SANITIZE_STRING);
-    $school_name = filter_var($_POST['school_name'], FILTER_SANITIZE_STRING);
-    $campus_name = filter_var($_POST['campus_name'], FILTER_SANITIZE_STRING);
-    $established_year = filter_var($_POST['established_year'], FILTER_SANITIZE_STRING);
-    $operating_hours = filter_var($_POST['operating_hours'], FILTER_SANITIZE_STRING);
+    
+    // Use ENT_QUOTES flag to allow apostrophes to be saved correctly
+    $purpose_text = $_POST['purpose_text'];
+    $school_name = filter_var($_POST['school_name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $campus_name = filter_var($_POST['campus_name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $established_year = filter_var($_POST['established_year'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $operating_hours = filter_var($_POST['operating_hours'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     $update_stmt = $conn->prepare("UPDATE purpose_card SET purpose_text=?, school_name=?, campus_name=?, established_year=?, operating_hours=?, updated_at=NOW() WHERE purpose_id=?");
     $update_stmt->execute([$purpose_text, $school_name, $campus_name, $established_year, $operating_hours, $purpose_id]);
@@ -71,14 +73,7 @@ if ($edit_id) {
     <!-- Carousel CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
 
-    <style>
-        .purpose-card {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-    </style>
+
 </head>
 <body>
 
@@ -104,7 +99,7 @@ if ($edit_id) {
                         <p><strong>Purpose:</strong> <?= nl2br(htmlspecialchars($card['purpose_text'])) ?></p>
                         <p><strong>Established:</strong> <?= htmlspecialchars($card['established_year']) ?></p>
                         <p><strong>Operating Hours:</strong> <?= htmlspecialchars($card['operating_hours']) ?></p>
-                        <a href="?edit=<?= $card['purpose_id'] ?>" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="?edit=<?= htmlspecialchars($card['purpose_id']) ?>" class="btn btn-warning btn-sm">Edit</a>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
@@ -122,7 +117,7 @@ if ($edit_id) {
         </div>
         <div class="card-body">
             <form action="sa_purpose.php" method="POST">
-                <input type="hidden" name="purpose_id" value="<?= $edit_purpose['purpose_id'] ?>">
+                <input type="hidden" name="purpose_id" value="<?= htmlspecialchars($edit_purpose['purpose_id']) ?>">
 
                 <div class="form-group">
                     <label for="purpose_text">Purpose Text</label>

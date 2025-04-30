@@ -20,12 +20,8 @@ $message = [];
 // Handle update form submission
 if (isset($_POST['update_about'])) {
     $about_id = $_POST['about_id'];
-    $title = $_POST['title'];
-    $description = $_POST['description'];
-    
-    // Validate inputs
-    $title = filter_var($title, FILTER_SANITIZE_STRING);
-    $description = filter_var($description, FILTER_SANITIZE_STRING);
+    $title = filter_var($_POST['title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $description = $_POST['description']; // Allow HTML content
     
     // Update the about us content
     $update_about = $conn->prepare("UPDATE `about_us` SET title = ?, description = ? WHERE about_id = ?");
@@ -133,24 +129,12 @@ if ($edit_id) {
     <link rel="stylesheet" href="../css/admin_style.css">
     <link rel="stylesheet" href="../css/sa_carousel.css">
 
-    <style>
-        .about-content {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .about-image {
-            max-width: 200px;
-            margin-top: 10px;
-        }
-        .modal-dialog {
-            max-width: 800px;
-        }
-        .img-thumbnail {
-            width: 150px;
-        }
-    </style>
+    <!-- Inside <head> -->
+<style>
+
+
+</style>
+
 </head>
 <body>
 
@@ -177,19 +161,19 @@ if ($edit_id) {
                     <?php if (count($about_content) > 0): ?>
                         <?php foreach ($about_content as $about): ?>
                             <div class="about-content">
-                                <h4><?= htmlspecialchars($about['title']) ?></h4>
-                                <p><?= htmlspecialchars($about['description']) ?></p>
+                                <h4><?= htmlspecialchars($about['title'], ENT_QUOTES, 'UTF-8') ?></h4>
+                                <p><?= htmlspecialchars($about['description'], ENT_QUOTES, 'UTF-8') ?></p>
                                 
                                 <?php if (!empty($about['image'])): ?>
                                     <div>
-                                        <img src="../uploads/<?= htmlspecialchars($about['image']) ?>" alt="About Us Image" class="about-image">
+                                        <img src="../uploads/<?= htmlspecialchars($about['image'], ENT_QUOTES, 'UTF-8') ?>" alt="About Us Image" class="about-image">
                                     </div>
                                 <?php endif; ?>
                                 
                                 <div class="mt-3">
-                                    <a href="?edit=<?= $about['about_id'] ?>" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="?edit=<?= htmlspecialchars($about['about_id'], ENT_QUOTES, 'UTF-8') ?>" class="btn btn-warning btn-sm">Edit</a>
                                     <?php if (!empty($about['image'])): ?>
-                                        <a href="?delete_image=<?= $about['about_id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this image?')">Delete Image</a>
+                                        <a href="?delete_image=<?= htmlspecialchars($about['about_id'], ENT_QUOTES, 'UTF-8') ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this image?')">Delete Image</a>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -215,17 +199,17 @@ if ($edit_id) {
                 </div>
                 <div class="card-body">
                     <form action="sa_aboutus.php" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="about_id" value="<?= $edit_about['about_id'] ?>">
+                        <input type="hidden" name="about_id" value="<?= htmlspecialchars($edit_about['about_id'], ENT_QUOTES, 'UTF-8') ?>">
                         
                         <div class="form-group">
                             <label for="edit_title">Title</label>
-                            <input type="text" id="edit_title" name="title" class="form-control" required value="<?= htmlspecialchars($edit_about['title']) ?>">
-                        </div>
+                            <input type="text" id="edit_title" name="title" class="form-control" required value="<?= htmlspecialchars_decode($edit_about['title']) ?>">
+                            </div>
 
                         <div class="form-group">
                             <label for="edit_description">Description</label>
-                            <textarea id="edit_description" name="description" class="form-control" required rows="5"><?= htmlspecialchars($edit_about['description']) ?></textarea>
-                        </div>
+                            <textarea id="edit_description" name="description" class="form-control" required rows="5"><?= htmlspecialchars_decode($edit_about['description']) ?></textarea>
+                            </div>
 
                         <div class="form-group">
                             <label for="edit_image">Image</label>
@@ -249,13 +233,8 @@ if ($edit_id) {
 </div>
 <?php endif; ?>
 
-<!-- Remove the modal JavaScript completely -->
-
-
-<!-- Bootstrap and jQuery Scripts -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="../js/admin_script.js"></script>   <!-- FOR THE SIDEBAR TOGGLE -->
+ 
 
 
 </body>
