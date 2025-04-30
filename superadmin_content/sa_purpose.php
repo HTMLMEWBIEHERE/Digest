@@ -57,8 +57,20 @@ if ($edit_id) {
 <head>
     <meta charset="UTF-8">
     <title>Manage Purpose Card - Superadmin</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/spurpose.css">
+
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="../css/admin_style.css">
+    <!-- Font Awesome CDN Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- Admin CSS File Link -->
+    <link rel="stylesheet" href="../css/admin_style.css">
+    <link rel="stylesheet" href="../css/sa_carousel.css">
+
+    <!-- Carousel CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
+
     <style>
         .purpose-card {
             margin-bottom: 20px;
