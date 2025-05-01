@@ -2806,3 +2806,516 @@ button[type="submit"]:hover {
         font-size: 14px;
     }
 }
+
+
+/* Match dropdown toggle design */
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: #fff;
+    text-decoration: none;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+/* Icon margin for toggle */
+.dropdown-toggle i {
+    margin-right: 8px;
+}
+
+/* Hover effect for toggle */
+.dropdown-toggle:hover {
+    align-items: center;
+    background-color: #fff;
+    color: #333;  /* Change text color on hover */
+}
+
+/* Dropdown menu styling */
+.navbar .dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 250px; /* Increase the width of the dropdown menu */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 5px;
+    left: 0;
+    margin-top: 5px;
+    flex-direction: column; /* Ensure items stack vertically */
+}
+
+/* Dropdown menu links */
+.navbar .dropdown-menu a {
+    color: #333;
+    padding: 12px 20px; /* Adjust padding for a more spacious look */
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+/* Dropdown menu link hover effect */
+.dropdown-menu a:hover {
+    background-color: #f1f1f1;
+    border-color: #ddd;  /* Subtle border change on hover */
+}
+
+/* Icon margin in the menu links */
+.dropdown-menu a i {
+    margin-right: 8px;
+}
+
+/* Show dropdown on hover */
+.dropdown:hover .dropdown-menu {
+    display: flex;  /* Show the menu with flex layout */
+}
+
+
+
+/* ================= FOOTER MANAGEMENT STYLES ================= */
+
+.footer-management {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-management .box-container {
+    margin-bottom: 3rem;
+}
+
+.footer-management .box {
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    box-shadow: var(--box-shadow);
+    border: var(--border);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-management .box h3 {
+    font-size: 2.2rem;
+    color: var(--black);
+    margin-bottom: 2rem;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.footer-management .form {
+    width: 100%;
+}
+
+.footer-management .flex {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.footer-management .input-box {
+    margin-bottom: 1.5rem;
+}
+
+.footer-management .input-box span {
+    display: block;
+    font-size: 1.8rem;
+    color: var(--black);
+    margin-bottom: 0.8rem;
+}
+
+.footer-management .box {
+    width: 100%;
+    background-color: var(--light-bg);
+    padding: 1.4rem;
+    font-size: 1.8rem;
+    color: var(--black);
+    border-radius: 0.5rem;
+}
+
+.footer-management .table-container {
+    overflow-x: auto;
+    margin-bottom: 2rem;
+}
+
+.footer-management table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.footer-management table th {
+    background-color: var(--main-color);
+    color: var(--white);
+    padding: 1.5rem;
+    font-size: 1.8rem;
+    text-transform: capitalize;
+}
+
+.footer-management table td {
+    padding: 1.5rem;
+    font-size: 1.6rem;
+    color: var(--black);
+    border-bottom: 1px solid var(--light-bg);
+}
+
+.footer-management table td.flex-btn {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-management table td.flex-btn button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1.4rem;
+}
+
+.footer-management table td.empty {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.8rem;
+    color: var(--red);
+}
+
+/* Custom Select Dropdown for Icons */
+.custom-select {
+    position: relative;
+    width: 100%;
+    background-color: var(--light-bg);
+    border: var(--border);
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.custom-select .selected {
+    padding: 1.4rem;
+    font-size: 1.8rem;
+    color: var(--black);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.custom-select .options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--white);
+    border: var(--border);
+    border-radius: 0 0 0.5rem 0.5rem;
+    max-height: 20rem;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.custom-select .options div {
+    padding: 1.2rem;
+    font-size: 1.6rem;
+    color: var(--black);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.custom-select .options div:hover {
+    background-color: var(--light-bg);
+}
+
+.d-none {
+    display: none;
+}
+
+/* Modal Styling for Footer Management */
+.footer-management .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.footer-management .modal-content {
+    background-color: var(--white);
+    margin: 10% auto;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    width: 80%;
+    max-width: 60rem;
+    position: relative;
+    box-shadow: var(--box-shadow);
+}
+
+.footer-management .modal-content h3 {
+    font-size: 2.4rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: var(--black);
+}
+
+.footer-management .close {
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+    font-size: 3rem;
+    color: var(--red);
+    cursor: pointer;
+}
+
+.footer-management .close:hover {
+    color: var(--black);
+}
+
+/* Message Container Styling */
+.footer-management .message-container {
+    margin-bottom: 2rem;
+}
+
+.footer-management .message {
+    padding: 1.5rem;
+    background-color: var(--light-bg);
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-management .message span {
+    font-size: 1.8rem;
+    color: var(--black);
+}
+
+.footer-management .message i {
+    font-size: 2rem;
+    color: var(--red);
+    cursor: pointer;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .footer-management .flex {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-management table th,
+    .footer-management table td {
+        padding: 1rem;
+        font-size: 1.4rem;
+    }
+    
+    .footer-management .modal-content {
+        width: 95%;
+        margin: 5% auto;
+    }
+    
+    .footer-management table td.flex-btn {
+        flex-direction: column;
+    }
+    
+    .footer-management table td.flex-btn button {
+        width: 100%;
+    }
+}
+
+
+
+/* Social Media Edit Modal Styles */
+#edit-social-modal.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+#edit-social-modal .modal-content {
+    background-color: var(--white);
+    margin: 5% auto;
+    padding: 2.5rem;
+    border-radius: 0.5rem;
+    width: 90%;
+    max-width: 50rem;
+    position: relative;
+    box-shadow: var(--box-shadow);
+    border: var(--border);
+    animation: slideDown 0.4s ease;
+}
+
+#edit-social-modal .close {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    font-size: 3rem;
+    color: var(--red);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+#edit-social-modal .close:hover {
+    color: var(--black);
+    transform: rotate(90deg);
+    transition: transform 0.3s ease;
+}
+
+#edit-social-modal h3 {
+    font-size: 2.4rem;
+    color: var(--black);
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--light-bg);
+}
+
+#edit-social-modal .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+#edit-social-modal .input-box {
+    margin-bottom: 1.5rem;
+}
+
+#edit-social-modal .input-box span,
+#edit-social-modal .input-box label {
+    display: block;
+    font-size: 1.8rem;
+    color: var(--black);
+    margin-bottom: 0.8rem;
+}
+
+#edit-social-modal .box {
+    width: 100%;
+    background-color: var(--light-bg);
+    padding: 1.4rem;
+    font-size: 1.8rem;
+    color: var(--black);
+    border: var(--border);
+    border-radius: 0.5rem;
+    transition: border-color 0.3s ease;
+}
+
+#edit-social-modal .box:focus {
+    border-color: var(--main-color);
+}
+
+/* Custom Icon Dropdown Styling */
+#edit-social-modal .custom-select {
+    position: relative;
+    width: 100%;
+    background-color: var(--light-bg);
+    border: var(--border);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+#edit-social-modal .custom-select .selected {
+    padding: 1.4rem;
+    font-size: 1.8rem;
+    color: var(--black);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+#edit-social-modal .custom-select .options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--white);
+    border: var(--border);
+    border-radius: 0 0 0.5rem 0.5rem;
+    max-height: 20rem;
+    overflow-y: auto;
+    z-index: 10;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+#edit-social-modal .custom-select .options div {
+    padding: 1.2rem;
+    font-size: 1.6rem;
+    color: var(--black);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+#edit-social-modal .custom-select .options div:hover {
+    background-color: var(--light-bg);
+}
+
+#edit-social-modal .custom-select .options div i {
+    width: 2rem;
+    text-align: center;
+    color: var(--main-color);
+}
+
+#edit-social-modal .flex-btn {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+#edit-social-modal .btn {
+    width: 100%;
+    padding: 1.2rem;
+    font-size: 1.8rem;
+    background-color: var(--main-color);
+    color: var(--white);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+#edit-social-modal .btn:hover {
+    background-color: var(--black);
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #edit-social-modal .modal-content {
+        width: 95%;
+        margin: 10% auto;
+        padding: 2rem;
+    }
+    
+    #edit-social-modal h3 {
+        font-size: 2rem;
+    }
+    
+    #edit-social-modal .input-box span,
+    #edit-social-modal .input-box label {
+        font-size: 1.6rem;
+    }
+    
+    #edit-social-modal .box,
+    #edit-social-modal .custom-select .selected {
+        font-size: 1.6rem;
+        padding: 1.2rem;
+    }
+}

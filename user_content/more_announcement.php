@@ -139,7 +139,7 @@ $select_announcements->execute();
     </div>
 </div>
 
-<?php include '../components/footer.php'; ?>
+<?php include '../components/footer.php'; ?>  <!-- Fixed path with ../ -->
 
 <script src="../js/filters.js"></script>
 

@@ -7,6 +7,18 @@ if (session_status() === PHP_SESSION_NONE) {
 $account_id = $_SESSION['account_id'] ?? null;
 $user_name = $_SESSION['user_name'] ?? null;
 $user_role = $_SESSION['role'] ?? null;
+
+// Fetch about us content for the logo
+try {
+    // Only fetch if the Database class exists and connection is available
+    if (class_exists('Database') && isset($conn)) {
+        $about_query = $conn->prepare("SELECT image FROM about_us ORDER BY about_id DESC LIMIT 1");
+        $about_query->execute();
+        $about_us = $about_query->fetch(PDO::FETCH_ASSOC);
+    }
+} catch (Exception $e) {
+    // Silently fail - will use default logo
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +27,7 @@ $user_role = $_SESSION['role'] ?? null;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The University Digest</title>
     <link rel="stylesheet" href="../css/user_header.css">
+    
     <!-- Updated Material Icons Import -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
@@ -25,8 +38,8 @@ $user_role = $_SESSION['role'] ?? null;
 <header>
     <div class="logo-container">
         <a href="../user_content/landing_page.php">
-            <img src="../imgs/logo.png" alt="The University Digest Logo">
-            <div class="logo"><h3>The University Digest</h3></div>
+        <img src="<?php echo htmlspecialchars($about_us['image'] ? '../uploads/' . $about_us['image'] : '../imgs/logo_trans.png'); ?>" alt="About Us Image" class="footer-logo">
+        <div class="logo"><h3>The University Digest</h3></div>
         </a>
     </div>
 

@@ -52,18 +52,73 @@ $admin_name = $fetch_profile ? htmlspecialchars($fetch_profile['firstname'] . ' 
     </div>
 
     <nav class="navbar">
-    <a href="../super_admin/superadmin_dashboard.php"><i class="fas fa-home"></i> <span>Home</span></a>
-    <a href="../superadmin_content/sa_add_posts.php"><i class="fas fa-pen"></i> <span>Manage Posts</span></a>
-    <a href="../superadmin_content/sa_add_carousel.php"><i class="fas fa-images"></i> <span>Manage Carousel</span></a>
-    <a href="../superadmin_content/sa_purpose.php"><i class="fas fa-exclamation"></i> <span>Manage Purpose Card</span></a>
-    <a href="../superadmin_content/sa_aboutus.php"><i class="fas fa-question"></i> <span>Manage About Us</span></a>
-    <a href="../superadmin_content/sa_view_posts.php"><i class="fas fa-eye"></i> <span>View Drafts</span></a>
-    <a href="../superadmin_content/sa_admin_accounts.php"><i class="fas fa-user-shield"></i> <span>Admin Accounts</span></a>
-    <a href="../superadmin_content/sa_manage_emagazines.php"><i class="fas fa-book"></i> <span>E-Magazines</span></a>
-    <a href="../superadmin_content/sa_manage_announcements.php"><i class="fas fa-bullhorn"></i> <span>Announcements</span></a>
-    <a href="../superadmin_content/sa_manage_org_chart.php"><i class="fas fa-sitemap"></i> <span>Organizational Chart</span></a>
-    <a href="../superadmin_content/sa_activity_logs.php"><i class="fas fa-clipboard-list"></i> <span>Activity Logs</span></a>
-    <a href="../components/admin_logout.php" class="logout-link" onclick="return confirm('Logout from the website?');"><i class="fas fa-right-from-bracket"></i><span>Logout</span></a>
+    <a href="../super_admin/superadmin_dashboard.php">
+        <i class="fas fa-home"></i> 
+        <span>Home</span>
+    </a>
+    <a href="../superadmin_content/sa_add_posts.php">
+        <i class="fas fa-pen"></i> 
+        <span>Manage Posts</span>
+    </a>
+    <a href="../superadmin_content/sa_add_carousel.php">
+        <i class="fas fa-images"></i> 
+        <span>Manage Carousel</span>
+    </a>
+
+
+    <!-- // Dropdown Menu -->
+    <div class="dropdown">
+        <a href="#" class="dropdown-toggle">
+            <i class="fas fa-cog"></i> 
+            <span>Manage Content</span> 
+            <i class="fas fa-chevron-down"></i>
+        </a>
+        <div class="dropdown-menu">
+            <a href="../superadmin_content/sa_purpose.php">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>Purpose Card</span>
+            </a>
+            <a href="../superadmin_content/sa_aboutus.php">
+                <i class="fas fa-question"></i> 
+                <span>About Us</span>
+            </a>
+            <a href="../superadmin_content/sa_footer.php">
+            <i class="fas fa-file-signature"></i> 
+            <span>Footer</span>
+            </a>
+        </div>
+    </div>
+
+
+    
+    <a href="../superadmin_content/sa_view_posts.php">
+        <i class="fas fa-eye"></i> 
+        <span>View Drafts</span>
+    </a>
+    <a href="../superadmin_content/sa_admin_accounts.php">
+        <i class="fas fa-user-shield"></i> 
+        <span>Admin Accounts</span>
+    </a>
+    <a href="../superadmin_content/sa_manage_emagazines.php">
+        <i class="fas fa-book"></i> 
+        <span>E-Magazines</span>
+    </a>
+    <a href="../superadmin_content/sa_manage_announcements.php">
+        <i class="fas fa-bullhorn"></i> 
+        <span>Announcements</span>
+    </a>
+    <a href="../superadmin_content/sa_manage_org_chart.php">
+        <i class="fas fa-sitemap"></i> 
+        <span>Organizational Chart</span>
+    </a>
+    <a href="../superadmin_content/sa_activity_logs.php">
+        <i class="fas fa-clipboard-list"></i> 
+        <span>Activity Logs</span>
+    </a>
+    <a href="../components/admin_logout.php" class="logout-link" onclick="return confirm('Logout from the website?');">
+        <i class="fas fa-right-from-bracket"></i>
+        <span>Logout</span>
+    </a>
 </nav>
 
     <div class="flex-btn">
@@ -73,3 +128,4 @@ $admin_name = $fetch_profile ? htmlspecialchars($fetch_profile['firstname'] . ' 
 </header>
 
 <div id="menu-btn" class="fas fa-bars"></div>
+<script src="../js/dropdown.js"></script>

@@ -147,3 +147,42 @@ CREATE TABLE org_categories (
   created_at timestamp NULL DEFAULT current_timestamp(),
   PRIMARY KEY (category_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8
+
+
+CREATE TABLE footer_info (
+    footer_id INT(11) NOT NULL AUTO_INCREMENT,
+    logo_path VARCHAR(255) DEFAULT NULL,
+    address TEXT NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(50) NOT NULL,
+    about_us_text TEXT NOT NULL,
+    copyright_text VARCHAR(255),
+    created_by INT(11) DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (footer_id),
+    FOREIGN KEY (created_by) REFERENCES accounts(account_id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE footer_links (
+    link_id INT(11) NOT NULL AUTO_INCREMENT,
+    title VARCHAR(100) NOT NULL,     -- e.g., "Announcements", "News"
+    url VARCHAR(255) NOT NULL,
+    footer_id INT(11),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (link_id),
+    FOREIGN KEY (footer_id) REFERENCES footer_info(footer_id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE footer_socials (
+    social_id INT(11) NOT NULL AUTO_INCREMENT,
+    platform VARCHAR(50) NOT NULL,     -- e.g., "Facebook", "Instagram"
+    url VARCHAR(255) NOT NULL,
+    icon_class VARCHAR(100),           -- e.g., "fab fa-facebook" (optional)
+    footer_id INT(11),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (social_id),
+    FOREIGN KEY (footer_id) REFERENCES footer_info(footer_id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
