@@ -1,3 +1,17 @@
+/* Make the page a flex container */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main content stretches to fill space */
+main {
+    flex: 1;
+}
+
 .footer {
     background-color: #4F0003;
     color: #D9D9D9;
@@ -5,61 +19,53 @@
     width: 100%;
     font-family: "Poppins", sans-serif;
     font-size: 12px;
-    
-    /* Force footer to normal positioning - keep this */
-    position: static !important;
-    z-index: auto !important;
-    bottom: auto !important;
-    left: auto !important;
-    top: auto !important;
-    right: auto !important;
-    transform: none !important;
-    clear: both;
-    
-    /* Add space above footer */
     margin-top: 50px;
-    
-    /* NEW: Minimum height to fill bottom space */
-    min-height: 200px; /* Adjust this value as needed */
-    
-    /* NEW: Add bottom padding to fill space */
-    padding-bottom: 40px;
 }
 
 .footer-container {
-    display: flex;
-    flex-wrap: wrap;
+    display: flex; 
+    flex-wrap: nowrap; 
     justify-content: space-between;
+    align-items: center; 
+    width: 85%;
+    margin: 0 auto;
 }
 
 .footer-section {
-    display: flex;
-    flex-direction: column;     /* Stack content vertically */
-    flex: 1 1 150px;
-    min-height: 100%;           /* Match tallest sibling */
-    box-sizing: border-box;
+    flex: 1;
+    min-width: 150px; 
+    text-align: left;
+    padding: 5px;
+    list-style: none; 
 }
 
-
-.footer-section p,
-.footer-section a,
-.footer-section ul li {
-    font-size: 10px;
-}
+/* Logo section styling */
 
 
-
-\.footer-section.logo {
-    display: flex;
-    flex-direction: column; 
-    align-items: center; 
-    text-align: center;
+/* Logo spinning animation */
+@keyframes spin-coin {
+    0% {
+        transform: rotateY(0deg);
+    }
+    50% {
+        transform: rotateY(180deg);
+    }
+    100% {
+        transform: rotateY(360deg);
+    }
 }
 
 .footer-logo {
-    width: 80px;
+    max-width: 60px; /* Reduced from 80% */
     height: auto;
-    margin-bottom: 10px; 
+    animation: spin-coin 3s linear infinite;
+    transform-style: preserve-3d;
+    perspective: 10px;
+}
+
+/* Add a slight hover effect to pause the animation */
+.footer-logo:hover {
+    animation-play-state: paused;
 }
 
 .footer-logo-name {
@@ -108,42 +114,6 @@
     font-size: 10px;
     color: #D9D9D9;
 }
-
-
-/* Logo section styling */
-.footer-section.logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Logo spinning animation */
-@keyframes spin-coin {
-    0% {
-        transform: rotateY(0deg);
-    }
-    50% {
-        transform: rotateY(180deg);
-    }
-    100% {
-        transform: rotateY(360deg);
-    }
-}
-
-.footer-logo {
-    max-width: 100%;
-    height: auto;
-    animation: spin-coin 3s linear infinite;
-    transform-style: preserve-3d;
-    perspective: 1000px;
-}
-
-/* Add a slight hover effect to pause the animation */
-.footer-logo:hover {
-    animation-play-state: paused;
-}
-
-
 
 /* TABLET */
 @media (max-width: 768px) {
