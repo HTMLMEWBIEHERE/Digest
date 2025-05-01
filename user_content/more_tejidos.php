@@ -104,7 +104,7 @@ try {
       <p>Explore our curated collection of tejidos, showcasing creativity, culture, and storytelling through unique textile artworks.</p>
     </div>
     <div class="logo-image">
-      <img src="../imgs/logo_trans.png" alt="Tejidos Logo">
+    <img src="<?php echo htmlspecialchars($about_us['image'] ? '../uploads/' . $about_us['image'] : '../imgs/logo_trans.png'); ?>" alt="About Us Image">
     </div>
   </div>
 
